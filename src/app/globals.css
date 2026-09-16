@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030817;
+  --foreground: #f8fbff;
+  --panel: #071225;
+  --panel-soft: #0c1b33;
+  --line: rgba(112, 199, 255, 0.26);
+  --kaitou-blue: #0496ff;
+  --kaitou-cyan: #00d5ff;
+  --kaitou-gold: #e3b261;
+  --kaitou-red: #ef3454;
+  --trust-bg: #f7fbff;
+  --trust-ink: #071225;
+  --trust-muted: #64748b;
+  --trust-line: #dbeafe;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.kaitou-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(4, 150, 255, 0.36), transparent 32rem),
+    radial-gradient(circle at 80% 12%, rgba(0, 213, 255, 0.18), transparent 28rem),
+    linear-gradient(135deg, #030817 0%, #071225 46%, #02040c 100%);
+}
+
+.trust-surface {
+  background: var(--trust-bg);
+  color: var(--trust-ink);
+}
+
+.font-display {
+  font-family: var(--font-display), "Segoe UI", sans-serif;
+}
+
+.blue-grid {
+  background-image:
+    linear-gradient(rgba(0, 213, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 213, 255, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
