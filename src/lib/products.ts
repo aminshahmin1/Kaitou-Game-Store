@@ -1,5 +1,9 @@
 import { getActiveProducts, getProductBySlug as getStarterProductBySlug } from "./catalog";
-import { getFazerCardsTopupDetails } from "./integrations/fazercards-catalog";
+import {
+  getFazerCardsCatalogDetails,
+  listFazerCardsCatalog,
+  type FazerCardsCatalogKind,
+} from "./integrations/fazercards-catalog";
 import { createSupabaseAdminClient } from "./supabase/admin";
 import type { Product, ProductVariation, RequiredField } from "./types";
 import { adminProductCreateSchema, adminProductUpdateSchema } from "./validation";
@@ -46,6 +50,7 @@ export async function getStoreProducts() {
       "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
     )
     .eq("active", true)
+    .eq("available", true)
     .order("sort_order", { ascending: true })
     .order("title", { ascending: true })
     .order("sort_order", { referencedTable: "product_variations", ascending: true });
@@ -74,6 +79,7 @@ export async function getStoreProductBySlug(slug: string) {
     )
     .eq("slug", slug)
     .eq("active", true)
+    .eq("available", true)
     .maybeSingle();
 
   if (error || !data) {
@@ -282,30 +288,44 @@ export async function deleteAdminProduct(productId: string) {
 }
 
 export async function importFazerCardsMobileLegendsMalaysiaDraft() {
+  return importFazerCardsCatalogDraft("topup", "mobile_legends_malaysia");
+}
+
+export async function searchFazerCardsCatalog(kind: FazerCardsCatalogKind, query = "") {
+  return listFazerCardsCatalog(kind, query);
+}
+
+export async function importFazerCardsCatalogDraft(
+  kind: FazerCardsCatalogKind,
+  categoryId: string,
+  displayName?: string,
+) {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
     throw new Error("Supabase is not configured.");
   }
 
-  const details = await getFazerCardsTopupDetails("mobile_legends_malaysia");
+  const details = await getFazerCardsCatalogDetails(kind, categoryId, displayName);
   const usdToMyrRate = Number(process.env.FAZERCARDS_USD_TO_MYR_RATE ?? "4.8");
-  const slug = "mobile-legends-malaysia";
+  const slug = makeSlug(details.name, details.categoryId);
+  const isSteamGift = kind === "steam_gift";
 
   const { data: product, error: productError } = await supabase
     .from("products")
     .upsert(
       {
         slug,
-        title: "Mobile Legends (Malaysia)",
-        type: "topup",
-        category: "Game Top-Ups",
-        game: "Mobile Legends",
+        title: details.name,
+        type: isSteamGift ? "steam_gift_game" : "topup",
+        category: isSteamGift ? "Steam Gift Games" : "Game Top-Ups",
+        game: details.name,
         description:
-          "Direct Mobile Legends diamond top-ups for Malaysia. Prices imported from FazerCards as a draft and should be reviewed before publishing.",
-        image_tone: "from-sky-400 via-blue-600 to-slate-950",
-        region: "MY",
-        delivery_type: "Direct top-up",
+          details.note ??
+          "Imported from FazerCards as a hidden draft. Review sale prices and availability before publishing.",
+        image_tone: isSteamGift ? "from-slate-700 via-sky-700 to-slate-950" : "from-sky-400 via-blue-600 to-slate-950",
+        region: inferRegion(details.name),
+        delivery_type: isSteamGift ? "Steam gift" : "Direct top-up",
         required_fields: details.fields,
         source: "fazercards",
         fazercards_product_id: details.categoryId,
@@ -323,12 +343,16 @@ export async function importFazerCardsMobileLegendsMalaysiaDraft() {
 
   const variations = details.offers.map((offer, index) => {
     const estimatedCostMyr = Number((offer.priceUsd * usdToMyrRate).toFixed(2));
+    const providerSku =
+      kind === "steam_gift"
+        ? `${details.categoryId}:${offer.offerId}`
+        : `${details.categoryId}:${offer.offerId}`;
 
     return {
       product_id: product.id,
       title: offer.name,
-      sku: `${details.categoryId}-${offer.offerId}`,
-      fazercards_sku: `${details.categoryId}:${offer.offerId}`,
+      sku: makeSlug(details.categoryId, String(offer.offerId)),
+      fazercards_sku: providerSku,
       price_myr: estimatedCostMyr,
       cost_myr: estimatedCostMyr,
       active: true,
@@ -388,4 +412,33 @@ function mapVariationRow(row: VariationRow): ProductVariation {
     active: row.active,
     available: row.available,
   };
+}
+
+function makeSlug(...parts: string[]) {
+  return parts
+    .join("-")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-")
+    .slice(0, 170);
+}
+
+function inferRegion(name: string): "MY" | "SEA" | "Global" {
+  const normalized = name.toLowerCase();
+  if (normalized.includes("malaysia") || normalized.includes("(my)") || normalized.includes(" my")) {
+    return "MY";
+  }
+
+  if (
+    normalized.includes("sea") ||
+    normalized.includes("singapore") ||
+    normalized.includes("indonesia") ||
+    normalized.includes("thailand") ||
+    normalized.includes("philippines")
+  ) {
+    return "SEA";
+  }
+
+  return "Global";
 }
