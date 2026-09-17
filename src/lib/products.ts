@@ -15,6 +15,7 @@ type ProductRow = {
   image_tone: string;
   region: "MY" | "SEA" | "Global";
   delivery_type: "Direct top-up" | "Steam gift";
+  fazercards_product_id: string | null;
   required_fields: RequiredField[];
   active: boolean;
   available: boolean;
@@ -42,7 +43,7 @@ export async function getStoreProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
     )
     .eq("active", true)
     .order("sort_order", { ascending: true })
@@ -67,7 +68,7 @@ export async function getStoreProductBySlug(slug: string) {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
     )
     .eq("slug", slug)
     .eq("active", true)
@@ -90,7 +91,7 @@ export async function getAdminProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
     )
     .order("created_at", { ascending: false });
 
@@ -239,6 +240,7 @@ function mapProductRow(row: ProductRow): Product {
     imageTone: row.image_tone,
     active: row.active,
     available: row.available,
+    fazercardsProductId: row.fazercards_product_id,
     requiredFields: row.required_fields ?? [],
     variations: (row.product_variations ?? [])
       .map(mapVariationRow)

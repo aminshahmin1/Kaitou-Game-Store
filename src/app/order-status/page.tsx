@@ -1,5 +1,6 @@
-import { MessageCircle, Search } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
+import { OrderStatusLookup } from "@/components/order-status-lookup";
 import { SiteHeader } from "@/components/site-header";
 
 export default function OrderStatusPage() {
@@ -18,20 +19,7 @@ export default function OrderStatusPage() {
             </p>
           </div>
 
-          <form className="mt-8 grid gap-4 md:grid-cols-[1fr_1fr_auto]">
-            <label className="grid gap-2 text-sm font-semibold text-slate-700">
-              Order ID
-              <input className="rounded-md border border-sky-100 px-3 py-3 outline-none ring-sky-300 focus:ring-4" placeholder="KGS-..." />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold text-slate-700">
-              WhatsApp number
-              <input className="rounded-md border border-sky-100 px-3 py-3 outline-none ring-sky-300 focus:ring-4" placeholder="0172637043" />
-            </label>
-            <button className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 py-3 font-bold text-white">
-              <Search className="h-4 w-4" />
-              Check
-            </button>
-          </form>
+          <OrderStatusLookup />
 
           <div className="mt-6 flex items-start gap-3 rounded-md bg-sky-50 p-4 text-sm text-slate-600">
             <MessageCircle className="mt-0.5 h-4 w-4 text-sky-600" />

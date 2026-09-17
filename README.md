@@ -48,6 +48,7 @@ Paste the generated value into `ADMIN_PASSWORD_PBKDF2`. Use a long random value 
 - FazerCards, WhatsApp, and email integrations kept server-side.
 - Admin dashboard for failed review, products, roles, reports, and integrations.
 - Supabase schema draft in `supabase/schema.sql`.
+- Customer order lookup at `/order-status` for paid/non-pending orders.
 
 ## Production Credentials Needed
 
@@ -64,7 +65,27 @@ Do not commit real secrets. Store production values in Vercel environment variab
 
 ## FazerCards Product Mapping
 
-Each Kaitou product variation has an optional `fazercardsSku` field. This is the value the fulfillment adapter will use later to place the matching FazerCards order.
+Each Kaitou product variation has an optional `fazercardsSku` field. This is the value the fulfillment adapter uses to place the matching FazerCards order after ToyyibPay confirms payment.
+
+Top-up mappings use:
+
+```text
+category_id:offer_id
+```
+
+Example:
+
+```text
+mobile_legends_malaysia:<offer_id>
+```
+
+Steam gift mappings use:
+
+```text
+app_id:sub_id:region
+```
+
+Steam gift products must collect a required customer field named `invite_url`, `steam_invite_url`, or `steamInviteUrl`.
 
 The dashboard includes a protected `Sync MLBB MY draft` action. It imports `Mobile Legends (Malaysia)` from FazerCards `/topups/offers` as a hidden draft, stores the provider category and offer IDs, and estimates cost in MYR from USD using:
 
@@ -86,7 +107,18 @@ Do not create public products with missing or unverified FazerCards SKU values i
 
 ## Deploy
 
-Checkout is disabled by default. Keep `CHECKOUT_ENABLED=false` until payment callback verification, idempotent FazerCards fulfillment, and order tracking are implemented and tested. The current fulfillment adapter is a placeholder; deploying the storefront does not make it ready to accept payments.
+Checkout is disabled by default. Keep `CHECKOUT_ENABLED=false` until the RM1 ToyyibPay payment test passes and at least one FazerCards product mapping is reviewed end-to-end.
+
+Before enabling checkout:
+
+1. Confirm ToyyibPay account verification is complete.
+2. Create one RM1 test product or temporary low-price variation.
+3. Confirm ToyyibPay creates a bill and redirects back to `/order-status`.
+4. Confirm the webhook accepts only valid ToyyibPay hashes.
+5. Confirm the order moves to `processing`.
+6. Confirm FazerCards creates exactly one order using the mapped SKU and idempotency key.
+7. Confirm `/order-status` shows the paid order with the customer contact detail.
+8. Set `CHECKOUT_ENABLED=true` in Vercel production only after the test passes.
 
 Push the repository to GitHub and import it into Vercel. Add environment variables in Vercel Project Settings before enabling real payment or fulfillment.
 

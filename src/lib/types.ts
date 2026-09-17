@@ -22,6 +22,7 @@ export type Product = {
   description?: string | null;
   active: boolean;
   available: boolean;
+  fazercardsProductId?: string | null;
   requiredFields: RequiredField[];
   variations: ProductVariation[];
 };

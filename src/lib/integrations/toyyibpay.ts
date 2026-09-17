@@ -12,6 +12,14 @@ type ToyyibPayBillInput = {
   whatsapp: string;
 };
 
+function cleanToyyibText(value: string, maxLength: number) {
+  return value
+    .replace(/[^a-zA-Z0-9 _-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
+}
+
 export async function createToyyibPayBill(input: ToyyibPayBillInput) {
   const secretKey = process.env.TOYYIBPAY_SECRET_KEY;
   const categoryCode = process.env.TOYYIBPAY_CATEGORY_CODE;
@@ -32,8 +40,11 @@ export async function createToyyibPayBill(input: ToyyibPayBillInput) {
   const formData = new URLSearchParams({
     userSecretKey: secretKey,
     categoryCode,
-    billName: `${input.product.title} - ${input.variation.title}`.slice(0, 100),
-    billDescription: `Kaitou Game Store order ${input.orderId} for ${input.product.title} (${input.variation.title})`.slice(0, 200),
+    billName: cleanToyyibText(`Kaitou ${input.orderId}`, 30),
+    billDescription: cleanToyyibText(
+      `${input.product.title} ${input.variation.title} ${input.orderId}`,
+      100,
+    ),
     billPriceSetting: "1",
     billPayorInfo: "1",
     billAmount: String(billAmountInSen),
@@ -63,11 +74,18 @@ export async function createToyyibPayBill(input: ToyyibPayBillInput) {
     throw new Error(`ToyyibPay createBill failed with HTTP ${response.status}`);
   }
 
-  const data = await response.json();
-  const billCode = Array.isArray(data) ? data[0]?.BillCode : data?.BillCode;
+  const text = await response.text();
+  const data = tryParseJson(text);
+  const billCode = Array.isArray(data)
+    ? getStringProperty(data[0], "BillCode")
+    : getStringProperty(data, "BillCode");
 
   if (!billCode || typeof billCode !== "string") {
-    throw new Error("ToyyibPay did not return a bill code.");
+    const message =
+      getStringProperty(data, "msg")
+        ? getStringProperty(data, "msg")
+        : text.slice(0, 160);
+    throw new Error(`ToyyibPay did not return a bill code. ${message}`);
   }
 
   return {
@@ -75,4 +93,18 @@ export async function createToyyibPayBill(input: ToyyibPayBillInput) {
     paymentUrl: `${apiBaseUrl.replace(/\/$/, "")}/${billCode}`,
     providerReference: billCode,
   };
+}
+
+function tryParseJson(text: string) {
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+function getStringProperty(value: unknown, key: string) {
+  return value && typeof value === "object" && key in value && typeof value[key as keyof typeof value] === "string"
+    ? String(value[key as keyof typeof value])
+    : null;
 }
