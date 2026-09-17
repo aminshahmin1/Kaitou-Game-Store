@@ -1,5 +1,6 @@
 .env*
 .next
 .next-build
+.next-verify
 node_modules
 .git
