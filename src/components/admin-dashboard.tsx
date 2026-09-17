@@ -1,6 +1,8 @@
 import { AlertTriangle, Boxes, CircleDollarSign, KeyRound, Settings, Users } from "lucide-react";
 
-import { formatMyr, products } from "@/lib/catalog";
+import { formatMyr } from "@/lib/catalog";
+import { getAdminProducts } from "@/lib/products";
+import { AdminLogoutButton } from "./admin-logout-button";
 import { AdminProductManager } from "./admin-product-manager";
 
 const failedQueue: {
@@ -10,7 +12,9 @@ const failedQueue: {
   next: string;
 }[] = [];
 
-export function AdminDashboard() {
+export async function AdminDashboard() {
+  const products = await getAdminProducts();
+  const visibleProducts = products.filter((product) => product.active && product.available);
   const revenue = products.reduce(
     (sum, product) => sum + product.variations.reduce((subtotal, variation) => subtotal + variation.priceMyr, 0),
     0,
@@ -53,16 +57,14 @@ export function AdminDashboard() {
               <p className="text-sm font-bold uppercase text-sky-600">Control center</p>
               <h1 className="font-display text-4xl font-bold">Dashboard</h1>
             </div>
-            <span className="rounded-md bg-slate-950 px-3 py-2 text-sm font-bold text-white">
-              Admin role
-            </span>
+            <AdminLogoutButton />
           </div>
         </header>
 
         <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8">
           <section className="grid gap-4 md:grid-cols-3">
             {[
-              ["Manual products", products.length.toString(), Boxes],
+              ["Visible products", visibleProducts.length.toString(), Boxes],
               ["Listed product value", formatMyr(revenue), CircleDollarSign],
               ["Projected margin", formatMyr(profit), CircleDollarSign],
             ].map(([label, value, Icon]) => (

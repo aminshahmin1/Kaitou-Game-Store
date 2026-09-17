@@ -155,6 +155,73 @@ export async function createAdminProduct(input: unknown) {
   return product.id as string;
 }
 
+export async function updateAdminProductStatus(
+  productId: string,
+  input: { active?: boolean; available?: boolean },
+) {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const update: { active?: boolean; available?: boolean } = {};
+
+  if (typeof input.active === "boolean") {
+    update.active = input.active;
+  }
+
+  if (typeof input.available === "boolean") {
+    update.available = input.available;
+  }
+
+  if (Object.keys(update).length === 0) {
+    throw new Error("No product fields to update.");
+  }
+
+  if (update.active === true && update.available === true) {
+    const { data: variations, error: variationError } = await supabase
+      .from("product_variations")
+      .select("price_myr, active, available")
+      .eq("product_id", productId);
+
+    if (variationError) {
+      throw new Error(variationError.message);
+    }
+
+    const publishableVariations = (variations ?? []).filter(
+      (variation) => variation.active && variation.available,
+    );
+
+    if (
+      publishableVariations.length === 0 ||
+      publishableVariations.some((variation) => Number(variation.price_myr) <= 0)
+    ) {
+      throw new Error("Review product variations and set positive prices before publishing.");
+    }
+  }
+
+  const { error } = await supabase.from("products").update(update).eq("id", productId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function deleteAdminProduct(productId: string) {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const { error } = await supabase.from("products").delete().eq("id", productId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function importFazerCardsMobileLegendsMalaysiaDraft() {
   const supabase = createSupabaseAdminClient();
 

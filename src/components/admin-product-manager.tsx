@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Loader2, PlusCircle, RefreshCw } from "lucide-react";
+import { Eye, EyeOff, Loader2, PlusCircle, RefreshCw, Trash2 } from "lucide-react";
 
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
@@ -45,6 +45,7 @@ export function AdminProductManager() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [mutatingProductId, setMutatingProductId] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [requiredFields, setRequiredFields] = useState(requiredFieldsTemplate);
   const [variations, setVariations] = useState(variationsTemplate);
@@ -107,8 +108,8 @@ export function AdminProductManager() {
       deliveryType: String(formData.get("deliveryType") ?? ""),
       requiredFields: parsedRequiredFields,
       variations: parsedVariations,
-      active: true,
-      available: true,
+      active: formData.get("active") === "on",
+      available: formData.get("available") === "on",
     };
 
     const response = await fetch("/api/admin/products", {
@@ -125,6 +126,50 @@ export function AdminProductManager() {
     }
 
     setMessage("Product created.");
+    await loadProducts();
+  }
+
+  async function updateProductStatus(product: Product, next: { active?: boolean; available?: boolean }) {
+    setMutatingProductId(product.id);
+    setMessage(null);
+
+    const response = await fetch(`/api/admin/products/${product.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(next),
+    });
+    const body = await response.json().catch(() => ({}));
+    setMutatingProductId(null);
+
+    if (!response.ok) {
+      setMessage(body.error ?? "Product status could not be updated.");
+      return;
+    }
+
+    setMessage(next.active === false || next.available === false ? "Product hidden." : "Product published.");
+    await loadProducts();
+  }
+
+  async function deleteProduct(product: Product) {
+    if (!window.confirm(`Delete ${product.title}? This removes its variations too.`)) {
+      return;
+    }
+
+    setMutatingProductId(product.id);
+    setMessage(null);
+
+    const response = await fetch(`/api/admin/products/${product.id}`, {
+      method: "DELETE",
+    });
+    const body = await response.json().catch(() => ({}));
+    setMutatingProductId(null);
+
+    if (!response.ok) {
+      setMessage(body.error ?? "Product could not be deleted.");
+      return;
+    }
+
+    setMessage("Product deleted.");
     await loadProducts();
   }
 
@@ -237,6 +282,17 @@ export function AdminProductManager() {
           />
         </div>
 
+        <div className="grid gap-3 rounded-md bg-slate-50 p-4 text-sm font-semibold text-slate-700 md:grid-cols-2">
+          <label className="flex items-center gap-3">
+            <input name="active" type="checkbox" defaultChecked className="h-4 w-4" />
+            Show on public website
+          </label>
+          <label className="flex items-center gap-3">
+            <input name="available" type="checkbox" defaultChecked className="h-4 w-4" />
+            Available for checkout
+          </label>
+        </div>
+
         <label className="grid gap-2 text-sm font-semibold text-slate-700">
           Description
           <textarea name="description" className="min-h-20 rounded-md border border-slate-200 px-3 py-3" />
@@ -286,12 +342,13 @@ export function AdminProductManager() {
               <th className="px-4 py-3">Variations</th>
               <th className="px-4 py-3">From</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
-                <td className="px-4 py-6 text-center text-slate-500" colSpan={5}>
+                <td className="px-4 py-6 text-center text-slate-500" colSpan={6}>
                   Loading products...
                 </td>
               </tr>
@@ -302,12 +359,64 @@ export function AdminProductManager() {
                   <td className="px-4 py-4">{product.type}</td>
                   <td className="px-4 py-4">{product.variations.length}</td>
                   <td className="px-4 py-4">{formatMyr(getProductStartingPrice(product))}</td>
-                  <td className="px-4 py-4">{product.active && product.available ? "Active" : "Hidden"}</td>
+                  <td className="px-4 py-4">
+                    {product.active && product.available ? (
+                      <span className="rounded-md bg-emerald-50 px-2 py-1 font-bold text-emerald-700">
+                        Public
+                      </span>
+                    ) : product.active ? (
+                      <span className="rounded-md bg-amber-50 px-2 py-1 font-bold text-amber-700">
+                        Unavailable
+                      </span>
+                    ) : (
+                      <span className="rounded-md bg-slate-100 px-2 py-1 font-bold text-slate-600">
+                        Hidden
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-2">
+                      {product.active && product.available ? (
+                        <button
+                          type="button"
+                          disabled={mutatingProductId === product.id}
+                          onClick={() => void updateProductStatus(product, { active: false, available: false })}
+                          className="inline-flex items-center gap-1 rounded-md border border-slate-200 px-2 py-1 font-bold text-slate-700 disabled:opacity-60"
+                        >
+                          <EyeOff className="h-4 w-4" />
+                          Hide
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled={mutatingProductId === product.id}
+                          onClick={() => void updateProductStatus(product, { active: true, available: true })}
+                          className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2 py-1 font-bold text-white disabled:opacity-60"
+                        >
+                          <Eye className="h-4 w-4" />
+                          Publish
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        disabled={mutatingProductId === product.id}
+                        onClick={() => void deleteProduct(product)}
+                        className="inline-flex items-center gap-1 rounded-md border border-red-200 px-2 py-1 font-bold text-red-700 disabled:opacity-60"
+                      >
+                        {mutatingProductId === product.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                        Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-4 py-6 text-center text-slate-500" colSpan={5}>
+                <td className="px-4 py-6 text-center text-slate-500" colSpan={6}>
                   No products created yet.
                 </td>
               </tr>
