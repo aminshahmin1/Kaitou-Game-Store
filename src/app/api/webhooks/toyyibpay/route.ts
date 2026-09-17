@@ -5,6 +5,10 @@ import { markOrderPaymentCallback } from "@/lib/orders";
 const paidStatusIds = new Set(["1", "3"]);
 
 export async function POST(request: Request) {
+  if (process.env.CHECKOUT_ENABLED !== "true") {
+    return NextResponse.json({ error: "Payments are not enabled." }, { status: 503 });
+  }
+
   const contentType = request.headers.get("content-type") ?? "";
   const payload =
     contentType.includes("application/json")

@@ -86,6 +86,8 @@ Do not create public products with missing or unverified FazerCards SKU values i
 
 ## Deploy
 
+Checkout is disabled by default. Keep `CHECKOUT_ENABLED=false` until payment callback verification, idempotent FazerCards fulfillment, and order tracking are implemented and tested. The current fulfillment adapter is a placeholder; deploying the storefront does not make it ready to accept payments.
+
 Push the repository to GitHub and import it into Vercel. Add environment variables in Vercel Project Settings before enabling real payment or fulfillment.
 
 Required production environment variables are listed in `.env.example`. Do not upload `.env.local`; Vercel does not read it automatically.

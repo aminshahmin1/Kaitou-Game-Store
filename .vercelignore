@@ -1,0 +1,5 @@
+.env*
+.next
+.next-build
+node_modules
+.git

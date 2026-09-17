@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 import { BadgeCheck, Gamepad2, Gauge, ShieldCheck, Sparkles, Zap } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
@@ -13,6 +14,7 @@ const categories = [
 ];
 
 export default async function Home() {
+  await connection();
   const products = await getStoreProducts();
 
   return (

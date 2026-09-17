@@ -31,6 +31,15 @@ const variationsTemplate = JSON.stringify(
   2,
 );
 
+async function fetchProducts(): Promise<Product[]> {
+  const response = await fetch("/api/admin/products");
+  const body = await response.json();
+  if (!response.ok) {
+    throw new Error(body.error ?? "Products could not be loaded.");
+  }
+  return body.products ?? [];
+}
+
 export function AdminProductManager() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,21 +55,28 @@ export function AdminProductManager() {
   );
 
   async function loadProducts() {
-    setIsLoading(true);
-    const response = await fetch("/api/admin/products");
-    const body = await response.json();
-    setIsLoading(false);
-
-    if (!response.ok) {
-      setMessage(body.error ?? "Products could not be loaded.");
-      return;
+    try {
+      setProducts(await fetchProducts());
+    } catch {
+      setMessage("Products could not be loaded. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setProducts(body.products ?? []);
   }
 
   useEffect(() => {
-    void loadProducts();
+    let cancelled = false;
+    void fetchProducts()
+      .then((loadedProducts) => {
+        if (!cancelled) setProducts(loadedProducts);
+      })
+      .catch(() => {
+        if (!cancelled) setMessage("Products could not be loaded. Please try again.");
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => { cancelled = true; };
   }, []);
 
   async function onSubmit(formData: FormData) {
@@ -154,7 +170,10 @@ export function AdminProductManager() {
           </button>
           <button
             type="button"
-            onClick={() => void loadProducts()}
+            onClick={() => {
+              setIsLoading(true);
+              void loadProducts();
+            }}
             className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm font-bold text-slate-700"
           >
             <RefreshCw className="h-4 w-4" />

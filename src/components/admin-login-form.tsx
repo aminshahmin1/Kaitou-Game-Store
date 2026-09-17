@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LockKeyhole, Loader2 } from "lucide-react";
 
 export function AdminLoginForm() {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,7 +29,8 @@ export function AdminLoginForm() {
       return;
     }
 
-    window.location.href = "/dashboard";
+    router.replace("/dashboard");
+    router.refresh();
   }
 
   return (

@@ -10,6 +10,13 @@ function createOrderId() {
 }
 
 export async function POST(request: Request) {
+  if (process.env.CHECKOUT_ENABLED !== "true") {
+    return NextResponse.json(
+      { error: "Checkout is temporarily unavailable. Please check back soon." },
+      { status: 503 },
+    );
+  }
+
   try {
     const json = await request.json().catch(() => null);
     const parsed = checkoutSchema.safeParse(json);

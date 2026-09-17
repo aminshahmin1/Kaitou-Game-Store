@@ -75,11 +75,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="rounded-lg border border-cyan-300/20 bg-cyan-300/10 p-4 text-sm font-medium leading-6 text-cyan-50">
             <div className="mb-1 flex items-center gap-2 font-bold">
               <ShieldCheck className="h-4 w-4" />
-              Clean payment mode
+              Check your game details
             </div>
-            The checkout form uses a plain trust surface even though the store keeps Kaitou&apos;s gaming identity.
+            Make sure your player ID, server, and region match your game account before paying.
           </div>
-          <CheckoutForm product={product} />
+          {process.env.CHECKOUT_ENABLED === "true" ? (
+            <CheckoutForm product={product} />
+          ) : (
+            <p className="trust-surface rounded-lg border border-sky-100 p-6 text-slate-700">
+              Checkout is temporarily unavailable. Please check back soon.
+            </p>
+          )}
         </section>
       </main>
     </div>
