@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Eye, EyeOff, Loader2, PlusCircle, RefreshCw, Trash2 } from "lucide-react";
+import { Edit3, Eye, EyeOff, Loader2, PlusCircle, RefreshCw, Trash2, X } from "lucide-react";
 
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
@@ -46,6 +46,7 @@ export function AdminProductManager() {
   const [isSaving, setIsSaving] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [mutatingProductId, setMutatingProductId] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [requiredFields, setRequiredFields] = useState(requiredFieldsTemplate);
   const [variations, setVariations] = useState(variationsTemplate);
@@ -104,6 +105,7 @@ export function AdminProductManager() {
       game: String(formData.get("game") ?? ""),
       description: String(formData.get("description") ?? ""),
       imageTone: String(formData.get("imageTone") ?? ""),
+      fazercardsProductId: String(formData.get("fazercardsProductId") ?? ""),
       region: String(formData.get("region") ?? ""),
       deliveryType: String(formData.get("deliveryType") ?? ""),
       requiredFields: parsedRequiredFields,
@@ -112,21 +114,57 @@ export function AdminProductManager() {
       available: formData.get("available") === "on",
     };
 
-    const response = await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      editingProduct ? `/api/admin/products/${editingProduct.id}` : "/api/admin/products",
+      {
+        method: editingProduct ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+    );
     const body = await response.json();
     setIsSaving(false);
 
     if (!response.ok) {
-      setMessage(body.error ?? "Product could not be created.");
+      setMessage(body.error ?? (editingProduct ? "Product could not be updated." : "Product could not be created."));
       return;
     }
 
-    setMessage("Product created.");
+    setMessage(editingProduct ? "Listing updated." : "Product created.");
+    setEditingProduct(null);
+    setRequiredFields(requiredFieldsTemplate);
+    setVariations(variationsTemplate);
     await loadProducts();
+  }
+
+  function startEditing(product: Product) {
+    setEditingProduct(product);
+    setMessage("Editing listing. Set MYR prices and availability, then save before publishing.");
+    setRequiredFields(JSON.stringify(product.requiredFields, null, 2));
+    setVariations(
+      JSON.stringify(
+        product.variations.map((variation) => ({
+          id: variation.id,
+          title: variation.title,
+          sku: variation.sku,
+          fazercardsSku: variation.fazercardsSku ?? "",
+          priceMyr: variation.priceMyr,
+          costMyr: variation.costMyr,
+          active: variation.active,
+          available: variation.available,
+        })),
+        null,
+        2,
+      ),
+    );
+    document.getElementById("product-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function cancelEditing() {
+    setEditingProduct(null);
+    setMessage(null);
+    setRequiredFields(requiredFieldsTemplate);
+    setVariations(variationsTemplate);
   }
 
   async function updateProductStatus(product: Product, next: { active?: boolean; available?: boolean }) {
@@ -246,22 +284,44 @@ export function AdminProductManager() {
         </div>
       </div>
 
-      <form action={onSubmit} className="grid gap-4 border-t border-slate-100 pt-5">
+      <form id="product-editor" key={editingProduct?.id ?? "new"} action={onSubmit} className="grid gap-4 border-t border-slate-100 pt-5">
+        <div className="flex flex-col justify-between gap-3 rounded-md bg-slate-50 p-4 md:flex-row md:items-center">
+          <div>
+            <p className="text-xs font-bold uppercase text-slate-500">
+              {editingProduct ? "Editing listing" : "New listing"}
+            </p>
+            <p className="text-sm font-semibold text-slate-700">
+              {editingProduct
+                ? "Set provider SKUs, cost, sale prices, customer fields, and publish settings."
+                : "Create a manual listing or paste SKU mappings from FazerCards."}
+            </p>
+          </div>
+          {editingProduct ? (
+            <button
+              type="button"
+              onClick={cancelEditing}
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm font-bold text-slate-700"
+            >
+              <X className="h-4 w-4" />
+              Cancel edit
+            </button>
+          ) : null}
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <Field name="title" label="Product title" placeholder="Mobile Legends (Malaysia)" />
-          <Field name="slug" label="Slug" placeholder="mobile-legends-malaysia" />
+          <Field name="title" label="Product title" placeholder="Mobile Legends (Malaysia)" defaultValue={editingProduct?.title} />
+          <Field name="slug" label="Slug" placeholder="mobile-legends-malaysia" defaultValue={editingProduct?.slug} />
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
             Type
-            <select name="type" className="rounded-md border border-slate-200 px-3 py-3">
+            <select name="type" defaultValue={editingProduct?.type ?? "topup"} className="rounded-md border border-slate-200 px-3 py-3">
               <option value="topup">Game top-up</option>
               <option value="steam_gift_game">Steam gift game</option>
             </select>
           </label>
-          <Field name="category" label="Category" placeholder="Game Top-Ups" defaultValue="Game Top-Ups" />
-          <Field name="game" label="Game" placeholder="Mobile Legends" />
+          <Field name="category" label="Category" placeholder="Game Top-Ups" defaultValue={editingProduct?.category ?? "Game Top-Ups"} />
+          <Field name="game" label="Game" placeholder="Mobile Legends" defaultValue={editingProduct?.game} />
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
             Region
-            <select name="region" className="rounded-md border border-slate-200 px-3 py-3">
+            <select name="region" defaultValue={editingProduct?.region ?? "MY"} className="rounded-md border border-slate-200 px-3 py-3">
               <option value="MY">MY</option>
               <option value="SEA">SEA</option>
               <option value="Global">Global</option>
@@ -269,7 +329,7 @@ export function AdminProductManager() {
           </label>
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
             Delivery type
-            <select name="deliveryType" className="rounded-md border border-slate-200 px-3 py-3">
+            <select name="deliveryType" defaultValue={editingProduct?.deliveryType ?? "Direct top-up"} className="rounded-md border border-slate-200 px-3 py-3">
               <option value="Direct top-up">Direct top-up</option>
               <option value="Steam gift">Steam gift</option>
             </select>
@@ -277,25 +337,32 @@ export function AdminProductManager() {
           <Field
             name="imageTone"
             label="Card color"
-            defaultValue="from-sky-500 via-blue-700 to-slate-950"
+            defaultValue={editingProduct?.imageTone ?? "from-sky-500 via-blue-700 to-slate-950"}
             placeholder="from-sky-500 via-blue-700 to-slate-950"
+          />
+          <Field
+            name="fazercardsProductId"
+            label="FazerCards product/category ID"
+            defaultValue={editingProduct?.fazercardsProductId ?? ""}
+            placeholder="mobile_legends_malaysia"
+            required={false}
           />
         </div>
 
         <div className="grid gap-3 rounded-md bg-slate-50 p-4 text-sm font-semibold text-slate-700 md:grid-cols-2">
           <label className="flex items-center gap-3">
-            <input name="active" type="checkbox" defaultChecked className="h-4 w-4" />
+            <input name="active" type="checkbox" defaultChecked={editingProduct?.active ?? true} className="h-4 w-4" />
             Show on public website
           </label>
           <label className="flex items-center gap-3">
-            <input name="available" type="checkbox" defaultChecked className="h-4 w-4" />
+            <input name="available" type="checkbox" defaultChecked={editingProduct?.available ?? true} className="h-4 w-4" />
             Available for checkout
           </label>
         </div>
 
         <label className="grid gap-2 text-sm font-semibold text-slate-700">
           Description
-          <textarea name="description" className="min-h-20 rounded-md border border-slate-200 px-3 py-3" />
+          <textarea name="description" defaultValue={editingProduct?.description ?? ""} className="min-h-20 rounded-md border border-slate-200 px-3 py-3" />
         </label>
 
         <div className="grid gap-4 lg:grid-cols-2">
@@ -329,7 +396,7 @@ export function AdminProductManager() {
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 py-3 font-bold text-white disabled:opacity-60"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-4 w-4" />}
-          Create product
+          {editingProduct ? "Save listing changes" : "Create product"}
         </button>
       </form>
 
@@ -376,6 +443,14 @@ export function AdminProductManager() {
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => startEditing(product)}
+                        className="inline-flex items-center gap-1 rounded-md border border-sky-200 px-2 py-1 font-bold text-sky-700"
+                      >
+                        <Edit3 className="h-4 w-4" />
+                        Edit
+                      </button>
                       {product.active && product.available ? (
                         <button
                           type="button"
@@ -433,18 +508,20 @@ function Field({
   label,
   placeholder,
   defaultValue,
+  required = true,
 }: {
   name: string;
   label: string;
   placeholder: string;
   defaultValue?: string;
+  required?: boolean;
 }) {
   return (
     <label className="grid gap-2 text-sm font-semibold text-slate-700">
       {label}
       <input
         name={name}
-        required
+        required={required}
         placeholder={placeholder}
         defaultValue={defaultValue}
         className="rounded-md border border-slate-200 px-3 py-3"

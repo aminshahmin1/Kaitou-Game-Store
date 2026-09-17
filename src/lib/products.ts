@@ -2,7 +2,7 @@ import { getActiveProducts, getProductBySlug as getStarterProductBySlug } from "
 import { getFazerCardsTopupDetails } from "./integrations/fazercards-catalog";
 import { createSupabaseAdminClient } from "./supabase/admin";
 import type { Product, ProductVariation, RequiredField } from "./types";
-import { adminProductCreateSchema } from "./validation";
+import { adminProductCreateSchema, adminProductUpdateSchema } from "./validation";
 
 type ProductRow = {
   id: string;
@@ -55,7 +55,9 @@ export async function getStoreProducts() {
     return [];
   }
 
-  return (data as ProductRow[]).map(mapProductRow).filter((product) => product.variations.length > 0);
+  return (data as ProductRow[])
+    .map((row) => mapProductRow(row))
+    .filter((product) => product.variations.length > 0);
 }
 
 export async function getStoreProductBySlug(slug: string) {
@@ -99,7 +101,7 @@ export async function getAdminProducts() {
     throw new Error(error.message);
   }
 
-  return (data as ProductRow[]).map(mapProductRow);
+  return (data as ProductRow[]).map((row) => mapProductRow(row, { includeUnavailableVariations: true }));
 }
 
 export async function createAdminProduct(input: unknown) {
@@ -122,6 +124,7 @@ export async function createAdminProduct(input: unknown) {
       image_tone: parsed.imageTone,
       region: parsed.region,
       delivery_type: parsed.deliveryType,
+      fazercards_product_id: parsed.fazercardsProductId || null,
       required_fields: parsed.requiredFields,
       active: parsed.active,
       available: parsed.available,
@@ -153,6 +156,62 @@ export async function createAdminProduct(input: unknown) {
   }
 
   return product.id as string;
+}
+
+export async function updateAdminProduct(productId: string, input: unknown) {
+  const parsed = adminProductUpdateSchema.parse(input);
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    throw new Error("Supabase is not configured.");
+  }
+
+  const { error: productError } = await supabase
+    .from("products")
+    .update({
+      slug: parsed.slug,
+      title: parsed.title,
+      type: parsed.type,
+      category: parsed.category,
+      game: parsed.game,
+      description: parsed.description ?? null,
+      image_tone: parsed.imageTone,
+      region: parsed.region,
+      delivery_type: parsed.deliveryType,
+      fazercards_product_id: parsed.fazercardsProductId || null,
+      required_fields: parsed.requiredFields,
+      active: parsed.active,
+      available: parsed.available,
+    })
+    .eq("id", productId);
+
+  if (productError) {
+    throw new Error(productError.message);
+  }
+
+  for (const [index, variation] of parsed.variations.entries()) {
+    const row = {
+      product_id: productId,
+      title: variation.title,
+      sku: variation.sku,
+      fazercards_sku: variation.fazercardsSku || null,
+      price_myr: variation.priceMyr,
+      cost_myr: variation.costMyr,
+      active: variation.active,
+      available: variation.available,
+      sort_order: index,
+    };
+
+    const query = variation.id
+      ? supabase.from("product_variations").update(row).eq("id", variation.id).eq("product_id", productId)
+      : supabase.from("product_variations").upsert(row, { onConflict: "product_id,sku" });
+
+    const { error: variationError } = await query;
+
+    if (variationError) {
+      throw new Error(variationError.message);
+    }
+  }
 }
 
 export async function updateAdminProductStatus(
@@ -293,7 +352,10 @@ export async function importFazerCardsMobileLegendsMalaysiaDraft() {
   };
 }
 
-function mapProductRow(row: ProductRow): Product {
+function mapProductRow(
+  row: ProductRow,
+  options: { includeUnavailableVariations?: boolean } = {},
+): Product {
   return {
     id: row.id,
     slug: row.slug,
@@ -311,7 +373,7 @@ function mapProductRow(row: ProductRow): Product {
     requiredFields: row.required_fields ?? [],
     variations: (row.product_variations ?? [])
       .map(mapVariationRow)
-      .filter((variation) => variation.active),
+      .filter((variation) => options.includeUnavailableVariations || (variation.active && variation.available)),
   };
 }
 

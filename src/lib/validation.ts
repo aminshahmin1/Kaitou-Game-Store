@@ -24,6 +24,7 @@ const requiredFieldSchema = z.object({
 });
 
 const variationSchema = z.object({
+  id: z.string().uuid().optional(),
   title: z.string().min(1).max(120),
   sku: z.string().min(1).max(120),
   fazercardsSku: z.string().max(160).optional(),
@@ -33,7 +34,7 @@ const variationSchema = z.object({
   available: z.boolean().default(true),
 });
 
-export const adminProductCreateSchema = z.object({
+const adminProductBaseSchema = z.object({
   title: z.string().min(2).max(160),
   slug: z.string().min(2).max(180).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   type: z.enum(["topup", "steam_gift_game"]),
@@ -43,8 +44,13 @@ export const adminProductCreateSchema = z.object({
   imageTone: z.string().min(1).max(160),
   region: z.enum(["MY", "SEA", "Global"]),
   deliveryType: z.enum(["Direct top-up", "Steam gift"]),
+  fazercardsProductId: z.string().max(160).optional(),
   requiredFields: z.array(requiredFieldSchema).default([]),
   variations: z.array(variationSchema).min(1),
   active: z.boolean().default(true),
   available: z.boolean().default(true),
 });
+
+export const adminProductCreateSchema = adminProductBaseSchema;
+
+export const adminProductUpdateSchema = adminProductBaseSchema;
