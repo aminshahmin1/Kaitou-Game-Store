@@ -44,40 +44,42 @@ export function AdminStaffManager({ initialStaff }: { initialStaff: StaffAccount
     setIsLoading(true);
     setMessage(null);
 
-    const response = await fetch("/api/admin/staff");
-    const body = await response.json().catch(() => ({}));
+    const { response, body } = await staffRequest("/api/admin/staff");
     setIsLoading(false);
 
-    if (!response.ok) {
+    if (!response?.ok) {
       setMessage(body.error ?? "Staff accounts could not be loaded.");
-      return;
+      return false;
     }
 
     const loadedStaff = body.staff ?? [];
     setStaff(loadedStaff);
     setDrafts(createDrafts(loadedStaff));
+    return true;
   }
 
   async function createStaff() {
     setIsCreating(true);
     setMessage(null);
 
-    const response = await fetch("/api/admin/staff", {
+    const { response, body } = await staffRequest("/api/admin/staff", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newStaff),
     });
-    const body = await response.json().catch(() => ({}));
     setIsCreating(false);
 
-    if (!response.ok) {
+    if (!response?.ok) {
       setMessage(body.error ?? "Staff account could not be created.");
       return;
     }
 
-    setMessage("Staff account created. They can sign in at /dashboard with the credentials you set.");
     setNewStaff(defaultDraft);
-    await loadStaff();
+    if (await loadStaff()) {
+      setMessage("Staff account created. They can sign in at /dashboard with the credentials you set.");
+    } else {
+      setMessage("Staff account created, but the list could not be refreshed. Refresh to see the account.");
+    }
   }
 
   async function saveStaff(account: StaffAccount) {
@@ -90,21 +92,24 @@ export function AdminStaffManager({ initialStaff }: { initialStaff: StaffAccount
     setSavingId(account.id);
     setMessage(null);
 
-    const response = await fetch(`/api/admin/staff/${account.id}`, {
+    const { response, body } = await staffRequest(`/api/admin/staff/${account.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(draft),
     });
-    const body = await response.json().catch(() => ({}));
     setSavingId(null);
 
-    if (!response.ok) {
+    if (!response?.ok) {
       setMessage(body.error ?? "Staff account could not be updated.");
       return;
     }
 
-    setMessage(`${draft.email} updated.`);
-    await loadStaff();
+    updateDraft(account.id, { password: "" });
+    if (await loadStaff()) {
+      setMessage(`${draft.email} updated.`);
+    } else {
+      setMessage("Staff account updated, but the list could not be refreshed. Refresh to see the changes.");
+    }
   }
 
   return (
@@ -116,7 +121,7 @@ export function AdminStaffManager({ initialStaff }: { initialStaff: StaffAccount
       </section>
 
       {message ? (
-        <div className="rounded-md border border-sky-100 bg-sky-50 p-3 text-sm font-semibold text-sky-800">
+        <div role="status" className="rounded-md border border-sky-100 bg-sky-50 p-3 text-sm font-semibold text-sky-800">
           {message}
         </div>
       ) : null}
@@ -231,6 +236,19 @@ export function AdminStaffManager({ initialStaff }: { initialStaff: StaffAccount
         ...patch,
       },
     }));
+  }
+}
+
+async function staffRequest(url: string, options?: RequestInit) {
+  try {
+    const response = await fetch(url, options);
+    const body = await response.json();
+    return { response, body };
+  } catch {
+    return {
+      response: null,
+      body: { error: "Could not confirm the request. Check your connection and refresh the staff list before trying again." },
+    };
   }
 }
 
