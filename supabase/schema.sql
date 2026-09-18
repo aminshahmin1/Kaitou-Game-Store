@@ -28,6 +28,19 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.staff_accounts (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  display_name text,
+  role text not null default 'support' check (role in ('support', 'operations', 'finance', 'custom')),
+  password_hash text not null,
+  permissions text[] not null default array[]::text[],
+  active boolean not null default true,
+  last_login_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create table if not exists public.products (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,
@@ -157,6 +170,11 @@ create trigger set_products_updated_at
 before update on public.products
 for each row execute function public.set_updated_at();
 
+drop trigger if exists set_staff_accounts_updated_at on public.staff_accounts;
+create trigger set_staff_accounts_updated_at
+before update on public.staff_accounts
+for each row execute function public.set_updated_at();
+
 drop trigger if exists set_product_variations_updated_at on public.product_variations;
 create trigger set_product_variations_updated_at
 before update on public.product_variations
@@ -173,6 +191,7 @@ before update on public.funding_batches
 for each row execute function public.set_updated_at();
 
 alter table public.profiles enable row level security;
+alter table public.staff_accounts enable row level security;
 alter table public.products enable row level security;
 alter table public.product_variations enable row level security;
 alter table public.orders enable row level security;
@@ -204,6 +223,8 @@ using (
 );
 
 create index if not exists products_active_sort_idx on public.products (active, sort_order, title);
+create index if not exists staff_accounts_email_idx on public.staff_accounts (lower(email));
+create index if not exists staff_accounts_active_idx on public.staff_accounts (active);
 create index if not exists product_variations_product_sort_idx on public.product_variations (product_id, active, sort_order, price_myr);
 create index if not exists orders_order_number_idx on public.orders (order_number);
 create index if not exists orders_payment_reference_idx on public.orders (payment_reference);

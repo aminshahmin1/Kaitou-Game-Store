@@ -13,7 +13,7 @@ const integrations = [
 
 export default async function DashboardIntegrationsPage() {
   return (
-    <AdminDashboardShell title="Integrations" eyebrow="Configuration">
+    <AdminDashboardShell title="Integrations" eyebrow="Configuration" requiredPermission="integrations">
       <section className="grid gap-4 md:grid-cols-2">
         {integrations.map(([name, copy]) => (
           <div key={name} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">

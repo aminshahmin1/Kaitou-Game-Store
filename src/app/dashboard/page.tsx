@@ -3,7 +3,11 @@ import { cookies } from "next/headers";
 import { AdminDashboardOverview } from "@/components/admin-dashboard-overview";
 import { AdminDashboardShell } from "@/components/admin-dashboard-shell";
 import { AdminLoginForm } from "@/components/admin-login-form";
-import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
+import {
+  getAdminSessionCookieName,
+  resolveDashboardSession,
+  verifyAdminSession,
+} from "@/lib/auth/admin-session";
 
 export const metadata = {
   title: "Dashboard | Kaitou Game Store",
@@ -11,12 +15,14 @@ export const metadata = {
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
-  const session = verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
+  const session = await resolveDashboardSession(
+    verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value),
+  );
 
   if (session) {
     return (
       <AdminDashboardShell title="Dashboard">
-        <AdminDashboardOverview />
+        <AdminDashboardOverview session={session} />
       </AdminDashboardShell>
     );
   }

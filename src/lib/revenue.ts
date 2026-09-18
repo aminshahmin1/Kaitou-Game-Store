@@ -107,6 +107,8 @@ export type RevenueDashboardData = {
     allocatedFundingUsd: number;
     availableFundingUsd: number;
     blendedFundingRate: number;
+    lowFundingThresholdUsd: number;
+    isLowFundingBalance: boolean;
   };
   fundingBatches: FundingBatch[];
   recentOrders: RevenueOrder[];
@@ -129,7 +131,7 @@ export type AllocationResult = {
   }>;
 };
 
-export async function getRevenueDashboard(input: { from?: string; to?: string } = {}) {
+export async function getRevenueDashboard(input: { from?: string; to?: string; recentLimit?: number } = {}) {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -173,6 +175,8 @@ export async function getRevenueDashboard(input: { from?: string; to?: string } 
   const totalFundingMyr = fundingBatches.reduce((sum, batch) => sum + batch.myrSpent + batch.feesMyr, 0);
   const allocatedFundingUsd = fundingBatches.reduce((sum, batch) => sum + batch.allocatedUsd, 0);
   const availableFundingUsd = fundingBatches.reduce((sum, batch) => sum + batch.remainingUsd, 0);
+  const pendingCostUsd = round4(unallocatedOrders.reduce((sum, order) => sum + order.costUsd, 0));
+  const lowFundingThresholdUsd = getLowFundingThresholdUsd();
 
   return {
     range,
@@ -190,15 +194,19 @@ export async function getRevenueDashboard(input: { from?: string; to?: string } 
       allocatedOrders: allocatedOrders.length,
       unallocatedOrders: unallocatedOrders.length,
       unallocatedRevenueMyr: round2(unallocatedOrders.reduce((sum, order) => sum + order.amountMyr, 0)),
-      pendingCostUsd: round4(unallocatedOrders.reduce((sum, order) => sum + order.costUsd, 0)),
+      pendingCostUsd,
       totalFundingMyr: round2(totalFundingMyr),
       totalFundingUsd: round4(totalFundingUsd),
       allocatedFundingUsd: round4(allocatedFundingUsd),
       availableFundingUsd: round4(availableFundingUsd),
       blendedFundingRate: totalFundingUsd > 0 ? round6(totalFundingMyr / totalFundingUsd) : 0,
+      lowFundingThresholdUsd,
+      isLowFundingBalance:
+        availableFundingUsd <= lowFundingThresholdUsd ||
+        (pendingCostUsd > 0 && availableFundingUsd + 0.0001 < pendingCostUsd),
     },
     fundingBatches,
-    recentOrders: orders.slice(0, 80),
+    recentOrders: orders.slice(0, input.recentLimit ?? 80),
   } satisfies RevenueDashboardData;
 }
 
@@ -500,6 +508,11 @@ function toNumber(value: MoneyValue) {
 
   const numberValue = Number(value);
   return Number.isFinite(numberValue) ? numberValue : 0;
+}
+
+function getLowFundingThresholdUsd() {
+  const value = Number(process.env.LOW_FUNDING_THRESHOLD_USD ?? "20");
+  return Number.isFinite(value) && value >= 0 ? round4(value) : 20;
 }
 
 function round2(value: number) {

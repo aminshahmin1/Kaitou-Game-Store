@@ -1,19 +1,11 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { createAdminProduct, getAdminProducts } from "@/lib/products";
 
-async function requireAdmin() {
-  const cookieStore = await cookies();
-  const session = verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
-
-  return session;
-}
-
 export async function GET() {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
@@ -31,7 +23,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

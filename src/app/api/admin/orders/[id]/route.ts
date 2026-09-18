@@ -15,7 +15,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await getAdminApiSession();
+  const session = await getAdminApiSession("review");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

@@ -4,7 +4,7 @@ import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { allocatePaidOrdersFunding } from "@/lib/revenue";
 
 export async function POST() {
-  const session = await getAdminApiSession();
+  const session = await getAdminApiSession("revenue");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

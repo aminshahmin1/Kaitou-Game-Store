@@ -4,7 +4,7 @@ import { getReviewOrders } from "@/lib/admin-orders";
 import { getAdminApiSession } from "@/lib/auth/admin-api";
 
 export async function GET() {
-  const session = await getAdminApiSession();
+  const session = await getAdminApiSession("review");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

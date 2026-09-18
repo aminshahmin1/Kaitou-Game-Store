@@ -1,8 +1,7 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z, ZodError } from "zod";
 
-import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { deleteAdminProduct, updateAdminProduct, updateAdminProductStatus } from "@/lib/products";
 
 const statusSchema = z.object({
@@ -10,16 +9,11 @@ const statusSchema = z.object({
   available: z.boolean().optional(),
 });
 
-async function requireAdmin() {
-  const cookieStore = await cookies();
-  return verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
-}
-
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
@@ -65,7 +59,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

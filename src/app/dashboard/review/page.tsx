@@ -1,5 +1,5 @@
 import { AdminReviewQueue } from "@/components/admin-review-queue";
-import { AdminDashboardShell } from "@/components/admin-dashboard-shell";
+import { AdminDashboardShell, requireAdminSession } from "@/components/admin-dashboard-shell";
 import { getReviewOrders } from "@/lib/admin-orders";
 
 export const metadata = {
@@ -7,10 +7,11 @@ export const metadata = {
 };
 
 export default async function DashboardReviewPage() {
+  await requireAdminSession("review");
   const orders = await getReviewOrders();
 
   return (
-    <AdminDashboardShell title="Failed order review" eyebrow="Support">
+    <AdminDashboardShell title="Failed order review" eyebrow="Support" requiredPermission="review">
       <AdminReviewQueue initialOrders={orders} />
     </AdminDashboardShell>
   );

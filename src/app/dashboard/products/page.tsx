@@ -7,7 +7,7 @@ export const metadata = {
 
 export default async function DashboardProductsPage() {
   return (
-    <AdminDashboardShell title="Products" eyebrow="Listings">
+    <AdminDashboardShell title="Products" eyebrow="Listings" requiredPermission="products">
       <AdminProductManager />
     </AdminDashboardShell>
   );

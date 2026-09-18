@@ -4,7 +4,7 @@ import {
   createAdminSession,
   getAdminSessionCookieName,
   getAdminSessionMaxAge,
-  verifyAdminPassword,
+  verifyDashboardCredentials,
 } from "@/lib/auth/admin-session";
 
 export async function POST(request: Request) {
@@ -12,7 +12,9 @@ export async function POST(request: Request) {
   const email = String(payload?.email ?? "");
   const password = String(payload?.password ?? "");
 
-  if (!verifyAdminPassword(email, password)) {
+  const account = await verifyDashboardCredentials(email, password);
+
+  if (!account) {
     return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
   }
 
@@ -20,7 +22,7 @@ export async function POST(request: Request) {
 
   response.cookies.set({
     name: getAdminSessionCookieName(),
-    value: createAdminSession(email),
+    value: createAdminSession(account),
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

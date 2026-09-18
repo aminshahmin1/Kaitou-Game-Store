@@ -14,7 +14,7 @@ const fundingBatchSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const session = await getAdminApiSession();
+  const session = await getAdminApiSession("revenue");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

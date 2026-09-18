@@ -4,7 +4,7 @@ import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { getRevenueDashboard } from "@/lib/revenue";
 
 export async function GET(request: Request) {
-  const session = await getAdminApiSession();
+  const session = await getAdminApiSession("revenue");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

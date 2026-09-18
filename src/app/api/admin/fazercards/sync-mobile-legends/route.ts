@@ -1,16 +1,10 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { importFazerCardsMobileLegendsMalaysiaDraft } from "@/lib/products";
 
-async function requireAdmin() {
-  const cookieStore = await cookies();
-  return verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
-}
-
 export async function POST() {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

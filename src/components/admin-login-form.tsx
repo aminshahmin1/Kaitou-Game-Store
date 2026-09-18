@@ -39,12 +39,12 @@ export function AdminLoginForm() {
         <p className="text-sm font-bold uppercase text-sky-600">Admin access</p>
         <h1 className="mt-2 font-display text-4xl font-bold text-slate-950">Kaitou Dashboard</h1>
         <p className="mt-3 text-sm leading-6 text-slate-600">
-          Sign in to manage orders, products, support reviews, and integration settings.
+          Sign in with an owner or staff account to access permitted dashboard areas.
         </p>
       </div>
 
       <label className="grid gap-2 text-sm font-semibold text-slate-700">
-        Admin email
+        Email
         <input
           name="email"
           type="email"

@@ -29,7 +29,7 @@ const settings = [
 
 export default async function DashboardSettingsPage() {
   return (
-    <AdminDashboardShell title="Settings" eyebrow="Store controls">
+    <AdminDashboardShell title="Settings" eyebrow="Store controls" requiredPermission="settings">
       <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-3xl font-bold">Store settings</h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">

@@ -22,6 +22,10 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
   const [isAllocating, setIsAllocating] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [formKey, setFormKey] = useState(0);
+  const exportHref = useMemo(() => {
+    const params = new URLSearchParams({ from, to });
+    return `/api/admin/revenue/export?${params.toString()}`;
+  }, [from, to]);
 
   const impliedRate = useMemo(() => {
     const batch = data.fundingBatches[0];
@@ -132,6 +136,20 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         <SummaryCard label="Net profit" value={formatMyr(data.summary.netProfitMyr)} icon={BarChart3} />
       </section>
 
+      {data.summary.isLowFundingBalance ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
+          <h2 className="font-display text-2xl font-bold">Low funding balance</h2>
+          <p className="mt-2">
+            Available balance is {data.summary.availableFundingUsd.toFixed(4)} USDT. Your alert threshold is{" "}
+            {data.summary.lowFundingThresholdUsd.toFixed(4)} USDT, and pending unallocated cost is{" "}
+            {data.summary.pendingCostUsd.toFixed(4)} USDT.
+          </p>
+          <p className="mt-2 font-semibold">
+            Reminder for later: after email or WhatsApp API is configured, connect this alert to owner notifications.
+          </p>
+        </section>
+      ) : null}
+
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
@@ -151,6 +169,9 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
               <button type="button" onClick={() => applyQuickRange("month")} className="rounded-md border border-slate-200 px-3 py-2 text-sm font-bold">
                 Month
               </button>
+              <a href={exportHref} className="rounded-md bg-slate-950 px-3 py-2 text-sm font-bold text-white">
+                Export CSV
+              </a>
             </div>
           </div>
 

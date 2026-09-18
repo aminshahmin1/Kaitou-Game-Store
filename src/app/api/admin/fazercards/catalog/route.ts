@@ -1,8 +1,7 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { importFazerCardsCatalogDraft, searchFazerCardsCatalog } from "@/lib/products";
 
 const catalogQuerySchema = z.object({
@@ -16,13 +15,8 @@ const importSchema = z.object({
   displayName: z.string().min(1).max(180).optional(),
 });
 
-async function requireAdmin() {
-  const cookieStore = await cookies();
-  return verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
-}
-
 export async function GET(request: Request) {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
@@ -50,7 +44,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const session = await requireAdmin();
+  const session = await getAdminApiSession("products");
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });

@@ -1,5 +1,5 @@
 import { AdminRevenueDashboard } from "@/components/admin-revenue-dashboard";
-import { AdminDashboardShell } from "@/components/admin-dashboard-shell";
+import { AdminDashboardShell, requireAdminSession } from "@/components/admin-dashboard-shell";
 import { getRevenueDashboard } from "@/lib/revenue";
 
 export const metadata = {
@@ -7,10 +7,11 @@ export const metadata = {
 };
 
 export default async function DashboardRevenuePage() {
+  await requireAdminSession("revenue");
   const data = await getRevenueDashboard();
 
   return (
-    <AdminDashboardShell title="Revenue" eyebrow="Profit center">
+    <AdminDashboardShell title="Revenue" eyebrow="Profit center" requiredPermission="revenue">
       <AdminRevenueDashboard initialData={data} />
     </AdminDashboardShell>
   );
