@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const root = fileURLToPath(new URL("../", import.meta.url));
 const rows = [];
 let cookie;
-const env = { ADMIN_SESSION_SECRET: "isolated-staff-test-session-secret" };
+const env = { ADMIN_SESSION_SECRET: "isolated-staff-test-session-secret", ADMIN_EMAIL: "owner@example.test" };
 const database = {
   from(table) {
     assert.equal(table, "staff_accounts");
@@ -80,12 +80,15 @@ assert.equal((await createRoute.GET()).status, 401);
 cookie = ownerCookie;
 const password = "test-only-password-123";
 const payload = { email: "support@example.test", password, role: "support", permissions: ["review"] };
+assert.equal((await createRoute.POST(request({ ...payload, email: "OWNER@example.test" }))).status, 400);
 assert.equal((await createRoute.POST(request({ ...payload, password: "short" }))).status, 400);
 assert.equal((await createRoute.POST(request({ ...payload, permissions: [] }))).status, 400);
 const created = await createRoute.POST(request(payload));
 assert.equal(created.status, 201);
 const { staffId } = await created.json();
 assert.notEqual(rows[0].password_hash, password);
+rows.push({ ...rows[0], id: "legacy-owner-duplicate", email: env.ADMIN_EMAIL });
+assert.equal(await sessions.verifyDashboardCredentials(env.ADMIN_EMAIL, password), null);
 assert.ok(!(await staff.getStaffAccounts())[0].password_hash);
 assert.equal((await createRoute.POST(request(payload))).status, 400);
 assert.equal((await loginRoute.POST(request({ email: payload.email, password: "wrong" }))).status, 401);

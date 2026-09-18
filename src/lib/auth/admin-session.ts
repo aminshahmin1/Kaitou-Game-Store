@@ -41,6 +41,10 @@ export async function verifyDashboardCredentials(email: string, password: string
     };
   }
 
+  if (normalizedEmail === expectedEmail?.trim().toLowerCase()) {
+    return null;
+  }
+
   const staff = await authenticateStaffAccount(email, password);
 
   if (!staff) {

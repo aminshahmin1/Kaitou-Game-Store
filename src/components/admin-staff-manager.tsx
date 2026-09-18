@@ -329,6 +329,7 @@ function Field({
       {label}
       <input
         type={type}
+        autoComplete={type === "password" ? "new-password" : "off"}
         value={value}
         required={required}
         placeholder={placeholder}

@@ -238,6 +238,9 @@ function normalizeRole(role: StaffRolePreset) {
 }
 
 function validateEmail(email: string) {
+  if (email === process.env.ADMIN_EMAIL?.trim().toLowerCase()) {
+    throw new Error("The owner email cannot be used for a staff account. Use a different email.");
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 160) {
     throw new Error("Enter a valid staff email.");
   }
