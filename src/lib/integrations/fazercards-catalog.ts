@@ -30,6 +30,12 @@ export type FazerCardsCatalogItem = {
   kind: FazerCardsCatalogKind;
   note: string | null;
   imageUrl: string | null;
+  score?: number;
+};
+
+export type FazerCardsCatalogSearchResult = {
+  items: FazerCardsCatalogItem[];
+  warnings: string[];
 };
 
 export type FazerCardsCatalogDetails = {
@@ -74,7 +80,8 @@ async function fazerCardsFetch<T>(path: string) {
   const body = (await response.json().catch(() => null)) as T | null;
 
   if (!response.ok || !body) {
-    throw new Error(`FazerCards request failed for ${path}.`);
+    const errorBody = body as { error?: string; code?: string } | null;
+    throw new Error(errorBody?.error ?? `FazerCards request failed for ${path}.`);
   }
 
   return body;
@@ -89,32 +96,59 @@ export async function listFazerCardsCatalog(kind: FazerCardsCatalogKind, query =
     const body = await fazerCardsFetch<{
       games?: Array<{ appid: number; name: string }>;
     }>("/steam-gifts/games?limit=500");
-    return (body.games ?? [])
+    return rankCatalogItems(
+      (body.games ?? [])
       .map((game): FazerCardsCatalogItem => ({
         id: String(game.appid),
         name: game.name,
         kind,
         note: "Steam gift game",
         imageUrl: null,
-      }))
-      .filter((item) => matchesQuery(item, query))
-      .slice(0, 80);
+      })),
+      query,
+    );
   }
 
   const params = new URLSearchParams({ limit: "500", include_ui: "1" });
   const path = kind === "gift_card" ? "/giftcards" : "/topups";
   const body = await fazerCardsFetch<{ items?: FazerCardsTopupCategory[] }>(`${path}?${params.toString()}`);
 
-  return (body.items ?? [])
+  return rankCatalogItems(
+    (body.items ?? [])
     .map((item): FazerCardsCatalogItem => ({
       id: item.category_id,
       name: item.name,
       kind,
       note: item.note ?? null,
       imageUrl: item.imageurl ?? null,
-    }))
-    .filter((item) => matchesQuery(item, query))
-    .slice(0, 80);
+    })),
+    query,
+  );
+}
+
+export async function searchAllFazerCardsCatalog(query = ""): Promise<FazerCardsCatalogSearchResult> {
+  const warnings: string[] = [];
+  const results = await Promise.allSettled([
+    listFazerCardsCatalog("topup", query),
+    listFazerCardsCatalog("gift_card", query),
+    listFazerCardsCatalog("steam_gift", query),
+  ]);
+
+  const labels = ["top-up", "gift card", "Steam gift"];
+  const items = results.flatMap((result, index) => {
+    if (result.status === "fulfilled") {
+      return result.value;
+    }
+
+    const message = result.reason instanceof Error ? result.reason.message : "Provider search failed.";
+    warnings.push(`${labels[index]} search unavailable: ${message}`);
+    return [];
+  });
+
+  return {
+    items: rankCatalogItems(items, query),
+    warnings,
+  };
 }
 
 export async function getFazerCardsCatalogDetails(
@@ -252,11 +286,39 @@ function mapFields(fields: FazerCardsField[]): RequiredField[] {
   }));
 }
 
-function matchesQuery(item: FazerCardsCatalogItem, query: string) {
+function rankCatalogItems(items: FazerCardsCatalogItem[], query: string) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) {
-    return true;
+    return items.slice(0, 80);
   }
 
-  return `${item.name} ${item.id} ${item.note ?? ""}`.toLowerCase().includes(normalized);
+  return items
+    .map((item) => ({ ...item, score: scoreCatalogItem(item, normalized) }))
+    .filter((item) => (item.score ?? 0) > 0)
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || a.name.localeCompare(b.name))
+    .slice(0, 80);
+}
+
+function scoreCatalogItem(item: FazerCardsCatalogItem, query: string) {
+  const haystack = `${item.name} ${item.id} ${item.note ?? ""}`.toLowerCase();
+  const name = item.name.toLowerCase();
+  const id = item.id.toLowerCase();
+  const tokens = query.split(/\s+/).filter(Boolean);
+
+  let score = 0;
+  if (name === query || id === query) score += 1000;
+  if (name.startsWith(query) || id.startsWith(query)) score += 450;
+  if (name.includes(query) || id.includes(query)) score += 300;
+
+  for (const token of tokens) {
+    if (name.includes(token)) score += 80;
+    if (id.includes(token)) score += 60;
+    if (haystack.includes(token)) score += 20;
+  }
+
+  if (tokens.length > 1 && tokens.every((token) => haystack.includes(token))) {
+    score += 180;
+  }
+
+  return score;
 }

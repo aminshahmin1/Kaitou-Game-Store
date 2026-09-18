@@ -2,6 +2,7 @@ import { getActiveProducts, getProductBySlug as getStarterProductBySlug } from "
 import {
   getFazerCardsCatalogDetails,
   listFazerCardsCatalog,
+  searchAllFazerCardsCatalog,
   type FazerCardsCatalogKind,
 } from "./integrations/fazercards-catalog";
 import { createSupabaseAdminClient } from "./supabase/admin";
@@ -247,16 +248,37 @@ export async function updateAdminProductStatus(
   if (update.active === true && update.available === true) {
     const { data: variations, error: variationError } = await supabase
       .from("product_variations")
-      .select("price_myr, active, available")
+      .select("id, price_myr, active, available")
       .eq("product_id", productId);
 
     if (variationError) {
       throw new Error(variationError.message);
     }
 
-    const publishableVariations = (variations ?? []).filter(
+    let publishableVariations = (variations ?? []).filter(
       (variation) => variation.active && variation.available,
     );
+
+    if (publishableVariations.length === 0) {
+      const positiveActiveVariationIds = (variations ?? [])
+        .filter((variation) => variation.active && Number(variation.price_myr) > 0)
+        .map((variation) => variation.id);
+
+      if (positiveActiveVariationIds.length > 0) {
+        const { error: availabilityError } = await supabase
+          .from("product_variations")
+          .update({ available: true })
+          .in("id", positiveActiveVariationIds);
+
+        if (availabilityError) {
+          throw new Error(availabilityError.message);
+        }
+
+        publishableVariations = (variations ?? []).filter(
+          (variation) => variation.active && Number(variation.price_myr) > 0,
+        );
+      }
+    }
 
     if (
       publishableVariations.length === 0 ||
@@ -291,7 +313,11 @@ export async function importFazerCardsMobileLegendsMalaysiaDraft() {
   return importFazerCardsCatalogDraft("topup", "mobile_legends_malaysia");
 }
 
-export async function searchFazerCardsCatalog(kind: FazerCardsCatalogKind, query = "") {
+export async function searchFazerCardsCatalog(kind: FazerCardsCatalogKind | "all", query = "") {
+  if (kind === "all") {
+    return searchAllFazerCardsCatalog(query);
+  }
+
   return listFazerCardsCatalog(kind, query);
 }
 
@@ -356,7 +382,7 @@ export async function importFazerCardsCatalogDraft(
       price_myr: estimatedCostMyr,
       cost_myr: estimatedCostMyr,
       active: true,
-      available: false,
+      available: true,
       sort_order: index,
     };
   });

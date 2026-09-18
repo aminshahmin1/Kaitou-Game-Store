@@ -6,7 +6,7 @@ import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-
 import { importFazerCardsCatalogDraft, searchFazerCardsCatalog } from "@/lib/products";
 
 const catalogQuerySchema = z.object({
-  kind: z.enum(["topup", "gift_card", "steam_gift"]).default("topup"),
+  kind: z.enum(["all", "topup", "gift_card", "steam_gift"]).default("all"),
   q: z.string().max(120).default(""),
 });
 
@@ -37,8 +37,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const items = await searchFazerCardsCatalog(parsed.data.kind, parsed.data.q);
-    return NextResponse.json({ items });
+    const result = await searchFazerCardsCatalog(parsed.data.kind, parsed.data.q);
+    const items = Array.isArray(result) ? result : result.items;
+    const warnings = Array.isArray(result) ? [] : result.warnings;
+    return NextResponse.json({ items, warnings });
   } catch (error) {
     console.error("FazerCards catalog search failed", {
       message: error instanceof Error ? error.message : "Unknown error",
