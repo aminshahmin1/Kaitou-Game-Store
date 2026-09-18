@@ -32,6 +32,7 @@ export type ProductVariation = {
   title: string;
   sku: string;
   fazercardsSku?: string | null;
+  costUsd: number;
   priceMyr: number;
   costMyr: number;
   active: boolean;

@@ -32,6 +32,7 @@ type VariationRow = {
   title: string;
   sku: string;
   fazercards_sku: string | null;
+  cost_usd: string | number | null;
   price_myr: string | number;
   cost_myr: string | number;
   active: boolean;
@@ -48,7 +49,7 @@ export async function getStoreProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
     )
     .eq("active", true)
     .eq("available", true)
@@ -76,7 +77,7 @@ export async function getStoreProductBySlug(slug: string) {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
     )
     .eq("slug", slug)
     .eq("active", true)
@@ -100,7 +101,7 @@ export async function getAdminProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
     )
     .order("created_at", { ascending: false });
 
@@ -150,6 +151,7 @@ export async function createAdminProduct(input: unknown) {
       title: variation.title,
       sku: variation.sku,
       fazercards_sku: variation.fazercardsSku || null,
+      cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
       cost_myr: variation.costMyr,
       active: variation.active,
@@ -202,6 +204,7 @@ export async function updateAdminProduct(productId: string, input: unknown) {
       title: variation.title,
       sku: variation.sku,
       fazercards_sku: variation.fazercardsSku || null,
+      cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
       cost_myr: variation.costMyr,
       active: variation.active,
@@ -379,6 +382,7 @@ export async function importFazerCardsCatalogDraft(
       title: offer.name,
       sku: makeSlug(details.categoryId, String(offer.offerId)),
       fazercards_sku: providerSku,
+      cost_usd: offer.priceUsd,
       price_myr: estimatedCostMyr,
       cost_myr: estimatedCostMyr,
       active: true,
@@ -423,7 +427,11 @@ function mapProductRow(
     requiredFields: row.required_fields ?? [],
     variations: (row.product_variations ?? [])
       .map(mapVariationRow)
-      .filter((variation) => options.includeUnavailableVariations || (variation.active && variation.available)),
+      .filter(
+        (variation) =>
+          options.includeUnavailableVariations ||
+          (variation.active && variation.available && variation.priceMyr > 0),
+      ),
   };
 }
 
@@ -433,6 +441,7 @@ function mapVariationRow(row: VariationRow): ProductVariation {
     title: row.title,
     sku: row.sku,
     fazercardsSku: row.fazercards_sku,
+    costUsd: Number(row.cost_usd ?? 0),
     priceMyr: Number(row.price_myr),
     costMyr: Number(row.cost_myr),
     active: row.active,

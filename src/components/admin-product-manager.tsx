@@ -28,6 +28,7 @@ type VariationDraft = {
   title: string;
   sku: string;
   fazercardsSku: string;
+  costUsd: string;
   priceMyr: string;
   costMyr: string;
   active: boolean;
@@ -65,6 +66,7 @@ const defaultVariations: VariationDraft[] = [
     title: "Weekly Diamond Pass",
     sku: "mobile-legends-weekly-diamond-pass-my",
     fazercardsSku: "",
+    costUsd: "0.00",
     priceMyr: "10.90",
     costMyr: "0.00",
     active: true,
@@ -100,6 +102,7 @@ function variationDraft(variation?: Partial<ProductVariation>): VariationDraft {
     title: variation?.title ?? "",
     sku: variation?.sku ?? "",
     fazercardsSku: variation?.fazercardsSku ?? "",
+    costUsd: variation?.costUsd != null ? String(variation.costUsd) : "0.00",
     priceMyr: variation?.priceMyr != null ? String(variation.priceMyr) : "0.00",
     costMyr: variation?.costMyr != null ? String(variation.costMyr) : "0.00",
     active: variation?.active ?? true,
@@ -218,6 +221,7 @@ export function AdminProductManager() {
             title: variation.title,
             sku: variation.sku,
             fazercardsSku: variation.fazercardsSku,
+            costUsd: Number(variation.costUsd),
             priceMyr,
             costMyr: Number(variation.costMyr),
             active: publishableVariation || variation.active,
@@ -570,10 +574,11 @@ export function AdminProductManager() {
         >
           <div className="grid gap-3">
             {variations.map((variation) => (
-              <div key={variation.localId} className="grid gap-3 rounded-md border border-slate-200 p-3 xl:grid-cols-[1.3fr_1fr_1fr_110px_110px_110px_auto]">
+              <div key={variation.localId} className="grid gap-3 rounded-md border border-slate-200 p-3 xl:grid-cols-[1.25fr_1fr_1fr_110px_110px_110px_110px_auto]">
                 <SmallInput label="Variation" value={variation.title} onChange={(value) => updateVariation(variation.localId, { title: value })} placeholder="Weekly Diamond Pass" />
                 <SmallInput label="Store SKU" value={variation.sku} onChange={(value) => updateVariation(variation.localId, { sku: value })} placeholder="mlbb-weekly-pass" />
                 <SmallInput label="Provider SKU" value={variation.fazercardsSku} onChange={(value) => updateVariation(variation.localId, { fazercardsSku: value })} placeholder="category:offer" />
+                <SmallInput label="Cost USD" type="number" value={variation.costUsd} onChange={(value) => updateVariation(variation.localId, { costUsd: value })} placeholder="2.00" />
                 <SmallInput label="Cost MYR" type="number" value={variation.costMyr} onChange={(value) => updateVariation(variation.localId, { costMyr: value })} placeholder="8.00" />
                 <SmallInput label="Sale MYR" type="number" value={variation.priceMyr} onChange={(value) => updateVariation(variation.localId, { priceMyr: value })} placeholder="9.90" />
                 <div className="grid gap-2 text-xs font-bold text-slate-600">

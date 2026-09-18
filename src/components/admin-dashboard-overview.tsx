@@ -1,30 +1,30 @@
 import Link from "next/link";
-import { AlertTriangle, BarChart3, Boxes, CircleDollarSign, KeyRound } from "lucide-react";
+import { AlertTriangle, BarChart3, Boxes, CircleDollarSign, KeyRound, Layers3 } from "lucide-react";
 
+import { getReviewOrders } from "@/lib/admin-orders";
 import { formatMyr } from "@/lib/catalog";
 import { getAdminProducts } from "@/lib/products";
+import { getRevenueDashboard } from "@/lib/revenue";
 
 export async function AdminDashboardOverview() {
-  const products = await getAdminProducts();
+  const [products, revenue, reviewOrders] = await Promise.all([
+    getAdminProducts(),
+    getRevenueDashboard(),
+    getReviewOrders(),
+  ]);
   const visibleProducts = products.filter((product) => product.active && product.available);
   const listedValue = products.reduce(
     (sum, product) => sum + product.variations.reduce((subtotal, variation) => subtotal + variation.priceMyr, 0),
-    0,
-  );
-  const projectedMargin = products.reduce(
-    (sum, product) =>
-      sum +
-      product.variations.reduce(
-        (subtotal, variation) => subtotal + variation.priceMyr - variation.costMyr,
-        0,
-      ),
     0,
   );
 
   const cards = [
     { label: "Visible products", value: visibleProducts.length.toString(), icon: Boxes },
     { label: "Listed product value", value: formatMyr(listedValue), icon: CircleDollarSign },
-    { label: "Projected margin", value: formatMyr(projectedMargin), icon: CircleDollarSign },
+    { label: "Month net profit", value: formatMyr(revenue.summary.netProfitMyr), icon: BarChart3 },
+    { label: "Funding available", value: `${revenue.summary.availableFundingUsd.toFixed(4)} USDT`, icon: Layers3 },
+    { label: "Pending allocation", value: revenue.summary.unallocatedOrders.toString(), icon: CircleDollarSign },
+    { label: "Review queue", value: reviewOrders.length.toString(), icon: AlertTriangle },
   ];
 
   const sections = [
@@ -37,7 +37,7 @@ export async function AdminDashboardOverview() {
     {
       href: "/dashboard/revenue",
       title: "Revenue",
-      copy: "Funding ledger, FIFO order cost allocation, and profit reports will live here.",
+      copy: "Add funding batches, allocate paid order costs, and monitor profit reports.",
       icon: BarChart3,
     },
     {

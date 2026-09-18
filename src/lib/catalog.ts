@@ -23,6 +23,7 @@ export const products: Product[] = [
         title: "Weekly Diamond Pass",
         sku: "starter-mlbb-weekly-diamond-pass",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 10.9,
         costMyr: 9.1,
         active: true,
@@ -51,6 +52,7 @@ export const products: Product[] = [
         title: "60 UC",
         sku: "starter-pubg-60-uc",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 4.9,
         costMyr: 4.1,
         active: true,
@@ -79,6 +81,7 @@ export const products: Product[] = [
         title: "100 Diamonds",
         sku: "starter-free-fire-100-diamonds",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 4.2,
         costMyr: 3.55,
         active: true,
@@ -114,6 +117,7 @@ export const products: Product[] = [
         title: "475 Points",
         sku: "starter-valorant-475-points",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 19.9,
         costMyr: 17.6,
         active: true,
@@ -149,6 +153,7 @@ export const products: Product[] = [
         title: "Express Supply Pass",
         sku: "starter-honkai-express-pass",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 19.9,
         costMyr: 17.2,
         active: true,
@@ -182,6 +187,7 @@ export const products: Product[] = [
         title: "Steam Gift Game",
         sku: "starter-steam-gift-game",
         fazercardsSku: null,
+        costUsd: 0,
         priceMyr: 59.9,
         costMyr: 52,
         active: true,
@@ -201,7 +207,7 @@ export function getProductBySlug(slug: string) {
 
 export function getProductStartingPrice(product: Product) {
   const prices = product.variations
-    .filter((variation) => variation.active && variation.available)
+    .filter((variation) => variation.active && variation.available && variation.priceMyr > 0)
     .map((variation) => variation.priceMyr);
 
   return prices.length > 0 ? Math.min(...prices) : 0;

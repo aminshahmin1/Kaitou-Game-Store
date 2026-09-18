@@ -1,5 +1,6 @@
 import { createSupabaseAdminClient } from "./supabase/admin";
 import { createFazerCardsOrder } from "./integrations/fazercards";
+import { allocateFundingForOrder } from "./revenue";
 import type { OrderStatus, Product, ProductVariation, RequiredField } from "./types";
 
 type CreatePendingOrderInput = {
@@ -29,7 +30,9 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     customer_whatsapp: input.whatsapp,
     customer_fields: input.fieldValues,
     amount_myr: input.variation.priceMyr,
+    cost_usd: input.variation.costUsd,
     cost_myr: input.variation.costMyr,
+    payment_fee_myr: 1,
   });
 
   if (error) {
@@ -74,7 +77,7 @@ export async function markOrderPaymentCallback(input: {
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .select(
-      "id, order_number, status, payment_reference, amount_myr, customer_fields, fulfillment_reference, products(id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available), product_variations(id, title, sku, fazercards_sku, price_myr, cost_myr, active, available)",
+      "id, order_number, status, payment_reference, amount_myr, customer_fields, fulfillment_reference, paid_at, products(id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available), product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
     )
     .eq("order_number", input.orderId)
     .maybeSingle();
@@ -98,6 +101,7 @@ export async function markOrderPaymentCallback(input: {
         status: "review",
         payment_reference: input.billCode || order.payment_reference,
         payment_raw: input.rawPayload,
+        paid_at: new Date().toISOString(),
         failure_reason: "Payment amount did not match the order total.",
       })
       .eq("id", order.id);
@@ -140,12 +144,14 @@ export async function markOrderPaymentCallback(input: {
   }
 
   if (order.fulfillment_reference) {
+    const paidAt = order.paid_at ?? new Date().toISOString();
     const { error } = await supabase
       .from("orders")
       .update({
         status: order.status === "pending_payment" ? "processing" : order.status,
         payment_reference: input.billCode || order.payment_reference,
         payment_raw: input.rawPayload,
+        paid_at: paidAt,
       })
       .eq("id", order.id);
 
@@ -153,21 +159,37 @@ export async function markOrderPaymentCallback(input: {
       throw new Error(error.message);
     }
 
+    await allocateFundingForOrder(order.id).catch((allocationError) => {
+      console.error("Order profit allocation skipped", {
+        orderId: order.order_number,
+        message: allocationError instanceof Error ? allocationError.message : "Unknown allocation error",
+      });
+    });
+
     return { processed: true, reason: "already_fulfilled" };
   }
 
+  const paidAt = order.paid_at ?? new Date().toISOString();
   const { error } = await supabase
     .from("orders")
     .update({
       status: "processing",
       payment_reference: input.billCode || null,
       payment_raw: input.rawPayload,
+      paid_at: paidAt,
     })
     .eq("id", order.id);
 
   if (error) {
     throw new Error(error.message);
   }
+
+  await allocateFundingForOrder(order.id).catch((allocationError) => {
+    console.error("Order profit allocation skipped", {
+      orderId: order.order_number,
+      message: allocationError instanceof Error ? allocationError.message : "Unknown allocation error",
+    });
+  });
 
   try {
     const fulfillment = await createFazerCardsOrder({
@@ -317,6 +339,7 @@ function mapOrderVariation(row: unknown): ProductVariation {
     title: String(record.title),
     sku: String(record.sku),
     fazercardsSku: typeof record.fazercards_sku === "string" ? record.fazercards_sku : null,
+    costUsd: Number(record.cost_usd ?? 0),
     priceMyr: Number(record.price_myr),
     costMyr: Number(record.cost_myr),
     active: Boolean(record.active),

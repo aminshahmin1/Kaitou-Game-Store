@@ -56,6 +56,7 @@ create table if not exists public.product_variations (
   title text not null,
   sku text not null,
   fazercards_sku text,
+  cost_usd numeric(12, 4) not null default 0,
   price_myr numeric(12, 2) not null,
   cost_myr numeric(12, 2) not null default 0,
   active boolean not null default true,
@@ -77,10 +78,16 @@ create table if not exists public.orders (
   customer_whatsapp text not null,
   customer_fields jsonb not null default '{}'::jsonb,
   amount_myr numeric(12, 2) not null,
+  cost_usd numeric(12, 4) not null default 0,
   cost_myr numeric(12, 2) not null,
+  payment_fee_myr numeric(12, 2) not null default 1.00,
+  gross_profit_myr numeric(12, 2),
+  net_profit_myr numeric(12, 2),
+  profit_allocated_at timestamptz,
   payment_provider text not null default 'toyyibpay',
   payment_reference text,
   payment_raw jsonb,
+  paid_at timestamptz,
   fulfillment_provider text not null default 'fazercards',
   fulfillment_reference text,
   fulfillment_raw jsonb,
@@ -98,6 +105,31 @@ create table if not exists public.integration_settings (
   public_config jsonb not null default '{}'::jsonb,
   encrypted_secret_reference text,
   updated_at timestamptz not null default now()
+);
+
+create table if not exists public.funding_batches (
+  id uuid primary key default gen_random_uuid(),
+  topup_date date not null default current_date,
+  provider text not null default 'fazercards',
+  currency text not null default 'USDT',
+  myr_spent numeric(12, 2) not null check (myr_spent >= 0),
+  usd_credited numeric(12, 4) not null check (usd_credited > 0),
+  fees_myr numeric(12, 2) not null default 0 check (fees_myr >= 0),
+  effective_rate numeric(12, 6) not null check (effective_rate > 0),
+  reference text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.order_funding_allocations (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid not null references public.orders(id) on delete cascade,
+  funding_batch_id uuid not null references public.funding_batches(id),
+  amount_usd numeric(12, 4) not null check (amount_usd > 0),
+  effective_rate numeric(12, 6) not null check (effective_rate > 0),
+  cost_myr numeric(12, 2) not null check (cost_myr >= 0),
+  created_at timestamptz not null default now()
 );
 
 create table if not exists public.audit_logs (
@@ -135,11 +167,18 @@ create trigger set_orders_updated_at
 before update on public.orders
 for each row execute function public.set_updated_at();
 
+drop trigger if exists set_funding_batches_updated_at on public.funding_batches;
+create trigger set_funding_batches_updated_at
+before update on public.funding_batches
+for each row execute function public.set_updated_at();
+
 alter table public.profiles enable row level security;
 alter table public.products enable row level security;
 alter table public.product_variations enable row level security;
 alter table public.orders enable row level security;
 alter table public.integration_settings enable row level security;
+alter table public.funding_batches enable row level security;
+alter table public.order_funding_allocations enable row level security;
 alter table public.audit_logs enable row level security;
 
 drop policy if exists "Public can read active products" on public.products;
@@ -168,3 +207,8 @@ create index if not exists products_active_sort_idx on public.products (active, 
 create index if not exists product_variations_product_sort_idx on public.product_variations (product_id, active, sort_order, price_myr);
 create index if not exists orders_order_number_idx on public.orders (order_number);
 create index if not exists orders_payment_reference_idx on public.orders (payment_reference);
+create index if not exists orders_profit_status_created_idx on public.orders (status, created_at);
+create index if not exists orders_paid_at_idx on public.orders (paid_at);
+create index if not exists funding_batches_topup_date_idx on public.funding_batches (topup_date, created_at);
+create unique index if not exists order_funding_allocations_order_batch_idx on public.order_funding_allocations (order_id, funding_batch_id);
+create index if not exists order_funding_allocations_order_idx on public.order_funding_allocations (order_id);
