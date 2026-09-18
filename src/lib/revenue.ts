@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseAdminClient } from "./supabase/admin";
+import { malaysiaDate, revenueQuickRange } from "./revenue-dates";
 
 const paidOrderStatuses = ["processing", "completed", "review"] as const;
 
@@ -206,7 +207,7 @@ export async function getRevenueDashboard(input: { from?: string; to?: string; r
         (pendingCostUsd > 0 && availableFundingUsd + 0.0001 < pendingCostUsd),
     },
     fundingBatches,
-    recentOrders: orders.slice(0, input.recentLimit ?? 80),
+    recentOrders: rangedOrders.slice(0, input.recentLimit ?? 80),
   } satisfies RevenueDashboardData;
 }
 
@@ -228,7 +229,7 @@ export async function createFundingBatch(input: FundingBatchInput) {
   const { data, error } = await supabase
     .from("funding_batches")
     .insert({
-      topup_date: input.topupDate || new Date().toISOString().slice(0, 10),
+      topup_date: input.topupDate || malaysiaDate(),
       provider: "fazercards",
       currency: "USDT",
       myr_spent: myrSpent,
@@ -410,10 +411,9 @@ async function snapshotOrderProfit(
 }
 
 function normalizeRange(input: { from?: string; to?: string }) {
-  const today = new Date();
-  const defaultFrom = new Date(today.getFullYear(), today.getMonth(), 1);
-  const from = isDateInput(input.from) ? input.from : toDateInput(defaultFrom);
-  const to = isDateInput(input.to) ? input.to : toDateInput(today);
+  const defaults = revenueQuickRange("month");
+  const from = isDateInput(input.from) ? input.from : defaults.from;
+  const to = isDateInput(input.to) ? input.to : defaults.to;
 
   return from <= to ? { from, to } : { from: to, to: from };
 }
@@ -428,10 +428,6 @@ function isWithinDateRange(value: string, from: string, to: string) {
 
 function isDateInput(value?: string): value is string {
   return Boolean(value && /^\d{4}-\d{2}-\d{2}$/.test(value));
-}
-
-function toDateInput(date: Date) {
-  return date.toISOString().slice(0, 10);
 }
 
 function mapFundingBatch(row: FundingBatchRow): FundingBatch {

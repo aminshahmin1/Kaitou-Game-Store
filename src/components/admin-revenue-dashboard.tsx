@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import type { RevenueDashboardData } from "@/lib/revenue";
+import { malaysiaDate, revenueQuickRange } from "@/lib/revenue-dates";
 
 export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDashboardData }) {
   const [data, setData] = useState(initialData);
@@ -106,22 +107,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
   }
 
   function applyQuickRange(kind: "today" | "week" | "month") {
-    const today = new Date();
-    let nextFrom = toInputDate(today);
-
-    if (kind === "week") {
-      const day = today.getDay();
-      const mondayOffset = day === 0 ? 6 : day - 1;
-      const weekStart = new Date(today);
-      weekStart.setDate(today.getDate() - mondayOffset);
-      nextFrom = toInputDate(weekStart);
-    }
-
-    if (kind === "month") {
-      nextFrom = toInputDate(new Date(today.getFullYear(), today.getMonth(), 1));
-    }
-
-    const nextTo = toInputDate(today);
+    const { from: nextFrom, to: nextTo } = revenueQuickRange(kind);
     setFrom(nextFrom);
     setTo(nextTo);
     void loadRevenue(nextFrom, nextTo);
@@ -241,7 +227,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
             </p>
           </div>
           <div className="grid gap-3 md:grid-cols-2">
-            <Field name="topupDate" label="Top-up date" type="date" defaultValue={toInputDate(new Date())} />
+            <Field name="topupDate" label="Top-up date" type="date" defaultValue={malaysiaDate()} />
             <Field name="myrSpent" label="MYR spent" type="number" placeholder="480.00" />
             <Field name="usdCredited" label="USDT credited" type="number" placeholder="100.0000" step="0.0001" />
             <Field name="feesMyr" label="Fees MYR" type="number" placeholder="0.00" />
@@ -440,10 +426,6 @@ function Field({
       />
     </label>
   );
-}
-
-function toInputDate(date: Date) {
-  return date.toISOString().slice(0, 10);
 }
 
 function formatMyr(value: number) {
