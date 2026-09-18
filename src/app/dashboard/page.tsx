@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { AdminDashboard } from "@/components/admin-dashboard";
+import { AdminDashboardOverview } from "@/components/admin-dashboard-overview";
+import { AdminDashboardShell } from "@/components/admin-dashboard-shell";
 import { AdminLoginForm } from "@/components/admin-login-form";
 import { getAdminSessionCookieName, verifyAdminSession } from "@/lib/auth/admin-session";
 
@@ -13,7 +14,11 @@ export default async function DashboardPage() {
   const session = verifyAdminSession(cookieStore.get(getAdminSessionCookieName())?.value);
 
   if (session) {
-    return <AdminDashboard />;
+    return (
+      <AdminDashboardShell title="Dashboard">
+        <AdminDashboardOverview />
+      </AdminDashboardShell>
+    );
   }
 
   return (
