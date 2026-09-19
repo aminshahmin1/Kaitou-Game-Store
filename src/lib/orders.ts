@@ -17,7 +17,7 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return;
+    throw new Error("Order storage is not configured.");
   }
 
   const { error } = await supabase.from("orders").insert({
@@ -48,7 +48,7 @@ export async function attachPaymentReference(orderId: string, paymentReference: 
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return;
+    throw new Error("Order storage is not configured.");
   }
 
   const { error } = await supabase
@@ -90,12 +90,20 @@ export async function markOrderPaymentCallback(input: {
     return { processed: false, reason: "order_not_found" };
   }
 
-  if (order.payment_reference && input.billCode && order.payment_reference !== input.billCode) {
+  if (!order.payment_reference || !input.billCode || order.payment_reference !== input.billCode) {
     return { processed: false, reason: "bill_code_mismatch" };
   }
 
-  if (input.amountMyr !== null && Math.abs(Number(order.amount_myr) - input.amountMyr) > 0.01) {
-    await supabase
+  if (order.paid_at || order.fulfillment_reference || !["pending_payment", "failed"].includes(order.status)) {
+    return { processed: true, reason: "already_processed" };
+  }
+
+  if (input.paymentStatus === "success" && (input.amountMyr === null || !Number.isFinite(input.amountMyr))) {
+    return { processed: false, reason: "missing_amount" };
+  }
+
+  if (input.paymentStatus === "success" && Math.round(Number(order.amount_myr) * 100) !== Math.round(input.amountMyr! * 100)) {
+    const { error } = await supabase
       .from("orders")
       .update({
         status: "review",
@@ -104,7 +112,10 @@ export async function markOrderPaymentCallback(input: {
         paid_at: new Date().toISOString(),
         failure_reason: "Payment amount did not match the order total.",
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .is("paid_at", null)
+      .in("status", ["pending_payment", "failed"]);
+    if (error) throw new Error(error.message);
 
     return { processed: false, reason: "amount_mismatch" };
   }
@@ -116,7 +127,9 @@ export async function markOrderPaymentCallback(input: {
         payment_reference: input.billCode || order.payment_reference,
         payment_raw: input.rawPayload,
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .is("paid_at", null)
+      .in("status", ["pending_payment", "failed"]);
 
     if (error) {
       throw new Error(error.message);
@@ -129,12 +142,14 @@ export async function markOrderPaymentCallback(input: {
     const { error } = await supabase
       .from("orders")
       .update({
-        status: "failed",
+        status: "pending_payment",
         payment_reference: input.billCode || order.payment_reference,
         payment_raw: input.rawPayload,
         failure_reason: String(input.rawPayload.reason ?? "Payment failed."),
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .is("paid_at", null)
+      .in("status", ["pending_payment", "failed"]);
 
     if (error) {
       throw new Error(error.message);
@@ -143,34 +158,9 @@ export async function markOrderPaymentCallback(input: {
     return { processed: true, reason: "payment_failed" };
   }
 
-  if (order.fulfillment_reference) {
-    const paidAt = order.paid_at ?? new Date().toISOString();
-    const { error } = await supabase
-      .from("orders")
-      .update({
-        status: order.status === "pending_payment" ? "processing" : order.status,
-        payment_reference: input.billCode || order.payment_reference,
-        payment_raw: input.rawPayload,
-        paid_at: paidAt,
-      })
-      .eq("id", order.id);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    await allocateFundingForOrder(order.id).catch((allocationError) => {
-      console.error("Order profit allocation skipped", {
-        orderId: order.order_number,
-        message: allocationError instanceof Error ? allocationError.message : "Unknown allocation error",
-      });
-    });
-
-    return { processed: true, reason: "already_fulfilled" };
-  }
-
   const paidAt = order.paid_at ?? new Date().toISOString();
-  const { error } = await supabase
+  // Claim the first confirmed payment atomically before any supplier purchase.
+  const { data: claimed, error } = await supabase
     .from("orders")
     .update({
       status: "processing",
@@ -178,11 +168,17 @@ export async function markOrderPaymentCallback(input: {
       payment_raw: input.rawPayload,
       paid_at: paidAt,
     })
-    .eq("id", order.id);
+    .eq("id", order.id)
+    .is("paid_at", null)
+    .in("status", ["pending_payment", "failed"])
+    .select("id")
+    .maybeSingle();
 
   if (error) {
     throw new Error(error.message);
   }
+
+  if (!claimed) return { processed: true, reason: "already_processed" };
 
   await allocateFundingForOrder(order.id).catch((allocationError) => {
     console.error("Order profit allocation skipped", {

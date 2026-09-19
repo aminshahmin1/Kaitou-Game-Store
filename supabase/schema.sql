@@ -80,6 +80,18 @@ create table if not exists public.product_variations (
   unique (product_id, sku)
 );
 
+create table if not exists public.toyyibpay_tests (
+  id text primary key,
+  bill_code text unique,
+  status text not null default 'pending' check (status in ('pending', 'success', 'failed')),
+  amount_myr numeric(12,2) not null default 1 check (amount_myr = 1),
+  callback_received_at timestamptz,
+  created_at timestamptz not null default now()
+);
+alter table public.toyyibpay_tests enable row level security;
+revoke all on public.toyyibpay_tests from anon, authenticated;
+grant all on public.toyyibpay_tests to service_role;
+
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   order_number text not null unique,

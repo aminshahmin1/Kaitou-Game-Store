@@ -56,7 +56,7 @@ function StatusIcon({ status }: { status: OrderStatus }) {
   return <Clock3 className="h-5 w-5" />;
 }
 
-export function OrderStatusLookup() {
+export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: string }) {
   const [order, setOrder] = useState<LookupResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,6 +93,7 @@ export function OrderStatusLookup() {
           Order ID
           <input
             name="orderNumber"
+            defaultValue={initialOrderId}
             required
             className="rounded-md border border-sky-100 px-3 py-3 outline-none ring-sky-300 focus:ring-4"
             placeholder="KGS-..."

@@ -3,7 +3,9 @@ import { MessageCircle } from "lucide-react";
 import { OrderStatusLookup } from "@/components/order-status-lookup";
 import { SiteHeader } from "@/components/site-header";
 
-export default function OrderStatusPage() {
+export default async function OrderStatusPage({ searchParams }: { searchParams: Promise<{ order_id?: string }> }) {
+  const params = await searchParams;
+  const initialOrderId = typeof params.order_id === "string" ? params.order_id.slice(0, 80) : "";
   return (
     <div className="trust-surface min-h-screen">
       <SiteHeader />
@@ -19,7 +21,7 @@ export default function OrderStatusPage() {
             </p>
           </div>
 
-          <OrderStatusLookup />
+          <OrderStatusLookup initialOrderId={initialOrderId} />
 
           <div className="mt-6 flex items-start gap-3 rounded-md bg-sky-50 p-4 text-sm text-slate-600">
             <MessageCircle className="mt-0.5 h-4 w-4 text-sky-600" />
