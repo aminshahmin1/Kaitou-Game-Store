@@ -69,8 +69,8 @@ export async function AdminDashboardShell({
   const visibleNavigation = navigation.filter((item) => hasDashboardPermission(session, item.permission));
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-950">
-      <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-slate-200 bg-white p-5 lg:block">
+    <main className="min-h-screen bg-slate-100 text-slate-950 lg:grid lg:grid-cols-[18rem_minmax(0,1fr)]">
+      <aside className="sticky top-0 hidden h-screen min-w-0 border-r border-slate-200 bg-white p-5 lg:block">
         <div className="font-display text-3xl font-bold uppercase">Kaitou Admin</div>
         <nav className="mt-8 grid gap-2 text-sm font-bold text-slate-600">
           {visibleNavigation.map((item) => (
@@ -90,7 +90,7 @@ export async function AdminDashboardShell({
         </div>
       </aside>
 
-      <section className="lg:pl-72">
+      <section className="min-w-0">
         <header className="border-b border-slate-200 bg-white px-5 py-5">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
             <div className="min-w-0">
@@ -113,7 +113,7 @@ export async function AdminDashboardShell({
           </nav>
         </header>
 
-        <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8">{children}</div>
+        <div className="mx-auto grid min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)] gap-6 px-5 py-8">{children}</div>
       </section>
     </main>
   );

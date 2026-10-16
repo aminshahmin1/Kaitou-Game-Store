@@ -1,6 +1,7 @@
 import { createSupabaseAdminClient } from "./supabase/admin";
 import { createFazerCardsOrder } from "./integrations/fazercards";
 import { allocateFundingForOrder } from "./revenue";
+import { getCheckoutPricing } from "./checkout-pricing";
 import type { OrderStatus, Product, ProductVariation, RequiredField } from "./types";
 
 type CreatePendingOrderInput = {
@@ -14,6 +15,7 @@ type CreatePendingOrderInput = {
 };
 
 export async function createPendingOrder(input: CreatePendingOrderInput) {
+  const pricing = getCheckoutPricing(input.variation.priceMyr);
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -29,7 +31,9 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     customer_email: input.customerEmail,
     customer_whatsapp: input.whatsapp,
     customer_fields: input.fieldValues,
-    amount_myr: input.variation.priceMyr,
+    amount_myr: pricing.totalMyr,
+    product_amount_myr: pricing.subtotalMyr,
+    payment_surcharge_myr: pricing.feeMyr,
     cost_usd: input.variation.costUsd,
     cost_myr: input.variation.costMyr,
     payment_fee_myr: 1,

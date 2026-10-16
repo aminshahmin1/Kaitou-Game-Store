@@ -5,11 +5,15 @@ import { Loader2, LockKeyhole, MessageCircle } from "lucide-react";
 
 import { formatMyr } from "@/lib/catalog";
 import type { CheckoutResult, Product } from "@/lib/types";
+import { getCheckoutPricing } from "@/lib/checkout-pricing";
 
 export function CheckoutForm({ product }: { product: Product }) {
   const [result, setResult] = useState<CheckoutResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [variationId, setVariationId] = useState(product.variations.find((v) => v.active && v.available)?.id ?? "");
+  const selected = product.variations.find((v) => v.id === variationId && v.active && v.available);
+  const pricing = selected ? getCheckoutPricing(selected.priceMyr) : null;
 
   async function onSubmit(formData: FormData) {
     setIsSubmitting(true);
@@ -69,6 +73,8 @@ export function CheckoutForm({ product }: { product: Product }) {
         Select product
         <select
           name="variationId"
+          value={variationId}
+          onChange={(event) => setVariationId(event.target.value)}
           required
           className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
         >
@@ -165,18 +171,24 @@ export function CheckoutForm({ product }: { product: Product }) {
         </div>
       ) : null}
 
+      {pricing && <dl className="grid gap-2 border-t border-sky-100 pt-4 text-sm text-slate-700" aria-live="polite">
+        <div className="flex justify-between gap-4"><dt>Product subtotal</dt><dd>{formatMyr(pricing.subtotalMyr)}</dd></div>
+        <div className="flex justify-between gap-4"><dt>FPX payment fee</dt><dd>{formatMyr(pricing.feeMyr)}</dd></div>
+        <div className="flex justify-between gap-4 text-lg font-bold text-slate-950"><dt>Total payable</dt><dd>{formatMyr(pricing.totalMyr)}</dd></div>
+      </dl>}
+
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || !pricing}
         className="flex min-h-12 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
-        Pay securely with ToyyibPay
+        {pricing ? `Pay ${formatMyr(pricing.totalMyr)} with FPX` : "Unavailable"}
       </button>
 
       <p className="flex items-start gap-2 text-xs font-medium text-slate-500">
         <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-sky-500" />
-        After payment, your order moves into processing. We only send WhatsApp updates for paid orders.
+        After payment, track your purchase on the Order Status page using your order number and contact details.
       </p>
     </form>
   );

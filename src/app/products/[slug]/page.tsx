@@ -64,6 +64,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <span className="text-sm font-semibold text-slate-300">Delivery</span>
               <strong className="text-cyan-100">{product.deliveryType}</strong>
             </div>
+            <p className="text-sm text-slate-300">A separate RM1.00 FPX payment fee applies per order. The full total is shown before payment.</p>
             <div className="flex items-center gap-2 border-t border-cyan-300/15 pt-3 text-sm font-bold text-emerald-300">
               <BadgeCheck className="h-4 w-4" />
               {product.available ? "Available" : "Temporarily out of stock"}

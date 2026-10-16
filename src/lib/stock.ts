@@ -5,7 +5,7 @@ export function applyBalanceAvailability(products: Product[], balanceUsd: number
   return products.map((product) => {
     const variations = product.variations.map((variation) => ({
       ...variation,
-      available: variation.available && variation.active && variation.priceMyr >= 1 &&
+      available: variation.available && variation.active && Number.isFinite(variation.priceMyr) && variation.priceMyr >= 0.01 &&
         Number.isFinite(variation.costUsd) && variation.costUsd > 0 &&
         Math.ceil(variation.costUsd * 10_000 - 1e-7) <= balanceUnits &&
         Boolean(variation.fazercardsSku),

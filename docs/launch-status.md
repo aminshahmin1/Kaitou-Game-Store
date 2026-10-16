@@ -26,6 +26,8 @@
 
 ## Must finish before enabling checkout
 
+- Owner approved a separate RM1 FPX surcharge on 2026-10-16. New checkout totals and provider bills use product price + RM1; gateway charge-to-customer remains blank to prevent a second fee. New orders snapshot product_amount_myr and payment_surcharge_myr; older orders unchanged. Verify live callback against the total including fee in the next newly authorized full-flow test.
+
 - Opening cost confirmed: USD14 credited for approximately RM57.93 including network fee (RM4.137857/USD). Stored separately in integration_settings as fazercards-opening-cost, NOT a new funding deposit. Prior supplier usage still needs reconciliation before creating an opening ledger balance. Product estimates use this basis only until funding batches exist; the next remaining batch rate is an indicative quote, not a multi-batch profit allocation.
 - Hourly chat continuation created as finish-kaitou-launch. It cannot bypass account usage limits.
 

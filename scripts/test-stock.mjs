@@ -17,9 +17,11 @@ const original = JSON.stringify(product);
 const [result] = exports.applyBalanceAvailability([product], 2.5928);
 assert.equal(result.available, true);
 assert.equal(result.variations[0].available, true);
-assert.ok(result.variations.slice(1).every((v) => !v.available));
+assert.equal(result.variations[1].available, false);
+assert.equal(result.variations[2].available, true); // RM1 FPX surcharge is added to the positive item price.
+assert.ok(result.variations.slice(3).every((v) => !v.available));
 assert.equal(exports.applyBalanceAvailability([product], null)[0].available, false);
 assert.equal(exports.applyBalanceAvailability([product], 0)[0].available, false);
 assert.equal(exports.applyBalanceAvailability([product], 10)[0].variations[1].available, true);
 assert.equal(JSON.stringify(product), original);
-console.log("PASS: Exact balance, insufficient funds, FPX minimum, missing cost, manual unavailability, provider failure and replenishment.");
+console.log("PASS: Exact balance, insufficient funds, positive item price plus FPX fee, missing cost, manual unavailability, provider failure and replenishment.");

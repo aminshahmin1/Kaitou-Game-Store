@@ -1,4 +1,5 @@
 import "server-only";
+import { getCheckoutPricing } from "../checkout-pricing";
 
 import type { Product } from "../types";
 import type { ProductVariation } from "../types";
@@ -23,8 +24,8 @@ function cleanToyyibText(value: string, maxLength: number) {
 export async function createToyyibPayBill(input: ToyyibPayBillInput) {
   return createToyyibPayPayment({
     orderId: input.orderId,
-    description: `${input.product.title} ${input.variation.title} ${input.orderId}`,
-    amountMyr: input.variation.priceMyr,
+    description: `Includes RM1 FPX fee ${input.product.title} ${input.variation.title} ${input.orderId}`,
+    amountMyr: getCheckoutPricing(input.variation.priceMyr).totalMyr,
     customerName: input.customerName,
     customerEmail: input.customerEmail,
     whatsapp: input.whatsapp,
@@ -77,6 +78,7 @@ export async function createToyyibPayPayment(input: {
     billSplitPaymentArgs: "",
     billPaymentChannel: "0",
     billContentEmail: "Thank you for ordering from Kaitou Game Store.",
+    // Already included in billAmount; asking the gateway to add it would double-charge.
     billChargeToCustomer: "",
     billExpiryDays: "1",
   });
