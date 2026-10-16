@@ -136,7 +136,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </section>
       ) : null}
 
-      <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
             <div>
@@ -218,7 +218,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </div>
       ) : null}
 
-      <section className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <form key={formKey} action={onCreateFundingBatch} className="grid gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <div>
             <h2 className="font-display text-3xl font-bold">Add funding batch</h2>
@@ -247,7 +247,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
           </button>
         </form>
 
-        <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div className="min-w-0 rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-200 p-5">
             <h2 className="font-display text-3xl font-bold">Funding ledger</h2>
             <p className="mt-1 text-sm text-slate-500">Oldest available balance is used first when allocating order cost.</p>
@@ -292,7 +292,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </div>
       </section>
 
-      <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+      <section className="min-w-0 rounded-lg border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 p-5">
           <h2 className="font-display text-3xl font-bold">Recent paid orders</h2>
           <p className="mt-1 text-sm text-slate-500">Orders without allocation are waiting for funding balance or cost data.</p>
