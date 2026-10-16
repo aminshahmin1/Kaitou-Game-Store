@@ -7,6 +7,7 @@ import { hasDashboardPermission } from "@/lib/auth/permissions";
 import { formatMyr } from "@/lib/catalog";
 import { getAdminProducts } from "@/lib/products";
 import { getRevenueDashboard } from "@/lib/revenue";
+import { AdminProviderBalance } from "./admin-provider-balance";
 
 export async function AdminDashboardOverview({ session }: { session: AdminSession }) {
   const canProducts = hasDashboardPermission(session, "products");
@@ -62,6 +63,7 @@ export async function AdminDashboardOverview({ session }: { session: AdminSessio
 
   return (
     <>
+      {canRevenue && <AdminProviderBalance />}
       <section className="grid gap-4 md:grid-cols-3">
         {cards.map((card) => (
           <div key={card.label} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">

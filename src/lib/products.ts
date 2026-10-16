@@ -1,4 +1,6 @@
-import { getActiveProducts, getProductBySlug as getStarterProductBySlug } from "./catalog";
+import { getFazerCardsBalance } from "./integrations/fazercards-balance";
+import { applyBalanceAvailability } from "./stock";
+import { refreshSupplierPrices } from "./integrations/fazercards-pricing";
 import {
   getFazerCardsCatalogDetails,
   listFazerCardsCatalog,
@@ -43,7 +45,7 @@ export async function getStoreProducts() {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return getActiveProducts();
+    return [];
   }
 
   const { data, error } = await supabase
@@ -62,16 +64,18 @@ export async function getStoreProducts() {
     return [];
   }
 
-  return (data as ProductRow[])
+  const products = (data as ProductRow[])
     .map((row) => mapProductRow(row))
     .filter((product) => product.variations.length > 0);
+  const balance = await getFazerCardsBalance().catch(() => null);
+  return applyBalanceAvailability(await refreshSupplierPrices(products), balance?.balanceUsd ?? null);
 }
 
 export async function getStoreProductBySlug(slug: string) {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return getStarterProductBySlug(slug);
+    return null;
   }
 
   const { data, error } = await supabase
@@ -88,7 +92,8 @@ export async function getStoreProductBySlug(slug: string) {
     return null;
   }
 
-  return mapProductRow(data as ProductRow);
+  const balance = await getFazerCardsBalance().catch(() => null);
+  return applyBalanceAvailability(await refreshSupplierPrices([mapProductRow(data as ProductRow)]), balance?.balanceUsd ?? null)[0];
 }
 
 export async function getAdminProducts() {

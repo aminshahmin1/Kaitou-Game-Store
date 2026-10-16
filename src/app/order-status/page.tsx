@@ -17,7 +17,7 @@ export default async function OrderStatusPage({ searchParams }: { searchParams: 
               Check your Kaitou order
             </h1>
             <p className="mt-4 text-slate-600">
-              Enter your order ID and WhatsApp number to view the latest status for your paid order.
+              Enter your order ID and email or WhatsApp number to view the latest status for your paid order.
             </p>
           </div>
 
@@ -25,7 +25,7 @@ export default async function OrderStatusPage({ searchParams }: { searchParams: 
 
           <div className="mt-6 flex items-start gap-3 rounded-md bg-sky-50 p-4 text-sm text-slate-600">
             <MessageCircle className="mt-0.5 h-4 w-4 text-sky-600" />
-            WhatsApp updates are sent for paid orders when the status changes or support needs to contact you.
+            Keep your order ID for support. Check this page for the latest order status.
           </div>
         </section>
       </main>

@@ -75,11 +75,12 @@ async function fazerCardsFetch<T>(path: string) {
       "X-API-Key": apiKey,
     },
     cache: "no-store",
+    signal: AbortSignal.timeout(10_000),
   });
 
   const body = (await response.json().catch(() => null)) as T | null;
 
-  if (!response.ok || !body) {
+  if (!response.ok || !body || (body as { ok?: boolean }).ok === false) {
     const errorBody = body as { error?: string; code?: string } | null;
     throw new Error(errorBody?.error ?? `FazerCards request failed for ${path}.`);
   }

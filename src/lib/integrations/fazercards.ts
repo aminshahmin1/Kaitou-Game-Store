@@ -13,7 +13,7 @@ type FazerCardsOrderInput = {
 type FazerCardsOrderResult = {
   setupRequired: boolean;
   providerReference: string;
-  status: "processing" | "review" | "failed";
+  status: "processing" | "completed" | "review" | "failed";
   message: string;
   raw?: unknown;
 };
@@ -69,24 +69,13 @@ async function createTopupOrder(
     };
   }
 
-  const body = await fazerCardsFetch<{
-    ok?: boolean;
-    order_id?: string;
-    status?: string;
-    error?: string;
-  }>(input, "/topups/order", {
+  const body = await fazerCardsFetch<FazerCardsOrderEnvelope>(input, "/topups/order", {
     category_id: categoryId,
     offer_id: offerId,
     fields: input.fieldValues,
   });
 
-  return {
-    setupRequired: false,
-    providerReference: body.order_id ?? `fazercards-${input.orderId}`,
-    status: "processing",
-    message: "FazerCards top-up order created.",
-    raw: body,
-  };
+  return parseFazerCardsOrder(body);
 }
 
 async function createSteamGiftOrder(
@@ -107,25 +96,48 @@ async function createSteamGiftOrder(
     };
   }
 
-  const body = await fazerCardsFetch<{
-    ok?: boolean;
-    order_id?: string;
-    status?: string;
-    error?: string;
-  }>(input, "/steam-gifts/order", {
+  const body = await fazerCardsFetch<FazerCardsOrderEnvelope>(input, "/steam-gifts/order", {
     invite_url: inviteUrl,
     sub_id: Number(subIdRaw),
     app_id: Number(appIdRaw),
     region: regionRaw,
   });
 
+  return parseFazerCardsOrder(body);
+}
+
+type FazerCardsOrderEnvelope = {
+  ok: boolean;
+  order?: { id?: string; status?: string; fail_reason?: string | null; total_usd?: string };
+};
+
+export function parseFazerCardsOrder(body: FazerCardsOrderEnvelope): FazerCardsOrderResult {
+  const order = body.order;
+  if (!body.ok || !order?.id || !order.status) {
+    throw new Error("Supplier response is incomplete. Check supplier order history before retrying.");
+  }
+  const status = order.status === "completed" ? "completed"
+    : ["created", "processing"].includes(order.status) ? "processing" : "review";
   return {
     setupRequired: false,
-    providerReference: body.order_id ?? `fazercards-${input.orderId}`,
-    status: "processing",
-    message: "FazerCards Steam gift order created.",
+    providerReference: order.id,
+    status,
+    message: status === "review" ? order.fail_reason || `Supplier status: ${order.status}` : `Supplier order ${order.status}.`,
     raw: body,
   };
+}
+
+export async function getFazerCardsOrder(reference: string) {
+  const { apiBaseUrl, apiKey } = getConfig();
+  if (!apiKey) throw new Error("FazerCards is not configured.");
+  const response = await fetch(`${apiBaseUrl}/orders/${encodeURIComponent(reference)}`, {
+    headers: { "X-API-Key": apiKey, Accept: "application/json" },
+    cache: "no-store", signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error("Supplier order lookup failed.");
+  const result = parseFazerCardsOrder(await response.json());
+  if (result.providerReference !== reference) throw new Error("Supplier order reference mismatch.");
+  return result;
 }
 
 async function fazerCardsFetch<T>(
@@ -143,6 +155,7 @@ async function fazerCardsFetch<T>(
     },
     body: JSON.stringify(payload),
     cache: "no-store",
+    signal: AbortSignal.timeout(20_000),
   });
 
   const body = (await response.json().catch(() => null)) as (T & { ok?: boolean; error?: string }) | null;

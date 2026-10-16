@@ -30,6 +30,7 @@ export function CheckoutForm({ product }: { product: Product }) {
       fieldValues,
     };
 
+    try {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,7 +38,6 @@ export function CheckoutForm({ product }: { product: Product }) {
     });
 
     const body = await response.json();
-    setIsSubmitting(false);
 
     if (!response.ok) {
       setError(body.error ?? "Checkout could not be started.");
@@ -45,6 +45,11 @@ export function CheckoutForm({ product }: { product: Product }) {
     }
 
     setResult(body);
+    } catch {
+      setError("Connection failed. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -56,7 +61,7 @@ export function CheckoutForm({ product }: { product: Product }) {
         </div>
         <div className="rounded-md bg-slate-950 px-3 py-2 text-right text-white">
           <span className="block text-xs text-cyan-200">From</span>
-          <strong>{formatMyr(Math.min(...product.variations.map((variation) => variation.priceMyr)))}</strong>
+          <strong>{formatMyr(Math.min(...product.variations.filter((v) => v.active && v.available).map((variation) => variation.priceMyr)))}</strong>
         </div>
       </div>
 
@@ -68,10 +73,10 @@ export function CheckoutForm({ product }: { product: Product }) {
           className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
         >
           {product.variations
-            .filter((variation) => variation.active && variation.available)
+            .filter((variation) => variation.active)
             .map((variation) => (
-              <option key={variation.id} value={variation.id}>
-                {variation.title} - {formatMyr(variation.priceMyr)}
+              <option key={variation.id} value={variation.id} disabled={!variation.available}>
+                {variation.title} - {formatMyr(variation.priceMyr)}{!variation.available ? " (Out of stock)" : ""}
               </option>
             ))}
         </select>

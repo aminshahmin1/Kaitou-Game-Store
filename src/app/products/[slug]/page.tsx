@@ -58,7 +58,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="grid gap-3 rounded-lg border border-cyan-300/20 bg-white/[0.045] p-5">
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold text-slate-300">Price</span>
-              <strong className="text-2xl text-white">From {formatMyr(getProductStartingPrice(product))}</strong>
+              <strong className="text-2xl text-white">{product.available ? `From ${formatMyr(getProductStartingPrice(product))}` : "Out of stock"}</strong>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold text-slate-300">Delivery</span>
@@ -66,7 +66,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
             <div className="flex items-center gap-2 border-t border-cyan-300/15 pt-3 text-sm font-bold text-emerald-300">
               <BadgeCheck className="h-4 w-4" />
-              Available
+              {product.available ? "Available" : "Temporarily out of stock"}
             </div>
           </div>
         </section>
@@ -79,11 +79,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
             Make sure your player ID, server, and region match your game account before paying.
           </div>
-          {process.env.CHECKOUT_ENABLED === "true" ? (
+          {process.env.CHECKOUT_ENABLED === "true" && product.available ? (
             <CheckoutForm product={product} />
           ) : (
             <p className="trust-surface rounded-lg border border-sky-100 p-6 text-slate-700">
-              Checkout is temporarily unavailable. Please check back soon.
+              {product.available ? "Checkout is temporarily unavailable. Please check back soon." : "Temporarily out of stock. Please check back soon."}
             </p>
           )}
         </section>

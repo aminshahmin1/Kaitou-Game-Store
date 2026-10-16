@@ -32,16 +32,16 @@ export function ProductCard({ product }: { product: Product }) {
           <div>
             <p className="text-xs font-semibold uppercase text-slate-400">{product.deliveryType}</p>
             <p className="mt-1 text-2xl font-bold text-white">
-              From {formatMyr(getProductStartingPrice(product))}
+              {product.available ? `From ${formatMyr(getProductStartingPrice(product))}` : "Temporarily out of stock"}
             </p>
           </div>
           <span className="flex items-center gap-1 text-xs font-bold text-emerald-300">
             <BadgeCheck className="h-4 w-4" />
-            Available
+            {product.available ? "Available" : "Out of stock"}
           </span>
         </div>
         <div className="flex items-center justify-between border-t border-cyan-300/15 pt-4 text-sm font-bold text-cyan-100">
-          Buy now
+          {product.available ? "Buy now" : "View options"}
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </div>
       </div>

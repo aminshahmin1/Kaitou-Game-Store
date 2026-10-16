@@ -66,6 +66,7 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
     setError(null);
     setOrder(null);
 
+    try {
     const response = await fetch("/api/order-status", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +77,6 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
     });
 
     const body = await response.json();
-    setIsLoading(false);
 
     if (!response.ok) {
       setError(body.error ?? "Order could not be found.");
@@ -84,6 +84,11 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
     }
 
     setOrder(body.order);
+    } catch {
+      setError("Connection failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (

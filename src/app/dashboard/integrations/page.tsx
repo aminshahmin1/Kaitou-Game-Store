@@ -1,5 +1,6 @@
 import { AdminDashboardShell, requireAdminSession } from "@/components/admin-dashboard-shell";
 import { AdminToyyibPay } from "@/components/admin-toyyibpay";
+import { AdminEmail } from "@/components/admin-email";
 
 export const metadata = {
   title: "Integrations | Kaitou Admin",
@@ -8,7 +9,6 @@ export const metadata = {
 const integrations = [
   ["FazerCards", "Product catalog, balance, and fulfillment."],
   ["WhatsApp Business API", "Customer order updates and support messages."],
-  ["Email", "Admin order receipts and support notifications."],
 ];
 
 export default async function DashboardIntegrationsPage() {
@@ -16,6 +16,7 @@ export default async function DashboardIntegrationsPage() {
   return (
     <AdminDashboardShell title="Integrations" eyebrow="Configuration" requiredPermission="integrations">
       {session.role === "owner" ? <AdminToyyibPay /> : <p className="text-sm text-slate-600">ToyyibPay payment configuration is managed by the owner.</p>}
+      {session.role === "owner" && <AdminEmail />}
       <section className="grid gap-4 md:grid-cols-2">
         {integrations.map(([name, copy]) => (
           <div key={name} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">

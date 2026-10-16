@@ -260,7 +260,7 @@ export async function lookupPublicOrder(input: { orderNumber: string; contact: s
   const contact = input.contact.trim().toLowerCase();
   const normalizedContactPhone = normalizePhone(contact);
   const emailMatches = String(data.customer_email).toLowerCase() === contact;
-  const phoneMatches = normalizePhone(String(data.customer_whatsapp)) === normalizedContactPhone;
+  const phoneMatches = normalizedContactPhone.length >= 8 && normalizePhone(String(data.customer_whatsapp)) === normalizedContactPhone;
 
   if (!emailMatches && !phoneMatches) {
     return null;
@@ -273,13 +273,14 @@ export async function lookupPublicOrder(input: { orderNumber: string; contact: s
     variationTitle: getRelationTitle(data.product_variations),
     amountMyr: Number(data.amount_myr),
     updatedAt: data.updated_at as string,
-    failureReason:
-      data.status === "failed" || data.status === "review" ? (data.failure_reason as string | null) : null,
+    failureReason: data.status === "failed" || data.status === "review"
+      ? "Your order needs support review. Please contact Kaitou with your order ID." : null,
   };
 }
 
 function normalizePhone(value: string) {
-  return value.replace(/\D/g, "");
+  const digits = value.replace(/\D/g, "");
+  return digits.startsWith("0") ? `6${digits}` : digits;
 }
 
 function getRelationTitle(value: unknown) {
