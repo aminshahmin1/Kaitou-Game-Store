@@ -17,6 +17,8 @@ import {
 
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import type { Product, ProductVariation, RequiredField } from "@/lib/types";
+import type { FundingCostBasis } from "@/lib/funding-cost";
+import { estimateCostMyr } from "@/lib/cost-conversion";
 
 type CatalogKind = "all" | "topup" | "gift_card" | "steam_gift";
 
@@ -74,13 +76,13 @@ const defaultVariations: VariationDraft[] = [
   },
 ];
 
-async function fetchProducts(): Promise<Product[]> {
+async function fetchProducts(): Promise<{ products: Product[]; fundingCostBasis: FundingCostBasis | null }> {
   const response = await fetch("/api/admin/products");
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.error ?? "Products could not be loaded.");
   }
-  return body.products ?? [];
+  return { products: body.products ?? [], fundingCostBasis: body.fundingCostBasis ?? null };
 }
 
 function fieldDraft(field?: Partial<RequiredField>): FieldDraft {
@@ -119,6 +121,7 @@ function cloneDefaultVariation(variation: VariationDraft): VariationDraft {
 
 export function AdminProductManager() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [fundingCostBasis, setFundingCostBasis] = useState<FundingCostBasis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSearchingCatalog, setIsSearchingCatalog] = useState(false);
@@ -154,7 +157,9 @@ export function AdminProductManager() {
 
   async function loadProducts() {
     try {
-      setProducts(await fetchProducts());
+      const loaded = await fetchProducts();
+      setProducts(loaded.products);
+      setFundingCostBasis(loaded.fundingCostBasis);
     } catch {
       setMessage("Products could not be loaded. Please try again.");
     } finally {
@@ -166,7 +171,10 @@ export function AdminProductManager() {
     let cancelled = false;
     void fetchProducts()
       .then((loadedProducts) => {
-        if (!cancelled) setProducts(loadedProducts);
+        if (!cancelled) {
+          setProducts(loadedProducts.products);
+          setFundingCostBasis(loadedProducts.fundingCostBasis);
+        }
       })
       .catch(() => {
         if (!cancelled) setMessage("Products could not be loaded. Please try again.");
@@ -579,7 +587,13 @@ export function AdminProductManager() {
                 <SmallInput label="Store SKU" value={variation.sku} onChange={(value) => updateVariation(variation.localId, { sku: value })} placeholder="mlbb-weekly-pass" />
                 <SmallInput label="Provider SKU" value={variation.fazercardsSku} onChange={(value) => updateVariation(variation.localId, { fazercardsSku: value })} placeholder="category:offer" />
                 <SmallInput label="Cost USD" type="number" value={variation.costUsd} onChange={(value) => updateVariation(variation.localId, { costUsd: value })} placeholder="2.00" />
-                <SmallInput label="Cost MYR" type="number" value={variation.costMyr} onChange={(value) => updateVariation(variation.localId, { costMyr: value })} placeholder="8.00" />
+                {Number(variation.costUsd) > 0 ? <div className="min-w-0 text-xs text-slate-600">
+                  <span className="font-semibold">Estimated cost MYR</span>
+                  <p className="mt-2 text-base font-semibold text-slate-900">{fundingCostBasis && Number.isFinite(Number(variation.costUsd))
+                    ? formatMyr(estimateCostMyr(Number(variation.costUsd), fundingCostBasis.rate))
+                    : "Funding cost unavailable"}</p>
+                  {fundingCostBasis && <p className="mt-1 break-words">RM {fundingCostBasis.rate.toFixed(4)} / USD. {fundingCostBasis.label}.</p>}
+                </div> : <SmallInput label="Manual cost MYR" type="number" value={variation.costMyr} onChange={(value) => updateVariation(variation.localId, { costMyr: value })} placeholder="8.00" />}
                 <SmallInput label="Sale MYR" type="number" value={variation.priceMyr} onChange={(value) => updateVariation(variation.localId, { priceMyr: value })} placeholder="9.90" />
                 <div className="grid gap-2 text-xs font-bold text-slate-600">
                   Status

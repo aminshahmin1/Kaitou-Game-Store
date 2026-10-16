@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 
 import { getAdminApiSession } from "@/lib/auth/admin-api";
 import { createAdminProduct, getAdminProducts } from "@/lib/products";
+import { getFundingCostBasis } from "@/lib/funding-cost";
 
 export async function GET() {
   const session = await getAdminApiSession("products");
@@ -13,7 +14,8 @@ export async function GET() {
 
   try {
     const products = await getAdminProducts();
-    return NextResponse.json({ products });
+    const fundingCostBasis = await getFundingCostBasis();
+    return NextResponse.json({ products, fundingCostBasis });
   } catch (error) {
     console.error("Admin products load failed", {
       message: error instanceof Error ? error.message : "Unknown error",

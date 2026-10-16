@@ -124,14 +124,14 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
 
       {data.summary.isLowFundingBalance ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
-          <h2 className="font-display text-2xl font-bold">Low funding balance</h2>
+          <h2 className="font-display text-2xl font-bold">Funding ledger needs attention</h2>
           <p className="mt-2">
-            Available balance is {data.summary.availableFundingUsd.toFixed(4)} USDT. Your alert threshold is{" "}
+            Unallocated ledger credit is {data.summary.availableFundingUsd.toFixed(4)} USDT. The ledger threshold is{" "}
             {data.summary.lowFundingThresholdUsd.toFixed(4)} USDT, and pending unallocated cost is{" "}
             {data.summary.pendingCostUsd.toFixed(4)} USDT.
           </p>
           <p className="mt-2 font-semibold">
-            Reminder for later: after email or WhatsApp API is configured, connect this alert to owner notifications.
+            This is an accounting balance, not your live FazerCards balance. Reconcile prior usage before recording opening credit. Supplier stock alerts use the live balance separately.
           </p>
         </section>
       ) : null}
@@ -192,13 +192,13 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </div>
 
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-3xl font-bold">Funding balance</h2>
+          <h2 className="font-display text-3xl font-bold">Funding ledger summary</h2>
           <p className="mt-1 text-sm leading-6 text-slate-500">{impliedRate}</p>
           <div className="mt-5 grid gap-3">
             <MiniStat label="Total funded" value={`${data.summary.totalFundingUsd.toFixed(4)} USDT`} />
             <MiniStat label="MYR spent" value={formatMyr(data.summary.totalFundingMyr)} />
-            <MiniStat label="Available balance" value={`${data.summary.availableFundingUsd.toFixed(4)} USDT`} tone={data.summary.availableFundingUsd > 0 ? "emerald" : "amber"} />
-            <MiniStat label="Blended rate" value={`RM ${data.summary.blendedFundingRate.toFixed(4)}`} />
+            <MiniStat label="Unallocated ledger credit" value={`${data.summary.availableFundingUsd.toFixed(4)} USDT`} tone={data.summary.availableFundingUsd > 0 ? "emerald" : "amber"} />
+            <MiniStat label="Historical ledger rate" value={data.summary.totalFundingUsd > 0 ? `RM ${data.summary.blendedFundingRate.toFixed(4)} / USD` : "Not recorded"} />
           </div>
           <button
             type="button"

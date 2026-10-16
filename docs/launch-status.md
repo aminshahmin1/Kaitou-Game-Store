@@ -26,6 +26,9 @@
 
 ## Must finish before enabling checkout
 
+- Opening cost confirmed: USD14 credited for approximately RM57.93 including network fee (RM4.137857/USD). Stored separately in integration_settings as fazercards-opening-cost, NOT a new funding deposit. Prior supplier usage still needs reconciliation before creating an opening ledger balance. Product estimates use this basis only until funding batches exist; the next remaining batch rate is an indicative quote, not a multi-batch profit allocation.
+- Hourly chat continuation created as finish-kaitou-launch. It cannot bypass account usage limits.
+
 - Atomic supplier-credit reservations across simultaneous checkouts, with verified payment expiry and late-payment handling.
 - Durable payment-to-fulfillment job recovery after crashes/timeouts, with the same idempotency key.
 - Record actual supplier cost snapshots and allocate funding after confirmed supplier debit; fix concurrent funding allocation/refunds.
@@ -33,7 +36,7 @@
 - Authenticated supplier webhook or fully tested polling fallback, including missing references and unknown outcomes.
 - Buyer receipts/order notifications and integration readiness UI (WhatsApp adapter is still a placeholder).
 - Storefront search, mobile navigation, light/dark theme and bilingual support.
-- Re-import must not reset an existing product's selling prices or publication settings.
+- Re-import now preserves existing selling prices/publication and only refreshes supplier costs; new variations have zero selling price and need manual pricing. Verify live import UI with an unpublished test item before launch.
 - Full live payment-to-supplier-to-customer test, distinct from the supplier-only test above.
 - Rotate credentials shared in chat before launch.
 

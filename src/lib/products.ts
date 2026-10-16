@@ -1,4 +1,6 @@
 import { getFazerCardsBalance } from "./integrations/fazercards-balance";
+import { getFundingCostBasis } from "./funding-cost";
+import { estimateCostMyr } from "./cost-conversion";
 import { applyBalanceAvailability } from "./stock";
 import { refreshSupplierPrices } from "./integrations/fazercards-pricing";
 import {
@@ -119,6 +121,7 @@ export async function getAdminProducts() {
 
 export async function createAdminProduct(input: unknown) {
   const parsed = adminProductCreateSchema.parse(input);
+  const basis = await getFundingCostBasis();
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -158,7 +161,7 @@ export async function createAdminProduct(input: unknown) {
       fazercards_sku: variation.fazercardsSku || null,
       cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
-      cost_myr: variation.costMyr,
+      cost_myr: basis && variation.costUsd > 0 ? estimateCostMyr(variation.costUsd, basis.rate) : variation.costMyr,
       active: variation.active,
       available: variation.available,
       sort_order: index,
@@ -174,6 +177,7 @@ export async function createAdminProduct(input: unknown) {
 
 export async function updateAdminProduct(productId: string, input: unknown) {
   const parsed = adminProductUpdateSchema.parse(input);
+  const basis = await getFundingCostBasis();
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -211,7 +215,7 @@ export async function updateAdminProduct(productId: string, input: unknown) {
       fazercards_sku: variation.fazercardsSku || null,
       cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
-      cost_myr: variation.costMyr,
+      cost_myr: basis && variation.costUsd > 0 ? estimateCostMyr(variation.costUsd, basis.rate) : variation.costMyr,
       active: variation.active,
       available: variation.available,
       sort_order: index,
@@ -341,11 +345,15 @@ export async function importFazerCardsCatalogDraft(
   }
 
   const details = await getFazerCardsCatalogDetails(kind, categoryId, displayName);
-  const usdToMyrRate = Number(process.env.FAZERCARDS_USD_TO_MYR_RATE ?? "4.8");
+  const basis = await getFundingCostBasis();
   const slug = makeSlug(details.name, details.categoryId);
   const isSteamGift = kind === "steam_gift";
 
-  const { data: product, error: productError } = await supabase
+  const { error: existingError } = await supabase.from("products")
+    .select("id").eq("slug", slug).maybeSingle();
+  if (existingError) throw new Error(existingError.message);
+
+  const { error: productError } = await supabase
     .from("products")
     .upsert(
       {
@@ -366,17 +374,19 @@ export async function importFazerCardsCatalogDraft(
         active: false,
         available: false,
       },
-      { onConflict: "slug" },
-    )
-    .select("id")
-    .single();
+      { onConflict: "slug", ignoreDuplicates: true },
+    );
 
   if (productError) {
     throw new Error(productError.message);
   }
 
+  const { data: product, error: lookupError } = await supabase.from("products")
+    .select("id").eq("slug", slug).single();
+  if (lookupError || !product) throw new Error("Imported product could not be loaded.");
+
   const variations = details.offers.map((offer, index) => {
-    const estimatedCostMyr = Number((offer.priceUsd * usdToMyrRate).toFixed(2));
+    const estimatedCostMyr = basis ? estimateCostMyr(offer.priceUsd, basis.rate) : 0;
     const providerSku =
       kind === "steam_gift"
         ? `${details.categoryId}:${offer.offerId}`
@@ -388,7 +398,7 @@ export async function importFazerCardsCatalogDraft(
       sku: makeSlug(details.categoryId, String(offer.offerId)),
       fazercards_sku: providerSku,
       cost_usd: offer.priceUsd,
-      price_myr: estimatedCostMyr,
+      price_myr: 0,
       cost_myr: estimatedCostMyr,
       active: true,
       available: true,
@@ -398,10 +408,18 @@ export async function importFazerCardsCatalogDraft(
 
   const { error: variationError } = await supabase
     .from("product_variations")
-    .upsert(variations, { onConflict: "product_id,sku" });
+    .upsert(variations, { onConflict: "product_id,sku", ignoreDuplicates: true });
 
   if (variationError) {
     throw new Error(variationError.message);
+  }
+
+  // Refresh supplier costs without replacing the seller's price or visibility choices.
+  for (const variation of variations) {
+    const { error } = await supabase.from("product_variations")
+      .update({ cost_usd: variation.cost_usd, ...(basis ? { cost_myr: variation.cost_myr } : {}) })
+      .eq("product_id", product.id).eq("sku", variation.sku);
+    if (error) throw new Error(error.message);
   }
 
   return {

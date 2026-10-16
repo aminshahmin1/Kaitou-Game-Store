@@ -4,18 +4,23 @@ import { getFazerCardsBalance } from "./integrations/fazercards-balance";
 import { sendAdminEmail } from "./integrations/email";
 import { getAdminProducts } from "./products";
 import { refreshSupplierPrices } from "./integrations/fazercards-pricing";
+import { getFundingCostBasis } from "./funding-cost";
+import { estimateCostMyr } from "./cost-conversion";
 
 export async function checkBalanceAndNotify() {
   const db = createSupabaseAdminClient();
   if (!db) throw new Error("Database is not configured.");
   const balance = await getFazerCardsBalance();
+  const basis = await getFundingCostBasis();
   const published = (await getAdminProducts()).filter((p) => p.active && p.available);
   const refreshed = await refreshSupplierPrices(published);
   if (refreshed.some((p) => !p.available)) throw new Error("Supplier pricing is unavailable.");
   for (const product of refreshed) {
     for (const variation of product.variations) {
       const { error: priceError } = await db.from("product_variations")
-        .update({ cost_usd: variation.costUsd }).eq("id", variation.id);
+        .update({ cost_usd: variation.costUsd,
+          ...(basis ? { cost_myr: estimateCostMyr(variation.costUsd, basis.rate) } : {}),
+        }).eq("id", variation.id);
       if (priceError) throw new Error("Could not sync supplier cost.");
     }
   }
