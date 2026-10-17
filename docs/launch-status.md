@@ -13,6 +13,8 @@
 
 ## Implemented in this batch
 
+- Review edits now require verified payment for status transitions, delivery notes for manual completion, and a customer refund reference for refunded status. Refunded orders cannot be reopened or have refund evidence cleared. Missing orders and concurrent callback/poller/operator edits produce an error rather than silent success. Isolated tests pass; these guards do not execute refunds. Granular financial permissions and durable audit trail remain outstanding.
+
 - 2026-10-17 follow-up: Supplier polls preserve confirmed cost snapshots and route changed totals to review without rewriting allocated profit. Revenue reports and funding allocation exclude unpaid orders, including unpaid review rows. Added isolated regression cases for first cost confirmation, changed/same confirmed totals, and unpaid report/CSV exclusion. No paid test or selling-price change.
 
 - Checkout snapshots original supplier product type/category/SKU; payment fulfillment no longer reads mutable catalogue mapping. Missing legacy snapshots go to review with no supplier request. Isolated callback tests cover changed listings and absent snapshots. Order cost allocation now waits for a valid supplier-returned USD total rather than allocating a quote before purchase. Added fulfillment_snapshot and supplier_cost_confirmed_at columns. Concurrent accounting allocation and recovery remain outstanding.

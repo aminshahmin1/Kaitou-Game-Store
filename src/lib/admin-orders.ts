@@ -111,11 +111,36 @@ export async function updateAdminOrder(
     throw new Error("No order fields to update.");
   }
 
-  const { error } = await supabase.from("orders").update(update).eq("id", orderId);
+  const { data: order, error: readError } = await supabase.from("orders")
+    .select("id,status,paid_at,updated_at,refund_reference,support_notes")
+    .eq("id", orderId).maybeSingle();
+  if (readError) throw new Error("Could not load the order. Please try again.");
+  if (!order) throw new Error("Order not found.");
+
+  const nextStatus = input.status ?? order.status;
+  if (input.status && input.status !== order.status) {
+    if (!order.paid_at) throw new Error("Payment must be verified before changing order status.");
+    if (order.status === "refunded") throw new Error("A refunded order cannot be reopened.");
+    const supportNotes = "support_notes" in update ? update.support_notes : order.support_notes;
+    if (nextStatus === "completed" && !supportNotes?.trim()) {
+      throw new Error("Add support notes confirming delivery before marking this order completed.");
+    }
+  }
+  const refundReference = "refund_reference" in update ? update.refund_reference : order.refund_reference;
+  if (nextStatus === "refunded" && !refundReference?.trim()) {
+    throw new Error("Enter the reference for the completed customer refund first. This action does not transfer money.");
+  }
+
+  // Do not overwrite a callback, supplier poll or another operator's newer change.
+  const { data: saved, error } = await supabase.from("orders")
+    .update({ ...update, updated_at: new Date().toISOString() })
+    .eq("id", orderId).eq("status", order.status).eq("updated_at", order.updated_at)
+    .select("id").maybeSingle();
 
   if (error) {
     throw new Error(error.message);
   }
+  if (!saved) throw new Error("This order changed while you were saving. Refresh it before trying again.");
 }
 
 function mapAdminOrder(row: AdminOrderRow): AdminOrder {
