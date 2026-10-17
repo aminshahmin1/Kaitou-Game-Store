@@ -142,7 +142,10 @@ export function CheckoutForm({ product }: { product: Product }) {
               <input
                 name={field.key}
                 required
-                type={field.type ?? "text"}
+                type="text"
+                inputMode={field.type === "number" ? "numeric" : undefined}
+                pattern={field.type === "number" ? "[0-9]+" : undefined}
+                maxLength={1000}
                 placeholder={field.placeholder}
                 className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
               />

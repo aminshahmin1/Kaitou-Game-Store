@@ -13,6 +13,8 @@
 
 ## Implemented in this batch
 
+- Checkout validates only the configured customer fields, rejects unexpected fields and invalid select choices, bounds lengths, and preserves numeric IDs as strings. Isolated HTTP-handler tests confirm rejection happens before storage or payment creation. Tested without live purchases.
+
 - Server-only TLS SMTP sender and owner-only email test endpoint.
 - Live USD provider balance separate from the manual funding ledger.
 - Fresh supplier pricing checks and per-variation affordability on storefront requests.

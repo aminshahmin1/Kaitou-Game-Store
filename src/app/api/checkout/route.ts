@@ -6,6 +6,7 @@ import { attachPaymentReference, createPendingOrder } from "@/lib/orders";
 import { getStoreProductBySlug } from "@/lib/products";
 import { checkoutSchema } from "@/lib/validation";
 import { getCheckoutPricing } from "@/lib/checkout-pricing";
+import { validateCheckoutFields } from "@/lib/checkout-fields";
 
 function createOrderId() {
   return `KGS-${randomUUID().replace(/-/g, "").slice(0, 20).toUpperCase()}`;
@@ -46,10 +47,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "FPX requires an order total of at least RM1.00. Please select another option." }, { status: 400 });
     }
 
-    const missingField = product.requiredFields.find((field) => !parsed.data.fieldValues[field.key]);
-
-    if (missingField) {
-      return NextResponse.json({ error: `${missingField.label} is required.` }, { status: 400 });
+    const customerFields = validateCheckoutFields(product.requiredFields, parsed.data.fieldValues);
+    if (!customerFields.success) {
+      return NextResponse.json({ error: customerFields.error }, { status: 400 });
     }
 
     const orderId = createOrderId();
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       customerName: parsed.data.customerName,
       customerEmail: parsed.data.customerEmail,
       whatsapp: parsed.data.whatsapp,
-      fieldValues: parsed.data.fieldValues,
+      fieldValues: customerFields.values,
     });
 
     const payment = await createToyyibPayBill({

@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const checkoutSchema = z.object({
-  productSlug: z.string().min(1),
-  variationId: z.string().min(1),
-  customerName: z.string().min(2).max(80),
+  productSlug: z.string().min(1).max(180),
+  variationId: z.string().min(1).max(80),
+  customerName: z.string().trim().min(2).max(80),
   customerEmail: z.email().max(120),
   whatsapp: z
     .string()
@@ -11,7 +11,8 @@ export const checkoutSchema = z.object({
     .max(20)
     .regex(/^[0-9+\-\s]+$/, "Use a valid WhatsApp number"),
   locale: z.enum(["en", "ms"]).default("en"),
-  fieldValues: z.record(z.string(), z.string().min(1)),
+  fieldValues: z.record(z.string().max(60), z.string().max(1000))
+    .refine((fields) => Object.keys(fields).length <= 30, "Too many customer fields."),
 });
 
 const requiredFieldSchema = z.object({
