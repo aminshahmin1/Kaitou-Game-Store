@@ -120,6 +120,7 @@ function cloneDefaultVariation(variation: VariationDraft): VariationDraft {
 }
 
 export function AdminProductManager() {
+  const [view, setView] = useState<"list" | "catalog" | "editor">("list");
   const [products, setProducts] = useState<Product[]>([]);
   const [fundingCostBasis, setFundingCostBasis] = useState<FundingCostBasis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -136,11 +137,6 @@ export function AdminProductManager() {
   const [catalogSearch, setCatalogSearch] = useState("");
   const [catalogItems, setCatalogItems] = useState<FazerCardsCatalogItem[]>([]);
   const [catalogWarnings, setCatalogWarnings] = useState<string[]>([]);
-
-  const totalVariations = useMemo(
-    () => products.reduce((sum, product) => sum + product.variations.length, 0),
-    [products],
-  );
 
   const visibleProducts = useMemo(() => {
     const query = productSearch.trim().toLowerCase();
@@ -190,9 +186,14 @@ export function AdminProductManager() {
   async function onSubmit(formData: FormData) {
     setIsSaving(true);
     setMessage(null);
+    try {
 
     const action = String(formData.get("action") ?? "save");
     const shouldPublish = action === "publish";
+    if (shouldPublish && !variations.some((variation) => variation.active && variation.available && Number(variation.priceMyr) > 0)) {
+      setMessage("Choose at least one package to sell and enter its price.");
+      return;
+    }
 
     const payload = {
       title: String(formData.get("title") ?? ""),
@@ -222,7 +223,6 @@ export function AdminProductManager() {
         .filter((variation) => variation.title.trim() && variation.sku.trim())
         .map((variation) => {
           const priceMyr = Number(variation.priceMyr);
-          const publishableVariation = shouldPublish && priceMyr > 0;
 
           return {
             id: variation.id,
@@ -232,12 +232,12 @@ export function AdminProductManager() {
             costUsd: Number(variation.costUsd),
             priceMyr,
             costMyr: Number(variation.costMyr),
-            active: publishableVariation || variation.active,
-            available: publishableVariation || variation.available,
+            active: variation.active,
+            available: variation.available && priceMyr > 0,
           };
         }),
-      active: shouldPublish || formData.get("active") === "on",
-      available: shouldPublish || formData.get("available") === "on",
+      active: shouldPublish || Boolean(editingProduct && formData.get("active") === "on"),
+      available: shouldPublish || Boolean(editingProduct && formData.get("available") === "on"),
     };
 
     const response = await fetch(
@@ -258,20 +258,29 @@ export function AdminProductManager() {
 
     setMessage(editingProduct ? "Listing updated. If it is public with available variations, it will appear on the storefront." : "Product created.");
     setEditingProduct(null);
+    setView("list");
     setRequiredFields(defaultFields.map((field) => fieldDraft(field)));
     setVariations(defaultVariations.map(cloneDefaultVariation));
     await loadProducts();
+    } catch {
+      setMessage("Could not save. Your edits are still here. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   function startEditing(product: Product) {
+    setView("editor");
     setEditingProduct(product);
-    setMessage("Editing listing. A product appears publicly only when the product and at least one priced variation are active and available.");
+    setMessage(null);
     setRequiredFields(product.requiredFields.length ? product.requiredFields.map(fieldDraft) : []);
     setVariations(product.variations.length ? product.variations.map(variationDraft) : [variationDraft()]);
     document.getElementById("product-editor")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function cancelEditing() {
+    if (view === "editor" && !window.confirm("Leave this editor? Unsaved changes will be discarded.")) return;
+    setView("list");
     setEditingProduct(null);
     setMessage(null);
     setRequiredFields(defaultFields.map((field) => fieldDraft(field)));
@@ -281,6 +290,7 @@ export function AdminProductManager() {
   async function updateProductStatus(product: Product, next: { active?: boolean; available?: boolean }) {
     setMutatingProductId(product.id);
     setMessage(null);
+    try {
 
     const response = await fetch(`/api/admin/products/${product.id}`, {
       method: "PATCH",
@@ -297,6 +307,11 @@ export function AdminProductManager() {
 
     setMessage(next.active === false || next.available === false ? "Product hidden." : "Product published.");
     await loadProducts();
+    } catch {
+      setMessage("Could not update visibility. Please refresh and try again.");
+    } finally {
+      setMutatingProductId(null);
+    }
   }
 
   async function deleteProduct(product: Product) {
@@ -306,6 +321,7 @@ export function AdminProductManager() {
 
     setMutatingProductId(product.id);
     setMessage(null);
+    try {
 
     const response = await fetch(`/api/admin/products/${product.id}`, {
       method: "DELETE",
@@ -320,12 +336,19 @@ export function AdminProductManager() {
 
     setMessage("Product deleted.");
     await loadProducts();
+    } catch {
+      setMessage("Deletion could not be confirmed. Refresh before retrying.");
+    } finally {
+      setMutatingProductId(null);
+    }
   }
 
   async function searchCatalog() {
+    if (isSearchingCatalog) return;
     setIsSearchingCatalog(true);
     setMessage(null);
     setCatalogWarnings([]);
+    try {
     const params = new URLSearchParams({ kind: catalogKind, q: catalogSearch });
     const response = await fetch(`/api/admin/fazercards/catalog?${params.toString()}`);
     const body = await response.json().catch(() => ({}));
@@ -338,11 +361,18 @@ export function AdminProductManager() {
 
     setCatalogItems(body.items ?? []);
     setCatalogWarnings(body.warnings ?? []);
+    if (!(body.items ?? []).length) setMessage("No matching products. Try a different game name.");
+    } catch {
+      setMessage("Search could not connect. Please try again.");
+    } finally {
+      setIsSearchingCatalog(false);
+    }
   }
 
   async function importCatalogItem(item: FazerCardsCatalogItem) {
     setImportingCatalogId(item.id);
     setMessage(null);
+    try {
 
     const response = await fetch("/api/admin/fazercards/catalog", {
       method: "POST",
@@ -357,8 +387,17 @@ export function AdminProductManager() {
       return;
     }
 
-    setMessage(`Imported ${body.productTitle} as a hidden draft with ${body.variationCount} variations. Edit sale prices and availability before publishing.`);
-    await loadProducts();
+    const loaded = await fetchProducts();
+    setProducts(loaded.products);
+    setFundingCostBasis(loaded.fundingCostBasis);
+    const imported = loaded.products.find((product) => product.id === body.productId);
+    if (imported) startEditing(imported);
+    else { setView("list"); setMessage("Product imported. Open it to set your prices."); }
+    } catch {
+      setMessage("Import could not be confirmed. Refresh your products before retrying.");
+    } finally {
+      setImportingCatalogId(null);
+    }
   }
 
   function updateField(localId: string, patch: Partial<FieldDraft>) {
@@ -374,13 +413,10 @@ export function AdminProductManager() {
   }
 
   return (
-    <section className="grid gap-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <section className="grid min-w-0 gap-5">
       <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
         <div>
-          <h2 className="font-display text-3xl font-bold">Product listings</h2>
-          <p className="text-sm text-slate-500">
-            Import provider items as hidden drafts, set MYR prices, then publish only the products you want to sell.
-          </p>
+          <h2 className="text-xl font-bold">{view === "editor" ? editingProduct?.title ?? "New product" : view === "catalog" ? "Add from FazerCards" : "My products"}</h2>
         </div>
         <button
           type="button"
@@ -395,22 +431,17 @@ export function AdminProductManager() {
         </button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Stat label="Products" value={products.length.toString()} />
-        <Stat label="Variations" value={totalVariations.toString()} />
-        <Stat
-          label="Lowest price"
-          value={products.length > 0 ? formatMyr(Math.min(...products.map((product) => getProductStartingPrice(product)))) : formatMyr(0)}
-        />
-      </div>
+      {view !== "editor" && <nav className="flex flex-wrap items-center gap-3 border-b border-slate-200 pb-3" aria-label="Product workspace">
+        <button type="button" onClick={() => setView("list")} aria-pressed={view === "list"} className={`px-3 py-2 text-sm font-semibold ${view === "list" ? "border-b-2 border-sky-600 text-sky-700" : "text-slate-600"}`}>My products ({products.length})</button>
+        <button type="button" onClick={() => setView("catalog")} aria-pressed={view === "catalog"} className={`inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold ${view === "catalog" ? "border-b-2 border-sky-600 text-sky-700" : "text-slate-600"}`}><Plus className="h-4 w-4" />Add from FazerCards</button>
+        <button type="button" onClick={() => { cancelEditing(); setView("editor"); }} className="ml-auto text-sm font-semibold text-slate-600">Create manually</button>
+      </nav>}
+      {message && <p role="status" className="rounded-md border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900">{message}</p>}
 
-      <div className="grid gap-4 rounded-lg border border-sky-100 bg-sky-50 p-4">
+      {view === "catalog" && <div className="grid min-w-0 gap-4 py-4">
         <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
           <div>
             <h3 className="font-display text-2xl font-bold text-slate-950">Import from FazerCards</h3>
-            <p className="max-w-2xl text-sm leading-6 text-slate-600">
-              Search across FazerCards products, SKUs, top-ups, gift cards, and Steam gifts. Results are ranked by closest match.
-            </p>
           </div>
           <div className="grid gap-2 sm:grid-cols-[180px_1fr_auto]">
             <select
@@ -462,47 +493,48 @@ export function AdminProductManager() {
                 <button
                   type="button"
                   onClick={() => void importCatalogItem(item)}
-                  disabled={importingCatalogId === item.id}
+                  disabled={importingCatalogId !== null}
                   className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-slate-950 px-3 py-2 text-sm font-bold text-white disabled:opacity-60"
                 >
                   {importingCatalogId === item.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-4 w-4" />}
-                  Import draft
+                  Add & set prices
                 </button>
               </div>
             ))}
           </div>
         ) : null}
-      </div>
+      </div>}
 
-      <form id="product-editor" key={editingProduct?.id ?? "new"} action={onSubmit} className="grid gap-4 border-t border-slate-100 pt-5">
+      {view === "editor" && <form id="product-editor" key={editingProduct?.id ?? "new"} action={onSubmit} className="grid min-w-0 gap-5">
         <div className="flex flex-col justify-between gap-3 rounded-md bg-slate-50 p-4 md:flex-row md:items-center">
           <div>
             <p className="text-xs font-bold uppercase text-slate-500">
               {editingProduct ? "Editing listing" : "New manual listing"}
             </p>
-            <p className="text-sm font-semibold text-slate-700">
-              Public visibility requires product active, product available, and at least one active available variation with a positive sale price.
-            </p>
           </div>
-          {editingProduct ? (
+          {(
             <button
               type="button"
               onClick={cancelEditing}
               className="inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm font-bold text-slate-700"
             >
               <X className="h-4 w-4" />
-              Cancel edit
+              Back to products
             </button>
-          ) : null}
+          )}
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <Field name="title" label="Product title" placeholder="Mobile Legends (Malaysia)" defaultValue={editingProduct?.title} />
+          <SelectField name="region" label="Region" defaultValue={editingProduct?.region ?? "MY"} options={[["MY", "Malaysia"], ["SEA", "Southeast Asia"], ["Global", "Global"]]} />
+        </div>
+        <details open={!editingProduct} className="border-y border-slate-200 py-3">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-600">Advanced product settings</summary>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           <Field name="slug" label="Slug" placeholder="mobile-legends-malaysia" defaultValue={editingProduct?.slug} />
           <SelectField name="type" label="Type" defaultValue={editingProduct?.type ?? "topup"} options={[["topup", "Game top-up"], ["steam_gift_game", "Steam gift game"]]} />
           <Field name="category" label="Category" placeholder="Game Top-Ups" defaultValue={editingProduct?.category ?? "Game Top-Ups"} />
           <Field name="game" label="Game" placeholder="Mobile Legends" defaultValue={editingProduct?.game} />
-          <SelectField name="region" label="Region" defaultValue={editingProduct?.region ?? "MY"} options={[["MY", "MY"], ["SEA", "SEA"], ["Global", "Global"]]} />
           <SelectField name="deliveryType" label="Delivery type" defaultValue={editingProduct?.deliveryType ?? "Direct top-up"} options={[["Direct top-up", "Direct top-up"], ["Steam gift", "Steam gift"]]} />
           <Field
             name="imageTone"
@@ -518,14 +550,15 @@ export function AdminProductManager() {
             required={false}
           />
         </div>
+        </details>
 
         <div className="grid gap-3 rounded-md bg-slate-50 p-4 text-sm font-semibold text-slate-700 md:grid-cols-2">
           <label className="flex items-center gap-3">
-            <input name="active" type="checkbox" defaultChecked={editingProduct?.active ?? true} className="h-4 w-4" />
+            <input name="active" type="checkbox" defaultChecked={editingProduct?.active ?? false} className="h-4 w-4" />
             Show on public website
           </label>
           <label className="flex items-center gap-3">
-            <input name="available" type="checkbox" defaultChecked={editingProduct?.available ?? true} className="h-4 w-4" />
+            <input name="available" type="checkbox" defaultChecked={editingProduct?.available ?? false} className="h-4 w-4" />
             Available for checkout
           </label>
         </div>
@@ -535,6 +568,8 @@ export function AdminProductManager() {
           <textarea name="description" defaultValue={editingProduct?.description ?? ""} className="min-h-20 rounded-md border border-slate-200 px-3 py-3" />
         </label>
 
+        <details className="border-b border-slate-200 pb-3">
+        <summary className="cursor-pointer text-sm font-semibold text-slate-600">Customer details ({requiredFields.length} fields)</summary>
         <EditorPanel
           title="Required customer fields"
           actionLabel="Add field"
@@ -574,58 +609,53 @@ export function AdminProductManager() {
             </p>
           )}
         </EditorPanel>
+        </details>
 
         <EditorPanel
-          title="Variations and prices"
-          actionLabel="Add variation"
+          title="Packages & prices"
+          actionLabel="Add package"
           onAdd={() => setVariations((current) => [...current, variationDraft()])}
         >
           <div className="grid gap-3">
             {variations.map((variation) => (
-              <div key={variation.localId} className="grid gap-3 rounded-md border border-slate-200 p-3 xl:grid-cols-[1.25fr_1fr_1fr_110px_110px_110px_110px_auto]">
-                <SmallInput label="Variation" value={variation.title} onChange={(value) => updateVariation(variation.localId, { title: value })} placeholder="Weekly Diamond Pass" />
+              <div key={variation.localId} className="grid min-w-0 gap-3 border-b border-slate-200 py-4 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+                <SmallInput label="Package" value={variation.title} onChange={(value) => updateVariation(variation.localId, { title: value })} placeholder="Weekly Diamond Pass" />
+                <details className="order-last min-w-0 sm:col-span-2 xl:col-span-4">
+                <summary className="cursor-pointer text-xs font-semibold text-slate-500">Supplier mapping</summary>
+                <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-3">
                 <SmallInput label="Store SKU" value={variation.sku} onChange={(value) => updateVariation(variation.localId, { sku: value })} placeholder="mlbb-weekly-pass" />
                 <SmallInput label="Provider SKU" value={variation.fazercardsSku} onChange={(value) => updateVariation(variation.localId, { fazercardsSku: value })} placeholder="category:offer" />
                 <SmallInput label="Cost USD" type="number" value={variation.costUsd} onChange={(value) => updateVariation(variation.localId, { costUsd: value })} placeholder="2.00" />
+                </div>
+                </details>
                 {Number(variation.costUsd) > 0 ? <div className="min-w-0 text-xs text-slate-600">
                   <span className="font-semibold">Estimated cost MYR</span>
                   <p className="mt-2 text-base font-semibold text-slate-900">{fundingCostBasis && Number.isFinite(Number(variation.costUsd))
                     ? formatMyr(estimateCostMyr(Number(variation.costUsd), fundingCostBasis.rate))
                     : "Funding cost unavailable"}</p>
-                  {fundingCostBasis && <p className="mt-1 break-words">RM {fundingCostBasis.rate.toFixed(4)} / USD. {fundingCostBasis.label}.</p>}
                 </div> : <SmallInput label="Manual cost MYR" type="number" value={variation.costMyr} onChange={(value) => updateVariation(variation.localId, { costMyr: value })} placeholder="8.00" />}
-                <SmallInput label="Sale MYR" type="number" value={variation.priceMyr} onChange={(value) => updateVariation(variation.localId, { priceMyr: value })} placeholder="9.90" />
+                <SmallInput label="Your price (RM)" type="number" value={variation.priceMyr} onChange={(value) => updateVariation(variation.localId, { priceMyr: value })} placeholder="0.00" />
                 <div className="grid gap-2 text-xs font-bold text-slate-600">
-                  Status
                   <label className="flex items-center gap-2 text-sm font-semibold">
-                    <input type="checkbox" checked={variation.active} onChange={(event) => updateVariation(variation.localId, { active: event.target.checked })} />
-                    Active
-                  </label>
-                  <label className="flex items-center gap-2 text-sm font-semibold">
-                    <input type="checkbox" checked={variation.available} onChange={(event) => updateVariation(variation.localId, { available: event.target.checked })} />
-                    Available
+                    <input type="checkbox" checked={variation.active && variation.available} onChange={(event) => updateVariation(variation.localId, { active: event.target.checked, available: event.target.checked })} />
+                    Sell this package
                   </label>
                 </div>
-                <button
+                {!variation.id && <button
                   type="button"
                   onClick={() => setVariations((current) => current.filter((item) => item.localId !== variation.localId))}
-                  className="inline-flex items-center justify-center rounded-md border border-red-200 px-2 py-2 text-red-700"
-                  aria-label="Remove variation"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-red-200 text-red-700"
+                  aria-label="Remove package"
+                  title="Remove package"
                 >
                   <Trash2 className="h-4 w-4" />
-                </button>
+                </button>}
               </div>
             ))}
           </div>
         </EditorPanel>
 
-        {message ? (
-          <div className="rounded-md border border-sky-100 bg-sky-50 p-3 text-sm font-semibold text-sky-800">
-            {message}
-          </div>
-        ) : null}
-
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="sticky bottom-0 z-10 grid gap-2 border-t border-slate-200 bg-white p-3 sm:grid-cols-2">
           <button
             type="submit"
             name="action"
@@ -634,7 +664,7 @@ export function AdminProductManager() {
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-slate-200 px-5 py-3 font-bold text-slate-800 disabled:opacity-60"
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlusCircle className="h-4 w-4" />}
-            {editingProduct ? "Save draft changes" : "Create draft"}
+            {editingProduct ? "Save changes" : "Save draft"}
           </button>
           <button
             type="submit"
@@ -647,9 +677,9 @@ export function AdminProductManager() {
             Save & publish
           </button>
         </div>
-      </form>
+      </form>}
 
-      <div className="grid gap-3">
+      {view === "list" && <div className="grid min-w-0 gap-3">
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <h3 className="font-display text-2xl font-bold">Listings</h3>
           <label className="relative block md:w-80">
@@ -688,7 +718,7 @@ export function AdminProductManager() {
                       <p className="max-w-80 break-words font-bold">{product.title}</p>
                       <p className="max-w-80 break-all text-xs text-slate-500">{product.slug}</p>
                     </td>
-                    <td className="px-4 py-4">{product.type}</td>
+                    <td className="px-4 py-4">{product.type === "topup" ? "Top-up" : "Steam gift"}</td>
                     <td className="px-4 py-4">{product.variations.length}</td>
                     <td className="px-4 py-4">{product.variations.length ? formatMyr(getProductStartingPrice(product)) : "No public options"}</td>
                     <td className="px-4 py-4">
@@ -752,17 +782,8 @@ export function AdminProductManager() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div>}
     </section>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-md bg-slate-50 p-4">
-      <p className="text-xs font-bold uppercase text-slate-500">{label}</p>
-      <strong className="mt-1 block text-2xl">{value}</strong>
-    </div>
   );
 }
 
@@ -778,9 +799,9 @@ function EditorPanel({
   children: ReactNode;
 }) {
   return (
-    <div className="grid gap-3 rounded-lg border border-slate-200 p-4">
+    <div className="grid min-w-0 gap-3 py-4">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="font-display text-2xl font-bold">{title}</h3>
+        <h3 className="text-lg font-bold">{title}</h3>
         <button
           type="button"
           onClick={onAdd}
@@ -879,15 +900,15 @@ function SmallInput({
   type?: string;
 }) {
   return (
-    <label className="grid gap-1 text-xs font-bold text-slate-600">
+    <label className="grid min-w-0 gap-1 text-xs font-bold text-slate-600">
       {label}
       <input
         type={type}
-        step={type === "number" ? "0.01" : undefined}
+        step={type === "number" ? "any" : undefined}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="rounded-md border border-slate-200 px-2 py-2 text-sm font-medium text-slate-900"
+        className="min-w-0 w-full rounded-md border border-slate-200 px-2 py-2 text-sm font-medium text-slate-900"
       />
     </label>
   );

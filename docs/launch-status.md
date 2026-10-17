@@ -13,6 +13,8 @@
 
 ## Implemented in this batch
 
+- Product workspace redesigned into My products, Add from FazerCards and a separate editor view. Imports open the imported listing for pricing. Technical mappings and customer fields are collapsed; MYR cost and selling price remain prominent. New draft saves stay hidden; publish respects disabled packages. Save/search/import/visibility/delete network errors preserve recovery paths. Existing package removal now disables it instead of silently dropping it from the editor while retaining it in storage.
+
 - 2026-10-17: Supplier polling rotates failed lookups to avoid starving later orders, preserves concurrent admin changes using timestamp/status/reference guards, and counts only actual updates. Regression tests use isolated adapters; no supplier purchase. The unimplemented supplier webhook now returns 503 instead of falsely acknowledging events. Configure no webhook until HMAC payload/signature details are verified; authenticated order polling remains the current status path. Missing-reference recovery is still outstanding.
 
 - Checkout validates only the configured customer fields, rejects unexpected fields and invalid select choices, bounds lengths, and preserves numeric IDs as strings. Isolated HTTP-handler tests confirm rejection happens before storage or payment creation. Tested without live purchases.
