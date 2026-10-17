@@ -156,6 +156,7 @@ export async function getRevenueDashboard(input: { from?: string; to?: string; r
           "id, order_number, status, amount_myr, cost_usd, cost_myr, payment_fee_myr, gross_profit_myr, net_profit_myr, profit_allocated_at, paid_at, created_at, products(title), product_variations(title)",
         )
         .in("status", paidOrderStatuses)
+        .not("paid_at", "is", null)
         .order("created_at", { ascending: false }),
     ]);
 
@@ -275,6 +276,8 @@ export async function allocatePaidOrdersFunding(options: { orderId?: string } = 
       "id, order_number, status, amount_myr, cost_usd, cost_myr, payment_fee_myr, profit_allocated_at, order_funding_allocations(id)",
     )
     .in("status", paidOrderStatuses)
+    .not("paid_at", "is", null)
+    .not("supplier_cost_confirmed_at", "is", null)
     .is("profit_allocated_at", null)
     .order("created_at", { ascending: true });
 

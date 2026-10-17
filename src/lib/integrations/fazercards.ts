@@ -5,8 +5,8 @@ import type { ProductVariation } from "../types";
 
 type FazerCardsOrderInput = {
   orderId: string;
-  product: Product;
-  variation: ProductVariation;
+  product: Pick<Product, "type" | "fazercardsProductId">;
+  variation: Pick<ProductVariation, "sku" | "fazercardsSku">;
   fieldValues: Record<string, string>;
 };
 
@@ -16,6 +16,7 @@ type FazerCardsOrderResult = {
   status: "processing" | "completed" | "review" | "failed";
   message: string;
   raw?: unknown;
+  chargedUsd?: number;
 };
 
 function getConfig() {
@@ -25,7 +26,7 @@ function getConfig() {
   return { apiBaseUrl: apiBaseUrl.replace(/\/$/, ""), apiKey };
 }
 
-export async function createFazerCardsOrder(input: FazerCardsOrderInput) {
+export async function createFazerCardsOrder(input: FazerCardsOrderInput): Promise<FazerCardsOrderResult> {
   const { apiBaseUrl, apiKey } = getConfig();
 
   if (!apiKey) {
@@ -118,12 +119,16 @@ export function parseFazerCardsOrder(body: FazerCardsOrderEnvelope): FazerCardsO
   }
   const status = order.status === "completed" ? "completed"
     : ["created", "processing"].includes(order.status) ? "processing" : "review";
+  const chargedUsd = typeof order.total_usd === "string" && /^\d+(\.\d{1,4})?$/.test(order.total_usd)
+    && Number.isSafeInteger(Math.round(Number(order.total_usd) * 10_000)) && Number(order.total_usd) > 0
+    ? Number(order.total_usd) : undefined;
   return {
     setupRequired: false,
     providerReference: order.id,
     status,
     message: status === "review" ? order.fail_reason || `Supplier status: ${order.status}` : `Supplier order ${order.status}.`,
     raw: body,
+    chargedUsd,
   };
 }
 

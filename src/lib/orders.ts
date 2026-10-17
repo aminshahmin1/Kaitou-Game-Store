@@ -2,7 +2,8 @@ import { createSupabaseAdminClient } from "./supabase/admin";
 import { createFazerCardsOrder } from "./integrations/fazercards";
 import { allocateFundingForOrder } from "./revenue";
 import { getCheckoutPricing } from "./checkout-pricing";
-import type { OrderStatus, Product, ProductVariation, RequiredField } from "./types";
+import { createFulfillmentSnapshot, readFulfillmentSnapshot } from "./fulfillment-snapshot";
+import type { OrderStatus, Product, ProductVariation } from "./types";
 
 type CreatePendingOrderInput = {
   orderId: string;
@@ -37,6 +38,7 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     cost_usd: input.variation.costUsd,
     cost_myr: input.variation.costMyr,
     payment_fee_myr: 1,
+    fulfillment_snapshot: createFulfillmentSnapshot(input.product, input.variation),
   });
 
   if (error) {
@@ -81,7 +83,7 @@ export async function markOrderPaymentCallback(input: {
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .select(
-      "id, order_number, status, payment_reference, amount_myr, customer_fields, fulfillment_reference, paid_at, products(id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available), product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
+      "id, order_number, status, payment_reference, amount_myr, customer_fields, fulfillment_reference, fulfillment_snapshot, paid_at",
     )
     .eq("order_number", input.orderId)
     .maybeSingle();
@@ -184,18 +186,12 @@ export async function markOrderPaymentCallback(input: {
 
   if (!claimed) return { processed: true, reason: "already_processed" };
 
-  await allocateFundingForOrder(order.id).catch((allocationError) => {
-    console.error("Order profit allocation skipped", {
-      orderId: order.order_number,
-      message: allocationError instanceof Error ? allocationError.message : "Unknown allocation error",
-    });
-  });
-
   try {
+    const snapshot = readFulfillmentSnapshot(order.fulfillment_snapshot);
     const fulfillment = await createFazerCardsOrder({
       orderId: input.orderId,
-      product: mapOrderProduct(order.products),
-      variation: mapOrderVariation(order.product_variations),
+      product: snapshot.product,
+      variation: snapshot.variation,
       fieldValues: order.customer_fields ?? {},
     });
 
@@ -209,11 +205,19 @@ export async function markOrderPaymentCallback(input: {
           setupRequired: fulfillment.setupRequired,
         },
         failure_reason: fulfillment.status === "review" ? fulfillment.message : null,
+        ...(fulfillment.chargedUsd !== undefined && ["processing", "completed"].includes(fulfillment.status)
+          ? { cost_usd: fulfillment.chargedUsd, supplier_cost_confirmed_at: new Date().toISOString() } : {}),
       })
       .eq("id", order.id);
 
     if (fulfillmentError) {
       throw new Error(fulfillmentError.message);
+    }
+
+    if (fulfillment.chargedUsd !== undefined && ["processing", "completed"].includes(fulfillment.status)) {
+      await allocateFundingForOrder(order.id).catch(() => {
+        console.error("Confirmed supplier cost is awaiting funding allocation", { orderId: order.order_number });
+      });
     }
 
     return { processed: true, reason: "fulfilled", fulfillmentStatus: fulfillment.status };
@@ -297,53 +301,3 @@ function getRelationTitle(value: unknown) {
     : null;
 }
 
-function mapOrderProduct(row: unknown): Product {
-  const product = Array.isArray(row) ? row[0] : row;
-
-  if (!product || typeof product !== "object") {
-    throw new Error("Order product is missing.");
-  }
-
-  const record = product as Record<string, unknown>;
-
-  return {
-    id: String(record.id),
-    slug: String(record.slug),
-    title: String(record.title),
-    type: record.type as Product["type"],
-    category: record.category as Product["category"],
-    game: String(record.game),
-    description: typeof record.description === "string" ? record.description : null,
-    region: record.region as Product["region"],
-    deliveryType: record.delivery_type as Product["deliveryType"],
-    imageTone: String(record.image_tone),
-    active: Boolean(record.active),
-    available: Boolean(record.available),
-    fazercardsProductId:
-      typeof record.fazercards_product_id === "string" ? record.fazercards_product_id : null,
-    requiredFields: (record.required_fields ?? []) as RequiredField[],
-    variations: [],
-  };
-}
-
-function mapOrderVariation(row: unknown): ProductVariation {
-  const variation = Array.isArray(row) ? row[0] : row;
-
-  if (!variation || typeof variation !== "object") {
-    throw new Error("Order product variation is missing.");
-  }
-
-  const record = variation as Record<string, unknown>;
-
-  return {
-    id: String(record.id),
-    title: String(record.title),
-    sku: String(record.sku),
-    fazercardsSku: typeof record.fazercards_sku === "string" ? record.fazercards_sku : null,
-    costUsd: Number(record.cost_usd ?? 0),
-    priceMyr: Number(record.price_myr),
-    costMyr: Number(record.cost_myr),
-    active: Boolean(record.active),
-    available: Boolean(record.available),
-  };
-}

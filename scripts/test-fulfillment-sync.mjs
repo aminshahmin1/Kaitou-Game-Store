@@ -74,6 +74,28 @@ await exports.reconcileProviderOrders();
 assert.equal(rows[0].status, "review");
 assert.equal(rows[0].updated_at, "admin-change");
 
+// First confirmed debit is immutable, including after profit allocation.
+for (const locked of [false, true]) {
+  rows.splice(0, rows.length, {
+    id: "cost", fulfillment_reference: "ord-cost", status: "processing",
+    paid_at: "2026-10-01", updated_at: "2026-10-01", cost_usd: 0.2317,
+    supplier_cost_confirmed_at: locked ? "2026-10-01" : null,
+    profit_allocated_at: locked ? "2026-10-01" : null,
+  });
+  lookup = async () => ({ status: "completed", providerReference: "ord-cost", chargedUsd: 0.25, raw: {} });
+  assert.equal((await exports.reconcileProviderOrders()).updated, 1);
+  assert.equal(rows[0].cost_usd, locked ? 0.2317 : 0.25);
+  assert.equal(rows[0].status, locked ? "review" : "completed");
+  if (locked) assert.equal(rows[0].supplier_cost_confirmed_at, "2026-10-01");
+  else assert.ok(rows[0].supplier_cost_confirmed_at);
+}
+
+rows[0].status = "processing";
+lookup = async () => ({ status: "completed", providerReference: "ord-cost", chargedUsd: 0.2317, raw: {} });
+await exports.reconcileProviderOrders();
+assert.equal(rows[0].status, "completed");
+assert.equal(rows[0].supplier_cost_confirmed_at, "2026-10-01");
+
 const route = {};
 vm.runInNewContext(ts.transpileModule(readFileSync(new URL("../src/app/api/webhooks/fazercards/route.ts", import.meta.url), "utf8"), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },

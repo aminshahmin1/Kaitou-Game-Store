@@ -37,15 +37,18 @@ const orders = paidTimes.map((paid_at, index) => ({
   payment_fee_myr: 1, gross_profit_myr: 6, net_profit_myr: 5,
   profit_allocated_at: paid_at,
 }));
+orders.push({ ...orders[1], id: "unpaid", order_number: "QA-UNPAID", paid_at: null, status: "review" });
 const revenue = load("../src/lib/revenue.ts", {
   "server-only": {},
   "./revenue-dates": dates,
   "./supabase/admin": {
     createSupabaseAdminClient: () => ({
       from: (table) => {
+        const filters = [];
         const query = {
           select: () => query, in: () => query, order: () => query,
-          then: (resolve) => Promise.resolve({ data: table === "orders" ? orders : [], error: null }).then(resolve),
+          not: (key, _operator, value) => { filters.push((row) => row[key] !== value); return query; },
+          then: (resolve) => Promise.resolve({ data: table === "orders" ? orders.filter((row) => filters.every((filter) => filter(row))) : [], error: null }).then(resolve),
         };
         return query;
       },
@@ -66,4 +69,5 @@ const csv = await response.text();
 assert.ok(csv.includes("Revenue MYR,20"));
 assert.ok(csv.includes("QA-1,") && csv.includes("QA-2,"));
 assert.ok(!csv.includes("QA-0,") && !csv.includes("QA-3,"));
+assert.ok(!csv.includes("QA-UNPAID"));
 console.log("PASS: Malaysia date boundaries, weekly/monthly presets, report rows, and CSV date filtering.");

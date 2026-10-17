@@ -13,6 +13,10 @@
 
 ## Implemented in this batch
 
+- 2026-10-17 follow-up: Supplier polls preserve confirmed cost snapshots and route changed totals to review without rewriting allocated profit. Revenue reports and funding allocation exclude unpaid orders, including unpaid review rows. Added isolated regression cases for first cost confirmation, changed/same confirmed totals, and unpaid report/CSV exclusion. No paid test or selling-price change.
+
+- Checkout snapshots original supplier product type/category/SKU; payment fulfillment no longer reads mutable catalogue mapping. Missing legacy snapshots go to review with no supplier request. Isolated callback tests cover changed listings and absent snapshots. Order cost allocation now waits for a valid supplier-returned USD total rather than allocating a quote before purchase. Added fulfillment_snapshot and supplier_cost_confirmed_at columns. Concurrent accounting allocation and recovery remain outstanding.
+
 - Product workspace redesigned into My products, Add from FazerCards and a separate editor view. Imports open the imported listing for pricing. Technical mappings and customer fields are collapsed; MYR cost and selling price remain prominent. New draft saves stay hidden; publish respects disabled packages. Save/search/import/visibility/delete network errors preserve recovery paths. Existing package removal now disables it instead of silently dropping it from the editor while retaining it in storage.
 
 - 2026-10-17: Supplier polling rotates failed lookups to avoid starving later orders, preserves concurrent admin changes using timestamp/status/reference guards, and counts only actual updates. Regression tests use isolated adapters; no supplier purchase. The unimplemented supplier webhook now returns 503 instead of falsely acknowledging events. Configure no webhook until HMAC payload/signature details are verified; authenticated order polling remains the current status path. Missing-reference recovery is still outstanding.
