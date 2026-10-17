@@ -36,6 +36,31 @@ textarea {
   font: inherit;
 }
 
+:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+  transition: scale 120ms ease-out, filter 120ms ease-out, background-color 150ms ease-out,
+    border-color 150ms ease-out, box-shadow 150ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):active {
+  scale: 0.97;
+  filter: brightness(0.9);
+}
+
+:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):focus-visible {
+  outline: 2px solid var(--kaitou-blue);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+    transition: none;
+  }
+  :is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):active {
+    scale: 1;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

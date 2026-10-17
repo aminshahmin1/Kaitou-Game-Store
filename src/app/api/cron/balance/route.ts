@@ -1,7 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { checkBalanceAndNotify } from "@/lib/balance-monitor";
-import { reconcileProviderOrders } from "@/lib/fulfillment-sync";
 
 export const maxDuration = 60;
 
@@ -13,9 +12,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   try {
-    const fulfillment = await reconcileProviderOrders();
     const balance = await checkBalanceAndNotify();
-    return NextResponse.json({ ...balance, fulfillment }, { status: fulfillment.failed ? 503 : 200 });
+    return NextResponse.json(balance);
   } catch {
     return NextResponse.json({ error: "Balance monitoring failed." }, { status: 503 });
   }
