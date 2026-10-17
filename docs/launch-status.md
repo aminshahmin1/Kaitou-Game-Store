@@ -13,6 +13,10 @@
 
 ## Implemented in this batch
 
+- Admin variation ordering: pointer drag handles, accessible move buttons and low-to-high price sorting. Existing sort_order positions are persisted by Save changes and now loaded by both admin and product-detail queries. Live Mobile Legends drag, move, sort, save and reopen verified; stored prices and disabled options preserved. Customer product pages now show a read-only package list when checkout is disabled; live page verified ascending prices and correct out-of-stock labels, without enabling payment. Automated query/persistence tests pass. Browser viewport override did not take effect; narrow-mobile verification remains pending.
+
+- Funding allocation now uses the server-only allocate_order_funding transaction, serialized across orders with an advisory lock and row locks. Confirmed debit/payment required; duplicate and insufficient allocations rejected without partial writes. SQL rollback tests verify two-batch FIFO, exact remaining balance, correct net profit, repeat calls, unpaid/unconfirmed exclusions and no leftover data. anon/authenticated execute denied; service_role allowed. Refund accounting and multi-connection concurrency stress verification remain pending. This accounting lock does NOT replace checkout stock reservations.
+
 - Review edits now require verified payment for status transitions, delivery notes for manual completion, and a customer refund reference for refunded status. Refunded orders cannot be reopened or have refund evidence cleared. Missing orders and concurrent callback/poller/operator edits produce an error rather than silent success. Isolated tests pass; these guards do not execute refunds. Granular financial permissions and durable audit trail remain outstanding.
 
 - 2026-10-17 follow-up: Supplier polls preserve confirmed cost snapshots and route changed totals to review without rewriting allocated profit. Revenue reports and funding allocation exclude unpaid orders, including unpaid review rows. Added isolated regression cases for first cost confirmation, changed/same confirmed totals, and unpaid report/CSV exclusion. No paid test or selling-price change.

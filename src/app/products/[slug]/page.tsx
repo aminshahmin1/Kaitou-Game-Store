@@ -83,9 +83,23 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {process.env.CHECKOUT_ENABLED === "true" && product.available ? (
             <CheckoutForm product={product} />
           ) : (
-            <p className="trust-surface rounded-lg border border-sky-100 p-6 text-slate-700">
-              {product.available ? "Checkout is temporarily unavailable. Please check back soon." : "Temporarily out of stock. Please check back soon."}
-            </p>
+            <div className="trust-surface border border-sky-100 p-6 text-slate-700">
+              <h2 className="text-lg font-bold text-slate-950">Packages</h2>
+              <ul className="mt-3 divide-y divide-sky-100">
+                {product.variations.filter((variation) => variation.active).map((variation) => (
+                  <li key={variation.id} className="flex min-w-0 items-start justify-between gap-4 py-3">
+                    <span className="min-w-0 break-words text-sm font-semibold">
+                      {variation.title}
+                      {!variation.available && <span className="mt-1 block text-xs font-normal text-slate-500">Out of stock</span>}
+                    </span>
+                    <strong className="shrink-0 text-sm tabular-nums">{formatMyr(variation.priceMyr)}</strong>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 border-t border-sky-100 pt-4 text-sm">
+                {product.available ? "Checkout is temporarily unavailable. Please check back soon." : "Temporarily out of stock. Please check back soon."}
+              </p>
+            </div>
           )}
         </section>
       </main>

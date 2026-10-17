@@ -42,17 +42,6 @@ type RevenueOrderRow = {
   product_variations: unknown;
 };
 
-type AllocationOrderRow = {
-  id: string;
-  order_number: string;
-  status: "processing" | "completed" | "review";
-  amount_myr: MoneyValue;
-  cost_usd: MoneyValue;
-  cost_myr: MoneyValue;
-  payment_fee_myr: MoneyValue;
-  profit_allocated_at: string | null;
-  order_funding_allocations?: Array<{ id: string }>;
-};
 
 export type FundingBatch = {
   id: string;
@@ -252,165 +241,26 @@ export async function createFundingBatch(input: FundingBatchInput) {
 
 export async function allocatePaidOrdersFunding(options: { orderId?: string } = {}) {
   const supabase = createSupabaseAdminClient();
-
-  if (!supabase) {
-    throw new Error("Supabase is not configured.");
+  if (!supabase) throw new Error("Supabase is not configured.");
+  let query = supabase.from("orders").select("id,order_number")
+    .in("status", paidOrderStatuses).not("paid_at", "is", null)
+    .not("supplier_cost_confirmed_at", "is", null).is("profit_allocated_at", null)
+    .order("paid_at", { ascending: true }).order("id", { ascending: true });
+  if (options.orderId) query = query.eq("id", options.orderId);
+  const { data: orders, error } = await query;
+  if (error) throw new Error(error.message);
+  const result: AllocationResult = { allocatedOrders: 0, skippedOrders: [] };
+  for (const order of orders ?? []) {
+    const { data, error: allocationError } = await supabase.rpc("allocate_order_funding", { p_order_id: order.id });
+    if (allocationError) throw new Error("Funding allocation failed. No partial allocation was saved for this order.");
+    if (data?.allocated === true) result.allocatedOrders++;
+    else result.skippedOrders.push({ orderNumber: order.order_number, reason: data?.reason ?? "Order was not eligible for allocation." });
   }
-
-  const { data: fundingRows, error: fundingError } = await supabase
-    .from("funding_batches")
-    .select(
-      "id, topup_date, provider, currency, myr_spent, usd_credited, fees_myr, effective_rate, reference, notes, created_at, order_funding_allocations(amount_usd, cost_myr)",
-    )
-    .order("topup_date", { ascending: true })
-    .order("created_at", { ascending: true });
-
-  if (fundingError) {
-    throw new Error(fundingError.message);
-  }
-
-  const batches = (fundingRows as FundingBatchRow[] | null ?? []).map(mapFundingBatch);
-  let orderQuery = supabase
-    .from("orders")
-    .select(
-      "id, order_number, status, amount_myr, cost_usd, cost_myr, payment_fee_myr, profit_allocated_at, order_funding_allocations(id)",
-    )
-    .in("status", paidOrderStatuses)
-    .not("paid_at", "is", null)
-    .not("supplier_cost_confirmed_at", "is", null)
-    .is("profit_allocated_at", null)
-    .order("created_at", { ascending: true });
-
-  if (options.orderId) {
-    orderQuery = orderQuery.eq("id", options.orderId);
-  }
-
-  const { data: orderRows, error: orderError } = await orderQuery;
-
-  if (orderError) {
-    throw new Error(orderError.message);
-  }
-
-  const result: AllocationResult = {
-    allocatedOrders: 0,
-    skippedOrders: [],
-  };
-
-  for (const order of (orderRows as AllocationOrderRow[] | null ?? [])) {
-    if ((order.order_funding_allocations ?? []).length > 0) {
-      result.skippedOrders.push({
-        orderNumber: order.order_number,
-        reason: "Order already has funding allocations.",
-      });
-      continue;
-    }
-
-    const costUsd = round4(toNumber(order.cost_usd));
-    const currentCostMyr = round2(toNumber(order.cost_myr));
-    const amountMyr = round2(toNumber(order.amount_myr));
-    const paymentFeeMyr = round2(toNumber(order.payment_fee_myr ?? 1));
-
-    if (costUsd <= 0) {
-      await snapshotOrderProfit(order.id, amountMyr, currentCostMyr, paymentFeeMyr);
-      result.allocatedOrders += 1;
-      continue;
-    }
-
-    const availableUsd = round4(batches.reduce((sum, batch) => sum + batch.remainingUsd, 0));
-
-    if (availableUsd + 0.0001 < costUsd) {
-      result.skippedOrders.push({
-        orderNumber: order.order_number,
-        reason: `Not enough funding balance. Need ${costUsd.toFixed(4)} USDT; available ${availableUsd.toFixed(4)} USDT.`,
-      });
-      continue;
-    }
-
-    let remainingUsd = costUsd;
-    const allocations: Array<{
-      order_id: string;
-      funding_batch_id: string;
-      amount_usd: number;
-      effective_rate: number;
-      cost_myr: number;
-    }> = [];
-
-    for (const batch of batches) {
-      if (remainingUsd <= 0.0001) {
-        break;
-      }
-
-      if (batch.remainingUsd <= 0) {
-        continue;
-      }
-
-      const amountUsd = round4(Math.min(batch.remainingUsd, remainingUsd));
-      const costMyr = round2(amountUsd * batch.effectiveRate);
-
-      if (amountUsd <= 0) {
-        continue;
-      }
-
-      allocations.push({
-        order_id: order.id,
-        funding_batch_id: batch.id,
-        amount_usd: amountUsd,
-        effective_rate: batch.effectiveRate,
-        cost_myr: costMyr,
-      });
-
-      batch.remainingUsd = round4(batch.remainingUsd - amountUsd);
-      batch.allocatedUsd = round4(batch.allocatedUsd + amountUsd);
-      batch.allocatedMyr = round2(batch.allocatedMyr + costMyr);
-      remainingUsd = round4(remainingUsd - amountUsd);
-    }
-
-    const allocatedCostMyr = round2(allocations.reduce((sum, allocation) => sum + allocation.cost_myr, 0));
-
-    const { error: allocationError } = await supabase.from("order_funding_allocations").insert(allocations);
-
-    if (allocationError) {
-      throw new Error(allocationError.message);
-    }
-
-    await snapshotOrderProfit(order.id, amountMyr, allocatedCostMyr, paymentFeeMyr);
-    result.allocatedOrders += 1;
-  }
-
   return result;
 }
 
 export async function allocateFundingForOrder(orderId: string) {
   return allocatePaidOrdersFunding({ orderId });
-}
-
-async function snapshotOrderProfit(
-  orderId: string,
-  amountMyr: number,
-  costMyr: number,
-  paymentFeeMyr: number,
-) {
-  const supabase = createSupabaseAdminClient();
-
-  if (!supabase) {
-    throw new Error("Supabase is not configured.");
-  }
-
-  const grossProfitMyr = round2(amountMyr - costMyr);
-  const netProfitMyr = round2(grossProfitMyr - paymentFeeMyr);
-  const { error } = await supabase
-    .from("orders")
-    .update({
-      cost_myr: costMyr,
-      gross_profit_myr: grossProfitMyr,
-      net_profit_myr: netProfitMyr,
-      profit_allocated_at: new Date().toISOString(),
-    })
-    .eq("id", orderId);
-
-  if (error) {
-    throw new Error(error.message);
-  }
 }
 
 function normalizeRange(input: { from?: string; to?: string }) {

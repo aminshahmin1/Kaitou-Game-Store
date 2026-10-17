@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
+  ArrowDown,
+  ArrowUp,
+  ArrowDownWideNarrow,
+  GripVertical,
   Edit3,
   Eye,
   EyeOff,
@@ -19,6 +23,7 @@ import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import type { Product, ProductVariation, RequiredField } from "@/lib/types";
 import type { FundingCostBasis } from "@/lib/funding-cost";
 import { estimateCostMyr } from "@/lib/cost-conversion";
+import { moveVariation } from "@/lib/variation-order";
 
 type CatalogKind = "all" | "topup" | "gift_card" | "steam_gift";
 
@@ -132,6 +137,7 @@ export function AdminProductManager() {
   const [message, setMessage] = useState<string | null>(null);
   const [requiredFields, setRequiredFields] = useState<FieldDraft[]>(defaultFields);
   const [variations, setVariations] = useState<VariationDraft[]>(defaultVariations);
+  const [draggedVariation, setDraggedVariation] = useState<string | null>(null);
   const [productSearch, setProductSearch] = useState("");
   const [catalogKind, setCatalogKind] = useState<CatalogKind>("all");
   const [catalogSearch, setCatalogSearch] = useState("");
@@ -616,9 +622,48 @@ export function AdminProductManager() {
           actionLabel="Add package"
           onAdd={() => setVariations((current) => [...current, variationDraft()])}
         >
+          <div className="flex justify-end">
+            <button type="button" disabled={isSaving || variations.length < 2}
+              onClick={() => setVariations((current) => [...current].sort((a, b) => Number(a.priceMyr) - Number(b.priceMyr)))}
+              className="inline-flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-sm font-semibold disabled:opacity-40">
+              <ArrowDownWideNarrow className="h-4 w-4" />Price: low to high
+            </button>
+          </div>
           <div className="grid gap-3">
-            {variations.map((variation) => (
-              <div key={variation.localId} className="grid min-w-0 gap-3 border-b border-slate-200 py-4 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+            {variations.map((variation, index) => (
+              <div key={variation.localId}
+                data-variation-id={variation.localId}
+                className={`grid min-w-0 gap-3 border-b border-slate-200 py-4 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] ${draggedVariation === variation.localId ? "opacity-50" : ""}`}>
+                <div className="flex items-center gap-2 sm:col-span-2 xl:col-span-4">
+                  <button type="button" disabled={isSaving}
+                    onPointerDown={(event) => {
+                      if (event.button !== 0) return;
+                      event.currentTarget.setPointerCapture(event.pointerId);
+                      setDraggedVariation(variation.localId);
+                    }}
+                    onPointerUp={(event) => {
+                      if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+                      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-variation-id]")?.dataset.variationId;
+                      if (target && !isSaving) setVariations((current) => moveVariation(current, variation.localId, target));
+                      event.currentTarget.releasePointerCapture(event.pointerId);
+                      setDraggedVariation(null);
+                    }}
+                    onPointerCancel={() => setDraggedVariation(null)}
+                    onLostPointerCapture={() => setDraggedVariation(null)}
+                    title={`Drag ${variation.title || "package"} to reorder`} aria-label={`Drag ${variation.title || "package"} to reorder`}
+                    className="inline-flex h-10 w-10 touch-none cursor-grab items-center justify-center rounded-md border border-slate-200 active:cursor-grabbing">
+                    <GripVertical className="h-4 w-4" />
+                  </button>
+                  <span className="min-w-8 text-sm tabular-nums text-slate-500">{index + 1}</span>
+                  <button type="button" disabled={isSaving || index === 0}
+                    onClick={() => setVariations((current) => moveVariation(current, variation.localId, current[index - 1].localId))}
+                    title="Move package up" aria-label={`Move ${variation.title || "package"} up`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 disabled:opacity-30"><ArrowUp className="h-4 w-4" /></button>
+                  <button type="button" disabled={isSaving || index === variations.length - 1}
+                    onClick={() => setVariations((current) => moveVariation(current, variation.localId, current[index + 1].localId))}
+                    title="Move package down" aria-label={`Move ${variation.title || "package"} down`}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 disabled:opacity-30"><ArrowDown className="h-4 w-4" /></button>
+                </div>
                 <SmallInput label="Package" value={variation.title} onChange={(value) => updateVariation(variation.localId, { title: value })} placeholder="Weekly Diamond Pass" />
                 <details className="order-last min-w-0 sm:col-span-2 xl:col-span-4">
                 <summary className="cursor-pointer text-xs font-semibold text-slate-500">Supplier mapping</summary>

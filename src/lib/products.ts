@@ -88,6 +88,7 @@ export async function getStoreProductBySlug(slug: string) {
     .eq("slug", slug)
     .eq("active", true)
     .eq("available", true)
+    .order("sort_order", { referencedTable: "product_variations", ascending: true })
     .maybeSingle();
 
   if (error || !data) {
@@ -110,7 +111,8 @@ export async function getAdminProducts() {
     .select(
       "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
     )
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("sort_order", { referencedTable: "product_variations", ascending: true });
 
   if (error) {
     throw new Error(error.message);
