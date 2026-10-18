@@ -29,7 +29,8 @@ begin
     'product',coalesce(new.product_title,'Game order'),'variation',coalesce(new.variation_title,''),
     'name',new.customer_name,'email',new.customer_email,'whatsapp',new.customer_whatsapp,
     'fields',new.customer_fields,'amountMyr',new.amount_myr,'subtotalMyr',new.product_amount_myr,
-    'feeMyr',new.payment_surcharge_myr,'paidAt',new.paid_at,'refundReference',new.refund_reference);
+    'feeMyr',new.payment_surcharge_myr,'paidAt',new.paid_at,'refundReference',new.refund_reference,
+    'paymentReference',new.payment_reference);
   insert into public.order_email_outbox(order_id,audience,order_status,payload)
     values(new.id,'customer',new.status::text,payload),(new.id,'admin',new.status::text,payload)
     on conflict(order_id,audience,order_status) do nothing;
@@ -38,13 +39,19 @@ end $$;
 create trigger queue_order_email after update on public.orders for each row execute function public.queue_order_email();
 
 create function public.claim_order_email()
-returns setof public.order_email_outbox language sql security invoker set search_path='' as $$
+returns setof public.order_email_outbox language plpgsql security invoker set search_path='' as $$
+begin
+  update public.order_email_outbox set state='failed',lease_until=null,
+    last_error='Email delivery could not be confirmed after the final attempt. Check SMTP and delivery history before retrying.'
+    where state='sending' and attempts>=5 and lease_until<clock_timestamp();
+  return query
   update public.order_email_outbox q set state='sending',attempts=q.attempts+1,
     lease_token=gen_random_uuid(),lease_until=clock_timestamp()+interval '2 minutes'
   from (select id from public.order_email_outbox where attempts<5 and next_attempt_at<=clock_timestamp()
     and (state='pending' or (state='sending' and lease_until<clock_timestamp()))
     order by created_at,id for update skip locked limit 1) candidate
   where q.id=candidate.id returning q.*;
+end
 $$;
 revoke all on function public.queue_order_email() from public,anon,authenticated;
 revoke all on function public.claim_order_email() from public,anon,authenticated;

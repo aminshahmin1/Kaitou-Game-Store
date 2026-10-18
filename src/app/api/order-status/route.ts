@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { lookupPublicOrder } from "@/lib/orders";
+import { guardRequest } from "@/lib/request-guard";
 
 const orderLookupSchema = z.object({
   orderNumber: z.string().min(4).max(80),
@@ -9,6 +10,8 @@ const orderLookupSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  const blocked = await guardRequest(request, "order-status");
+  if (blocked) return blocked;
   const json = await request.json().catch(() => null);
   const parsed = orderLookupSchema.safeParse(json);
 

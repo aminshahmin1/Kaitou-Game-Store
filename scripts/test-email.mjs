@@ -43,6 +43,9 @@ if (live) {
   await exports.sendAdminEmail("Test\r\nSubject", "Hello");
   assert.equal(sent.subject, "Test  Subject");
   assert.equal(sent.to, env.ADMIN_ORDER_EMAIL);
+  assert.match(sent.html, /KAITOU/);
+  assert.equal(sent.replyTo, env.EMAIL_FROM);
+  assert.equal(exports.escapeEmailHtml('<script>"&'), '&lt;script&gt;&quot;&amp;');
   assert.equal(closed, 1);
   rejected = true;
   await assert.rejects(exports.sendAdminEmail("Test", "Hello"));

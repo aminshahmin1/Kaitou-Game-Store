@@ -48,12 +48,15 @@ export async function checkBalanceAndNotify() {
   if (claimError) throw new Error("Could not claim balance alert.");
   if (!claimed) return { ...balance, blockedVariations: blocked.length, notified: false };
   try {
-    await sendAdminEmail("Kaitou: top up your FazerCards balance", [
-      `Your FazerCards balance is USD ${balance.balanceUsd.toFixed(4)}.`,
-      `${blocked.length} published product options exceed this balance and cannot be purchased.`,
-      "Top up FazerCards to restore affordable options. Your selling prices will not change.",
+    await sendAdminEmail("Kaitou | Action required: supplier balance is low", [
+      "Supplier funding alert", "",
+      `Available FazerCards balance: USD ${balance.balanceUsd.toFixed(4)}.`,
+      `${blocked.length} published product options currently cost more than the available supplier balance. These options are unavailable to customers until sufficient credit is available.`,
+      "Please top up your FazerCards wallet, then use Sync balance in the dashboard to check the updated amount. Your manual selling prices will remain unchanged.",
+      "Affected options (up to 20):",
       ...blocked.slice(0, 20).map((row) => `${row.title}: supplier cost USD ${Number(row.cost_usd).toFixed(4)}`),
       "Dashboard: https://kaitou.shop/dashboard",
+      "This is an automated operational alert from Kaitou Game Store. It is not a customer order or payment receipt.",
     ].join("\n\n"));
     const { error: completeError } = await db.from("provider_balance_monitor")
       .update({ last_alert_at: new Date().toISOString(), lease_until: "1970-01-01T00:00:00Z" })

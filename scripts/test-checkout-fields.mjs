@@ -44,6 +44,7 @@ function load(relative) {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
   }).outputText, { exports: target, console, URL, process: { env }, require(name) {
     if (name === "next/server") return { NextResponse: Response };
+    if (name === "@/lib/request-guard") return { guardRequest: async () => null };
     if (name === "@/lib/products") return { getStoreProductBySlug: async () => product };
     if (name === "@/lib/auth/admin-api") return { getAdminApiSession: async () => adminSession };
     if (name === "@/lib/orders") return { createPendingOrder: async (input) => { saved = input; return { expiresAt: new Date(Date.now() + 900000).toISOString() }; }, attachPaymentReference: async () => {} };

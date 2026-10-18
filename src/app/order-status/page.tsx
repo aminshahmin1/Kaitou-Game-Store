@@ -3,9 +3,10 @@ import { MessageCircle } from "lucide-react";
 import { OrderStatusLookup } from "@/components/order-status-lookup";
 import { SiteHeader } from "@/components/site-header";
 
-export default async function OrderStatusPage({ searchParams }: { searchParams: Promise<{ order_id?: string }> }) {
+export default async function OrderStatusPage({ searchParams }: { searchParams: Promise<{ order_id?: string | string[] }> }) {
   const params = await searchParams;
-  const initialOrderId = typeof params.order_id === "string" ? params.order_id.slice(0, 80) : "";
+  const returnedOrderId = Array.isArray(params.order_id) ? params.order_id[0] : params.order_id;
+  const initialOrderId = typeof returnedOrderId === "string" ? returnedOrderId.slice(0, 80) : "";
   return (
     <div className="trust-surface min-h-screen">
       <SiteHeader />

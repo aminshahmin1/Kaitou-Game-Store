@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createHmac } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 
 import { dashboardPermissions, type DashboardPermission } from "./permissions";
 import { verifyPasswordHash } from "./password";
@@ -75,9 +75,13 @@ export function verifyAdminSession(cookieValue?: string) {
     return null;
   }
 
-  const [payload, signature] = cookieValue.split(".");
+  const parts = cookieValue.split(".");
+  if (parts.length !== 2) return null;
+  const [payload, signature] = parts;
+  const expected = signPayload(payload);
 
-  if (!payload || !signature || signPayload(payload) !== signature) {
+  if (!payload || !signature || !/^[A-Za-z0-9_-]+$/.test(signature) || !expected || signature.length !== expected.length ||
+    !timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
     return null;
   }
 
@@ -88,7 +92,7 @@ export function verifyAdminSession(cookieValue?: string) {
       exp: number;
     };
 
-    if (session.exp < Math.floor(Date.now() / 1000)) {
+    if (!Number.isFinite(session.exp) || session.exp <= Math.floor(Date.now() / 1000) || typeof session.email !== "string") {
       return null;
     }
 

@@ -8,8 +8,8 @@ import { SiteHeader } from "@/components/site-header";
 import { getStoreProducts } from "@/lib/products";
 
 const categories = [
-  { label: "Game Top-Ups", value: "Direct IDs, UID, server and zone forms", icon: Zap },
-  { label: "Steam Gift Games", value: "Gift delivery through FazerCards", icon: Gamepad2 },
+  { label: "Game Top-Ups", value: "Delivered to your game account", icon: Zap },
+  { label: "Steam Gift Games", value: "Games sent directly to your Steam account", icon: Gamepad2 },
   { label: "MYR Checkout", value: "Secure payment with clear order tracking", icon: ShieldCheck },
 ];
 
@@ -37,13 +37,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#030817] via-[#030817]/86 to-[#030817]/35" />
-          <div className="relative mx-auto grid min-h-[620px] w-full max-w-7xl items-end px-5 py-16 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10">
+          <div className="relative mx-auto grid w-full max-w-7xl items-center px-5 py-10 lg:min-h-[420px] lg:grid-cols-[1.04fr_0.96fr] lg:gap-10">
             <div className="max-w-3xl">
               <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 text-sm font-bold text-cyan-100">
                 <Sparkles className="h-4 w-4" />
                 Malaysia-first game top-ups and Steam gift games
               </div>
-              <h1 className="font-display text-6xl font-bold uppercase leading-[0.88] text-white text-balance md:text-8xl">
+              <h1 className="font-display text-5xl font-bold uppercase leading-none text-white text-balance md:text-7xl">
                 Kaitou Game Store
               </h1>
               <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-200">
@@ -65,7 +65,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
                 </Link>
               </div>
             </div>
-            <div className="mt-10 grid gap-3 lg:mt-0">
+            <div className="hidden gap-3 lg:grid">
               {categories.map((category) => (
                 <div
                   key={category.label}

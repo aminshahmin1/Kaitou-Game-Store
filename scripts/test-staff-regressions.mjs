@@ -58,6 +58,7 @@ function load(file) {
     exports, Buffer, Date, console, process: { env },
     require(name) {
       if (name === "server-only") return {};
+      if (name === "@/lib/request-guard") return { guardRequest: async () => null };
       if (name === "next/server") return { NextResponse: TestResponse };
       if (name === "next/headers") return { cookies: async () => ({ get: () => cookie ? { value: cookie } : undefined }) };
       if (name.endsWith("supabase/admin")) return { createSupabaseAdminClient: () => database };
@@ -112,4 +113,9 @@ assert.equal(await api.getAdminApiSession("revenue"), null);
 assert.equal((await loginRoute.POST(request(payload))).status, 401);
 cookie = `${ownerCookie}tampered`;
 assert.equal(await api.getAdminApiSession("staff"), null);
+assert.equal(sessions.verifyAdminSession(`${ownerCookie}.extra`), null);
+assert.equal(sessions.verifyAdminSession(`${ownerCookie.split(".")[0]}.${"\u00e9".repeat(43)}`), null);
+const invalidPayload = Buffer.from(JSON.stringify({ email: "owner@example.test", role: "owner", exp: null })).toString("base64url");
+const invalidSignature = require("node:crypto").createHmac("sha256", env.ADMIN_SESSION_SECRET).update(invalidPayload).digest("base64url");
+assert.equal(sessions.verifyAdminSession(`${invalidPayload}.${invalidSignature}`), null);
 console.log("PASS: staff validation, creation, hashing, login, permissions, forbidden edits, live permission changes, disabling, and tampered sessions (isolated database).");

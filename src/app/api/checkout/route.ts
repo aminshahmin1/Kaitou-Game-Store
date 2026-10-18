@@ -8,6 +8,7 @@ import { checkoutSchema } from "@/lib/validation";
 import { getCheckoutPricing } from "@/lib/checkout-pricing";
 import { validateCheckoutFields } from "@/lib/checkout-fields";
 import { getAdminApiSession } from "@/lib/auth/admin-api";
+import { guardRequest } from "@/lib/request-guard";
 
 function createOrderId() {
   return `KGS-${randomUUID().replace(/-/g, "").slice(0, 20).toUpperCase()}`;
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
   }
 
   try {
+    const blocked = await guardRequest(request, "checkout");
+    if (blocked) return blocked;
     const json = await request.json().catch(() => null);
     const parsed = checkoutSchema.safeParse(json);
 

@@ -27,19 +27,36 @@ const mailDb = { rpc: async () => ({ data: job ? [job] : [], error: null }), fro
     then(resolve) { return Promise.resolve({ error: null }).then(resolve); } };
   return q;
 } };
+const emailTemplates = load("../src/lib/integrations/email.ts", {});
 const emails = load("../src/lib/order-emails.ts", {
   "./supabase/admin": { createSupabaseAdminClient: () => mailDb },
-  "./integrations/email": { getEmailConfiguration: () => ({ recipient: "owner@example.test" }),
+  "./integrations/email": { ...emailTemplates, getEmailConfiguration: () => ({ recipient: "owner@example.test" }),
     sendStoreEmail: async (...args) => { sent = args; if (sendFails) throw new Error("SMTP unavailable"); } },
 });
 const customer = emails.formatOrderEmail(payload, "customer");
 assert.match(customer.text, /Order total: RM2.10/);
-assert.ok(!customer.text.includes("00123"));
-assert.match(emails.formatOrderEmail(payload, "admin").text, /user_id: 00123/);
+assert.match(customer.text, /user id: 00123/);
+assert.match(customer.text, /Payment received: .*MYT/);
+assert.match(customer.text, /FPX fee: RM1.00/);
+assert.match(customer.html, /Your payment receipt/);
+assert.match(customer.html, /KAITOU/);
+assert.match(emails.formatOrderEmail(payload, "admin").text, /user id: 00123/);
+for (const status of ["processing", "completed", "failed", "review", "refunded"]) {
+  const receipt = emails.formatOrderEmail({ ...payload, status, paymentReference: "bill-123", refundReference: "refund-123" }, "customer");
+  assert.match(receipt.text, /Order total: RM2.10/);
+  assert.match(receipt.text, /Payment reference: bill-123/);
+  assert.match(receipt.html, /RM2.10/);
+}
+const escaped = emails.formatOrderEmail({ ...payload, name: '<img src=x onerror="alert(1)">', fields: { player_id: "<script>bad</script>" } }, "customer");
+assert.ok(!escaped.html.includes('<img src=x'));
+assert.ok(!escaped.html.includes('<script>'));
+assert.match(escaped.html, /&lt;script&gt;/);
+assert.throws(() => emails.formatOrderEmail({ ...payload, paidAt: "invalid" }, "customer"));
 assert.throws(() => emails.formatOrderEmail({ ...payload, status: "pending_payment" }, "customer"));
 assert.equal((await emails.deliverNextOrderEmail()).sent, 1);
 assert.equal(sent[0], payload.email);
 assert.equal(sent[3], "<order-mail@kaitou.shop>");
+assert.match(sent[4], /Your payment receipt/);
 assert.equal(patch.state, "sent");
 job.audience = "admin";
 await emails.deliverNextOrderEmail();
