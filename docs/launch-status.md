@@ -13,6 +13,8 @@
 
 ## Implemented in this batch
 
+- Payment callback race fix: supplier success/error results only update an order that is still processing with no supplier reference. Concurrent admin completion/refund and newly saved provider references are preserved; skipped writes do not allocate funding. Regression tests simulate an admin refund during success and an admin completion during supplier failure. No live payment or supplier purchase.
+
 - Global button press feedback uses a short scale/brightness transition, preserves disabled states and removes movement for reduced-motion users.
 - Interrupted fulfillment recovery handles one stale paid processing order with no supplier reference per worker run, using the original saved mapping/customer fields and original idempotency key. Timestamp claims prevent overlapping workers and preserve newer admin changes; invalid mappings/unknown outcomes go to review. Supplier success with a failed DB save remains eligible for a later idempotent replay. Confirmed-cost conflicts preserve recorded profit. Isolated tests cover these paths and worker authentication. A separate fulfillment cron keeps supplier recovery/polling independent from balance pricing/email work. No paid test performed.
 - Deployment verified: button press and reduced-motion CSS present in production; authenticated fulfillment worker returned HTTP 200 with zero orders processed. Supabase job kaitou-fulfillment-recovery runs every five minutes, offset one minute from the balance monitor. Unauthenticated worker requests return 401; public checkout still returns 503. Real paid full-flow test and stock reservations remain pending.

@@ -195,7 +195,7 @@ export async function markOrderPaymentCallback(input: {
       fieldValues: order.customer_fields ?? {},
     });
 
-    const { error: fulfillmentError } = await supabase
+    const { data: fulfilledOrder, error: fulfillmentError } = await supabase
       .from("orders")
       .update({
         status: fulfillment.status,
@@ -208,11 +208,17 @@ export async function markOrderPaymentCallback(input: {
         ...(fulfillment.chargedUsd !== undefined && ["processing", "completed"].includes(fulfillment.status)
           ? { cost_usd: fulfillment.chargedUsd, supplier_cost_confirmed_at: new Date().toISOString() } : {}),
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .eq("status", "processing")
+      .is("fulfillment_reference", null)
+      .select("id")
+      .maybeSingle();
 
     if (fulfillmentError) {
       throw new Error(fulfillmentError.message);
     }
+
+    if (!fulfilledOrder) return { processed: true, reason: "order_changed_during_fulfillment" };
 
     if (fulfillment.chargedUsd !== undefined && ["processing", "completed"].includes(fulfillment.status)) {
       await allocateFundingForOrder(order.id).catch(() => {
@@ -225,18 +231,24 @@ export async function markOrderPaymentCallback(input: {
     const message =
       fulfillmentError instanceof Error ? fulfillmentError.message : "FazerCards fulfillment failed.";
 
-    const { error: reviewError } = await supabase
+    const { data: reviewOrder, error: reviewError } = await supabase
       .from("orders")
       .update({
         status: "review",
         failure_reason: message,
         fulfillment_raw: { error: message },
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .eq("status", "processing")
+      .is("fulfillment_reference", null)
+      .select("id")
+      .maybeSingle();
 
     if (reviewError) {
       throw new Error(reviewError.message);
     }
+
+    if (!reviewOrder) return { processed: true, reason: "order_changed_during_fulfillment" };
 
     return { processed: true, reason: "fulfillment_review" };
   }

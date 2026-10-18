@@ -12,12 +12,14 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const env = { TOYYIBPAY_SECRET_KEY: "test-secret", TOYYIBPAY_CATEGORY_CODE: "test-category", NEXT_PUBLIC_SITE_URL: "https://kaitou.shop", CHECKOUT_ENABLED: "false" };
 let order, tests, purchases = 0, confirmed = true, bodySent, session = null;
 let failBill = false;
+let duringPurchase = () => {};
 function reset() {
   order = { id: "order1", order_number: "KGS-TEST", status: "pending_payment", payment_reference: "bill123", amount_myr: 10, paid_at: null, fulfillment_reference: null, products: { id: "p1", type: "topup" }, product_variations: { id: "v1" }, customer_fields: {} };
   tests = [{ id: "KTEST-TEST", bill_code: "testbill", status: "pending", amount_myr: 1 }];
   purchases = 0;
   order.fulfillment_snapshot = { version: 1, product: { type: "topup", fazercardsProductId: "original-game" }, variation: { sku: "original", fazercardsSku: "original-game:original-pack" } };
   confirmed = true;
+  duringPurchase = () => {};
 }
 reset();
 const database = {
@@ -67,7 +69,7 @@ function load(file) {
       if (name === "next/server") return { NextResponse: Response };
       if (name.endsWith("supabase/admin")) return { createSupabaseAdminClient: () => database };
       if (name.endsWith("auth/admin-api")) return { getAdminApiSession: async () => session };
-      if (name === "./integrations/fazercards") return { createFazerCardsOrder: async (input) => { assert.equal(input.variation.fazercardsSku, "original-game:original-pack"); purchases++; return { status: "processing", providerReference: "fazer123" }; } };
+      if (name === "./integrations/fazercards") return { createFazerCardsOrder: async (input) => { assert.equal(input.variation.fazercardsSku, "original-game:original-pack"); purchases++; duringPurchase(); return { status: "processing", providerReference: "fazer123" }; } };
       if (name === "./revenue") return { allocateFundingForOrder: async () => {} };
       if (name.startsWith("@/")) return load(`src/${name.slice(2)}.ts`);
       if (name.startsWith(".")) return load(path.resolve(path.dirname(absolute), `${name}.ts`));
@@ -116,6 +118,16 @@ const concurrent = await Promise.all([webhook.POST(callback()), webhook.POST(cal
 assert.ok(concurrent.every((response) => response.status === 200));
 assert.equal(purchases, 1);
 assert.ok(order.paid_at);
+reset();
+duringPurchase = () => { order.status = "refunded"; order.refund_reference = "MANUAL-REFUND"; };
+await webhook.POST(callback());
+assert.equal(order.status, "refunded");
+assert.equal(order.fulfillment_reference, null);
+reset();
+duringPurchase = () => { order.status = "completed"; order.fulfillment_reference = "ord-manual"; throw new Error("Supplier timed out"); };
+await webhook.POST(callback());
+assert.equal(order.status, "completed");
+assert.equal(order.fulfillment_reference, "ord-manual");
 reset();
 order.products = { type: "steam_gift_game", fazercards_product_id: "changed-game" };
 order.product_variations = { fazercards_sku: "changed-game:changed-pack" };
