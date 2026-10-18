@@ -8,7 +8,7 @@ export const metadata = {
 
 const integrations = [
   ["FazerCards", "Product catalog, balance, and fulfillment."],
-  ["WhatsApp Business API", "Customer order updates and support messages."],
+  ["WhatsApp Business API", "Not configured. Automated customer updates currently use email."],
 ];
 
 export default async function DashboardIntegrationsPage() {

@@ -13,7 +13,7 @@ const settings = [
   {
     label: "Checkout",
     value: process.env.CHECKOUT_ENABLED === "true" ? "Enabled" : "Disabled",
-    note: "Controlled through Vercel environment variables until an editable store-settings table is approved.",
+    note: "Managed through CHECKOUT_ENABLED in the Vercel production environment. Changing it requires a deployment.",
   },
   {
     label: "Currency",
@@ -22,8 +22,8 @@ const settings = [
   },
   {
     label: "Languages",
-    value: "English default + Bahasa Malaysia",
-    note: "Public copy is structured for bilingual expansion while keeping English as the default.",
+    value: "English",
+    note: "Bahasa Malaysia translation is not available yet.",
   },
 ];
 
@@ -33,7 +33,7 @@ export default async function DashboardSettingsPage() {
       <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="font-display text-3xl font-bold">Store settings</h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
-          These are read-only MVP settings. Secrets and provider setup stay outside this page while Integrations is out of scope.
+          Store configuration is shown below. Payment and email connection checks are available on the Integrations page. Credentials are managed securely in Vercel.
         </p>
       </section>
 

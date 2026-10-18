@@ -4,10 +4,11 @@ import { useState } from "react";
 import { Loader2, LockKeyhole, MessageCircle } from "lucide-react";
 
 import { formatMyr } from "@/lib/catalog";
-import type { CheckoutResult, Product } from "@/lib/types";
+import type { CheckoutResult } from "@/lib/types";
+import type { CheckoutProduct } from "@/lib/checkout-product";
 import { getCheckoutPricing } from "@/lib/checkout-pricing";
 
-export function CheckoutForm({ product, launchTest = false }: { product: Product; launchTest?: boolean }) {
+export function CheckoutForm({ product, launchTest = false }: { product: CheckoutProduct; launchTest?: boolean }) {
   const [result, setResult] = useState<CheckoutResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,22 +63,22 @@ export function CheckoutForm({ product, launchTest = false }: { product: Product
       <div className="flex items-start justify-between gap-4 border-b border-sky-100 pb-5">
         <div>
           <p className="text-sm font-bold uppercase text-sky-600">Secure checkout</p>
-          <h2 className="mt-1 font-display text-3xl font-bold text-slate-950">{product.title}</h2>
+          <h2 className="mt-1 break-words font-display text-3xl font-bold text-slate-950">{product.title}</h2>
         </div>
-        <div className="rounded-md bg-slate-950 px-3 py-2 text-right text-white">
+        <div className="shrink-0 rounded-md bg-slate-950 px-3 py-2 text-right text-white">
           <span className="block text-xs text-cyan-200">From</span>
           <strong>{formatMyr(Math.min(...product.variations.filter((v) => v.active && v.available).map((variation) => variation.priceMyr)))}</strong>
         </div>
       </div>
 
-      <label className="grid gap-2 text-sm font-semibold text-slate-700">
+      <label className="grid min-w-0 gap-2 text-sm font-semibold text-slate-700">
         Select product
         <select
           name="variationId"
           value={variationId}
           onChange={(event) => setVariationId(event.target.value)}
           required
-          className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+          className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
         >
           {product.variations
             .filter((variation) => variation.active)
@@ -90,32 +91,32 @@ export function CheckoutForm({ product, launchTest = false }: { product: Product
       </label>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
+        <label className="grid min-w-0 gap-2 text-sm font-semibold text-slate-700">
           Name
           <input
             name="customerName"
             required
             placeholder="Your name"
-            className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+            className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
           />
         </label>
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
+        <label className="grid min-w-0 gap-2 text-sm font-semibold text-slate-700">
           Email
           <input
             name="customerEmail"
             type="email"
             required
             placeholder="you@example.com"
-            className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+            className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
           />
         </label>
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
+        <label className="grid min-w-0 gap-2 text-sm font-semibold text-slate-700">
           WhatsApp number
           <input
             name="whatsapp"
             required
             placeholder="Example: 0172637043"
-            className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+            className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
           />
         </label>
       </div>
@@ -124,13 +125,13 @@ export function CheckoutForm({ product, launchTest = false }: { product: Product
 
       <div className="grid gap-4">
         {product.requiredFields.map((field) => (
-          <label key={field.key} className="grid gap-2 text-sm font-semibold text-slate-700">
+          <label key={field.key} className="grid min-w-0 gap-2 text-sm font-semibold text-slate-700">
             {field.label}
             {field.type === "select" ? (
               <select
                 name={field.key}
                 required
-                className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+                className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
               >
                 <option value="">{field.placeholder}</option>
                 {field.options?.map((option) => (
@@ -148,7 +149,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Product
                 pattern={field.type === "number" ? "[0-9]+" : undefined}
                 maxLength={1000}
                 placeholder={field.placeholder}
-                className="rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
+                className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
               />
             )}
             {field.help ? <span className="text-xs font-medium text-slate-500">{field.help}</span> : null}

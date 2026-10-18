@@ -6,6 +6,7 @@ import { CheckoutForm } from "@/components/checkout-form";
 import { SiteHeader } from "@/components/site-header";
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import { getStoreProductBySlug } from "@/lib/products";
+import { toCheckoutProduct } from "@/lib/checkout-product";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -80,7 +81,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             Make sure your player ID, server, and region match your game account before paying.
           </div>
           {process.env.CHECKOUT_ENABLED === "true" && product.available ? (
-            <CheckoutForm product={product} />
+            <CheckoutForm product={toCheckoutProduct(product)} />
           ) : (
             <div className="trust-surface border border-sky-100 p-6 text-slate-700">
               <h2 className="text-lg font-bold text-slate-950">Packages</h2>

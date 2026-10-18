@@ -60,7 +60,7 @@ export function AdminToyyibPay() {
   return (
     <section className="border-b border-slate-200 pb-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div><h2 className="font-display text-2xl font-bold">ToyyibPay FPX</h2><p className="mt-2 text-sm text-slate-600">MYR payments. Transaction fees are charged to the store.</p></div>
+        <div><h2 className="font-display text-2xl font-bold">ToyyibPay FPX</h2><p className="mt-2 text-sm text-slate-600">MYR payments. A separate RM1.00 FPX fee is shown to customers at checkout.</p></div>
         <button type="button" disabled={busy} onClick={() => void check()} className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-4 py-3 text-sm font-bold disabled:opacity-50"><RefreshCw className="h-4 w-4" />Check connection</button>
       </div>
       {message && <p role="status" className="mt-4 rounded-md bg-sky-50 p-4 text-sm text-sky-900">{message}</p>}
