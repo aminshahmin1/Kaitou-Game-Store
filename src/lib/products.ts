@@ -1,4 +1,4 @@
-import { getFazerCardsBalance } from "./integrations/fazercards-balance";
+import { getAvailableSupplierCredit } from "./supplier-credit";
 import { getFundingCostBasis } from "./funding-cost";
 import { estimateCostMyr } from "./cost-conversion";
 import { applyBalanceAvailability } from "./stock";
@@ -69,8 +69,9 @@ export async function getStoreProducts() {
   const products = (data as ProductRow[])
     .map((row) => mapProductRow(row))
     .filter((product) => product.variations.length > 0);
-  const balance = await getFazerCardsBalance().catch(() => null);
-  return applyBalanceAvailability(await refreshSupplierPrices(products), balance?.balanceUsd ?? null);
+  const refreshed = await refreshSupplierPrices(products);
+  const availableCredit = await getAvailableSupplierCredit().catch(() => null);
+  return applyBalanceAvailability(refreshed, availableCredit);
 }
 
 export async function getStoreProductBySlug(slug: string) {
@@ -95,8 +96,9 @@ export async function getStoreProductBySlug(slug: string) {
     return null;
   }
 
-  const balance = await getFazerCardsBalance().catch(() => null);
-  return applyBalanceAvailability(await refreshSupplierPrices([mapProductRow(data as ProductRow)]), balance?.balanceUsd ?? null)[0];
+  const refreshed = await refreshSupplierPrices([mapProductRow(data as ProductRow)]);
+  const availableCredit = await getAvailableSupplierCredit().catch(() => null);
+  return applyBalanceAvailability(refreshed, availableCredit)[0];
 }
 
 export async function getAdminProducts() {

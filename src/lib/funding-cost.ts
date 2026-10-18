@@ -8,14 +8,14 @@ export async function getFundingCostBasis(): Promise<FundingCostBasis | null> {
   const db = createSupabaseAdminClient();
   if (!db) return null;
   const { data, error } = await db.from("funding_batches")
-    .select("effective_rate,usd_credited,order_funding_allocations(amount_usd)")
+    .select("effective_rate,usd_credited,opening_used_usd,order_funding_allocations(amount_usd)")
     .eq("provider", "fazercards")
     .order("topup_date", { ascending: true }).order("created_at", { ascending: true });
   if (error) throw new Error("Funding cost could not be loaded.");
   for (const batch of data ?? []) {
     const used = (batch.order_funding_allocations ?? []).reduce((sum, row) => sum + Number(row.amount_usd), 0);
     const rate = Number(batch.effective_rate);
-    if (Number(batch.usd_credited) - used > 0.00005 && Number.isFinite(rate) && rate >= 0) {
+    if (Number(batch.usd_credited) - Number(batch.opening_used_usd ?? 0) - used > 0.00005 && Number.isFinite(rate) && rate >= 0) {
       return { rate, label: "Estimated at next available funding batch rate" };
     }
   }

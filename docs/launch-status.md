@@ -1,5 +1,15 @@
 # Kaitou launch verification
 
+## Current checkpoint: 2026-10-18
+
+- Deployed stock reservations under a database transaction lock. Store availability deducts held credit; supplier debits are fenced against older balance observations. Paid reservations never expire automatically. New payment links expire at an exact 15-minute Malaysia timestamp; unpaid holds release after a two-minute callback buffer. Late paid orders reacquire credit or move to review without a supplier purchase. SQL rollback cases passed; no paid test used.
+- Durable email outbox queues customer updates/receipts and owner order details only after payment. Unique order/audience/status keys, worker leases, retries and safe recipient validation are implemented. Separate payment reconciliation finds missed callbacks from verified ToyyibPay transactions. Both workers are scheduled every minute and require the existing private cron secret.
+- Owner-only /dashboard/launch-test permits the real flow while public CHECKOUT_ENABLED remains false. Non-owner test attempts return 403; ordinary checkout returns 503. Launch-test orders are excluded from sales revenue, but actual supplier funding usage remains allocated.
+- Paid Orders page added; refund records require revenue permission. Review network errors recover. Storefront search/category filtering, mobile menu and persistent theme controls are wired; customer copy improved. Browser visual checks are unfinished because Computer Use stopped when it could not determine Chrome's current URL. Do not bypass that browser stop in this turn.
+- Funding reconciled from supplier wallet and owner figures: original USD14 (USD3 + USD11) cost approximately RM57.93 and was fully used before storefront accounting. Recent Binance purchase: RM63.39 for net 15 USDT after purchase fee; 4.1 USDT sent, USD4 received. Proportional cost RM17.3266 (stored RM17.33), effective rate RM4.331650/USD. Recent batch prior usage USD3.4421 leaves USD0.5579. Binance credit not sent to FazerCards is excluded. Earlier supplier spending is separate from website sales; no fabricated orders were inserted. Manual selling prices preserved.
+- All isolated regression scripts passed. SQL reservation/outbox checks rolled back all fixtures. Production build passed. No real orders or order emails exist yet. Fresh approval requested for one RM2.10 full-flow test, maximum RM3, ML player 24407481/server 2029; bank payment must be completed by the owner. Do not reuse the old supplier-only test approval.
+- Still required: authorized live FPX-to-supplier-to-receipt test and desktop/mobile visual verification. WhatsApp credentials and full Bahasa Malaysia content remain unfinished; email is the configured notification channel. Public checkout must remain closed until the final test and release checks pass.
+
 ## Verified 2026-10-16 (Malaysia)
 
 - Gmail SMTP test accepted and recipient confirmed receipt.

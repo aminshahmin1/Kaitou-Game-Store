@@ -20,7 +20,7 @@ const statusOptions: Array<[AdminOrder["status"], string]> = [
   ["refunded", "Refunded"],
 ];
 
-export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[] }) {
+export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOrders: AdminOrder[]; allPaid?: boolean }) {
   const [orders, setOrders] = useState(initialOrders);
   const [drafts, setDrafts] = useState<Record<string, Draft>>(() => createDrafts(initialOrders));
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,8 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
     setIsLoading(true);
     setMessage(null);
 
-    const response = await fetch("/api/admin/orders");
+    try {
+    const response = await fetch(allPaid ? "/api/admin/orders?scope=all" : "/api/admin/orders");
     const body = await response.json().catch(() => ({}));
     setIsLoading(false);
 
@@ -43,6 +44,9 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
     const nextOrders = body.orders ?? [];
     setOrders(nextOrders);
     setDrafts(createDrafts(nextOrders));
+    } catch {
+      setMessage("Connection failed. Please try refreshing again.");
+    } finally { setIsLoading(false); }
   }
 
   async function saveOrder(order: AdminOrder) {
@@ -55,6 +59,7 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
     setSavingOrderId(order.id);
     setMessage(null);
 
+    try {
     const response = await fetch(`/api/admin/orders/${order.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -70,6 +75,9 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
 
     setMessage(`${order.orderNumber} updated.`);
     await loadOrders();
+    } catch {
+      setMessage("Connection failed. Your changes have not been confirmed; refresh the order before retrying.");
+    } finally { setSavingOrderId(null); }
   }
 
   function updateDraft(orderId: string, patch: Partial<Draft>) {
@@ -86,7 +94,7 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-col justify-between gap-3 border-b border-slate-200 p-5 md:flex-row md:items-center">
         <div>
-          <h2 className="font-display text-3xl font-bold">Failed order review</h2>
+          <h2 className="font-display text-3xl font-bold">{allPaid ? "Paid orders" : "Failed order review"}</h2>
           <p className="text-sm text-slate-500">
             Review paid fulfillment issues, record support notes, and move orders to the right final status.
           </p>
@@ -124,6 +132,7 @@ export function AdminReviewQueue({ initialOrders }: { initialOrders: AdminOrder[
                   <div className="min-w-0">
                     <p className="text-xs font-bold uppercase text-slate-500">Order</p>
                     <h3 className="break-words font-display text-2xl font-bold">{order.orderNumber}</h3>
+                    {order.isTest && <p className="text-xs font-semibold text-amber-700">Launch test</p>}
                     <p className="mt-1 text-sm text-slate-500">
                       {formatDateTime(order.updatedAt)} / {formatMyr(order.amountMyr)}
                     </p>

@@ -60,4 +60,5 @@ export type CheckoutResult = {
   orderId: string;
   paymentUrl: string;
   paymentSetupRequired: boolean;
+  expiresAt?: string;
 };

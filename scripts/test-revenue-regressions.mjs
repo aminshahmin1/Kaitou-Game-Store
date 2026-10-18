@@ -36,8 +36,10 @@ const orders = paidTimes.map((paid_at, index) => ({
   status: "completed", amount_myr: 10, cost_usd: 1, cost_myr: 4,
   payment_fee_myr: 1, gross_profit_myr: 6, net_profit_myr: 5,
   profit_allocated_at: paid_at,
+  is_test_order: false,
 }));
 orders.push({ ...orders[1], id: "unpaid", order_number: "QA-UNPAID", paid_at: null, status: "review" });
+orders.push({ ...orders[1], id: "launch", order_number: "QA-LAUNCH", is_test_order: true });
 const revenue = load("../src/lib/revenue.ts", {
   "server-only": {},
   "./revenue-dates": dates,
@@ -48,6 +50,7 @@ const revenue = load("../src/lib/revenue.ts", {
         const query = {
           select: () => query, in: () => query, order: () => query,
           not: (key, _operator, value) => { filters.push((row) => row[key] !== value); return query; },
+          eq: (key, value) => { filters.push((row) => row[key] === value); return query; },
           then: (resolve) => Promise.resolve({ data: table === "orders" ? orders.filter((row) => filters.every((filter) => filter(row))) : [], error: null }).then(resolve),
         };
         return query;
@@ -70,4 +73,5 @@ assert.ok(csv.includes("Revenue MYR,20"));
 assert.ok(csv.includes("QA-1,") && csv.includes("QA-2,"));
 assert.ok(!csv.includes("QA-0,") && !csv.includes("QA-3,"));
 assert.ok(!csv.includes("QA-UNPAID"));
+assert.ok(!csv.includes("QA-LAUNCH"));
 console.log("PASS: Malaysia date boundaries, weekly/monthly presets, report rows, and CSV date filtering.");

@@ -13,15 +13,19 @@ const categories = [
   { label: "MYR Checkout", value: "Secure payment with clear order tracking", icon: ShieldCheck },
 ];
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
   await connection();
-  const products = await getStoreProducts();
+  const filters = await searchParams;
+  const query = typeof filters.q === "string" ? filters.q.trim().slice(0, 100).toLowerCase() : "";
+  const products = (await getStoreProducts()).filter((p) =>
+    (!query || `${p.title} ${p.game} ${p.category}`.toLowerCase().includes(query))
+    && (!filters.category || p.type === filters.category));
 
   return (
     <div className="kaitou-shell blue-grid">
       <SiteHeader />
       <main>
-        <section className="relative overflow-hidden border-b border-cyan-300/15">
+        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
           <div className="absolute inset-0 opacity-35">
             <Image
               src="/brand/facebook-cover-current.png"
@@ -40,11 +44,11 @@ export default async function Home() {
                 Malaysia-first game top-ups and Steam gift games
               </div>
               <h1 className="font-display text-6xl font-bold uppercase leading-[0.88] text-white text-balance md:text-8xl">
-                Play more. Spend less.
+                Kaitou Game Store
               </h1>
               <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-200">
                 Buy game top-ups and Steam gift games with clear MYR pricing,
-                secure checkout, and support review for paid orders that need extra help.
+                secure FPX payment, and help from our support team.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
@@ -78,6 +82,7 @@ export default async function Home() {
               ))}
             </div>
           </div>
+
         </section>
 
         <section className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-14" id="products">
@@ -94,6 +99,18 @@ export default async function Home() {
             </div>
           </div>
 
+          <form action="/#products" className="flex flex-wrap items-end gap-3">
+            <label className="grid min-w-0 flex-1 gap-1 text-sm">Search products
+              <input name="q" defaultValue={filters.q ?? ""} maxLength={100} className="min-w-0 rounded-md border border-cyan-300/30 bg-white px-3 py-3 text-slate-950" placeholder="Game name" />
+            </label>
+            <label className="grid gap-1 text-sm">Category
+              <select name="category" defaultValue={filters.category ?? ""} className="rounded-md border border-cyan-300/30 bg-white px-3 py-3 text-slate-950">
+                <option value="">All products</option><option value="topup">Game top-ups</option><option value="steam_gift_game">Steam gift games</option>
+              </select>
+            </label>
+            <button type="submit" className="min-h-12 rounded-md bg-cyan-300 px-4 py-3 font-bold text-slate-950">Search</button>
+          </form>
+
           {products.length > 0 ? (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
@@ -102,7 +119,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="rounded-lg border border-cyan-300/20 bg-white/[0.045] p-8 text-center text-slate-200">
-              Products are being prepared. Please check back soon.
+              {query || filters.category ? "No products match your search." : "Products are being prepared. Please check back soon."}
             </div>
           )}
         </section>

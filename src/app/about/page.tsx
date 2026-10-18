@@ -7,17 +7,17 @@ import { SiteHeader } from "@/components/site-header";
 const trustPoints = [
   {
     title: "Malaysia-first checkout",
-    copy: "Kaitou starts with MYR pricing and payment through ToyyibPay Standard before expanding to Indonesia and Southeast Asia.",
+    copy: "Shop with prices in Malaysian ringgit and pay securely through FPX.",
     icon: ShieldCheck,
   },
   {
     title: "Fast digital delivery",
-    copy: "Paid orders are designed to move straight into processing through FazerCards fulfillment where supported.",
+    copy: "Your order starts processing after payment is confirmed. Delivery times vary by game and package.",
     icon: Zap,
   },
   {
-    title: "Support review SOP",
-    copy: "Failed orders are moved into review so support can retry, contact the customer, fulfill manually, or process refund steps.",
+    title: "Customer support",
+    copy: "Contact our team with your order number if you need help with a purchase or delivery.",
     icon: Headphones,
   },
 ];
@@ -32,7 +32,7 @@ export default function AboutPage() {
     <div className="kaitou-shell blue-grid">
       <SiteHeader />
       <main>
-        <section className="relative overflow-hidden border-b border-cyan-300/15">
+        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
           <div className="absolute inset-0 opacity-25">
             <Image
               src="/brand/facebook-cover-current.png"
@@ -51,7 +51,7 @@ export default function AboutPage() {
                 Kaitou Game Store
               </div>
               <h1 className="font-display text-6xl font-bold uppercase leading-[0.9] text-white text-balance md:text-8xl">
-                Gaming energy. Clean checkout.
+                Kaitou Game Store
               </h1>
               <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-200">
                 Kaitou Game Store is built for players who want game top-ups and Steam

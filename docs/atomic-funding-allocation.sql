@@ -35,7 +35,7 @@ begin
   -- Lock funding batches before deriving their unspent amounts.
   perform id from public.funding_batches where provider = 'fazercards'
     order by topup_date, created_at, id for update;
-  select coalesce(sum(greatest(0, f.usd_credited - coalesce(a.used, 0))), 0)
+  select coalesce(sum(greatest(0, f.usd_credited - f.opening_used_usd - coalesce(a.used, 0))), 0)
     into v_available
     from public.funding_batches f
     left join (select funding_batch_id, sum(amount_usd) used
@@ -47,7 +47,7 @@ begin
   end if;
   v_remaining := v_order.cost_usd;
   for v_batch in
-    select f.id, f.effective_rate, greatest(0, f.usd_credited - coalesce(a.used, 0)) remaining
+    select f.id, f.effective_rate, greatest(0, f.usd_credited - f.opening_used_usd - coalesce(a.used, 0)) remaining
     from public.funding_batches f
     left join (select funding_batch_id, sum(amount_usd) used
                from public.order_funding_allocations group by funding_batch_id) a

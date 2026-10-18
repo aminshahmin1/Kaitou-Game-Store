@@ -46,6 +46,7 @@ vm.runInNewContext(ts.transpileModule(readFileSync(new URL("../src/lib/fulfillme
   if (name === "./fulfillment-snapshot") return { readFulfillmentSnapshot: (value) => { if (!value) throw new Error("Missing mapping"); return value; } };
   if (name === "./integrations/fazercards") return { createFazerCardsOrder: async (input) => { purchases.push(input); return onPurchase(); } };
   if (name === "./revenue") return { allocateFundingForOrder: async () => { allocationCount++; } };
+  if (name === "./supplier-credit") return { hasSupplierReservation: async () => true };
   throw new Error(`Unexpected import ${name}`);
 } });
 reset();
@@ -89,6 +90,7 @@ vm.runInNewContext(ts.transpileModule(readFileSync(new URL("../src/app/api/cron/
   if (name === "next/server") return { NextResponse: Response };
   if (name === "@/lib/fulfillment-recovery") return { recoverInterruptedFulfillment: async () => { workerCalls++; return { recovered: 0 }; } };
   if (name === "@/lib/fulfillment-sync") return { reconcileProviderOrders: async () => ({ updated: 0, failed: 0 }) };
+  if (name === "@/lib/supabase/admin") return { createSupabaseAdminClient: () => ({ rpc: async () => ({ error: null }) }) };
   throw new Error(`Unexpected route dependency ${name}`);
 } });
 assert.equal((await route.POST(new Request("https://example.invalid"))).status, 401);

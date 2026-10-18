@@ -93,3 +93,14 @@ a {
 .text-balance {
   text-wrap: balance;
 }
+
+html[data-theme="light"] .kaitou-shell {
+  background: #f1f7fb;
+  color: #10263a;
+}
+html[data-theme="light"] .kaitou-shell :is(.text-white, .text-slate-200, .text-slate-300, .text-cyan-100, .text-cyan-200, .text-cyan-50):not([data-dark-surface], [data-dark-surface] *) {
+  color: #15334b;
+}
+html[data-theme="light"] .kaitou-shell :is(.text-emerald-300, .text-emerald-200):not([data-dark-surface], [data-dark-surface] *) {
+  color: #086c4b;
+}

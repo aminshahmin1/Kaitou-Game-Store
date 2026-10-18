@@ -7,13 +7,22 @@ import { getStoreProductBySlug } from "@/lib/products";
 import { checkoutSchema } from "@/lib/validation";
 import { getCheckoutPricing } from "@/lib/checkout-pricing";
 import { validateCheckoutFields } from "@/lib/checkout-fields";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 
 function createOrderId() {
   return `KGS-${randomUUID().replace(/-/g, "").slice(0, 20).toUpperCase()}`;
 }
 
 export async function POST(request: Request) {
-  if (process.env.CHECKOUT_ENABLED !== "true") {
+  let launchTest = false;
+  const candidate = await request.clone().json().catch(() => null);
+  if (candidate?.launchTest === true) {
+    if (request.headers.get("origin") !== new URL(request.url).origin || (await getAdminApiSession())?.role !== "owner") {
+      return NextResponse.json({ error: "Owner access required for a launch test." }, { status: 403 });
+    }
+    launchTest = true;
+  }
+  if (process.env.CHECKOUT_ENABLED !== "true" && !launchTest) {
     return NextResponse.json(
       { error: "Checkout is temporarily unavailable. Please check back soon." },
       { status: 503 },
@@ -53,7 +62,7 @@ export async function POST(request: Request) {
     }
 
     const orderId = createOrderId();
-    await createPendingOrder({
+    const pending = await createPendingOrder({
       orderId,
       product,
       variation,
@@ -61,6 +70,7 @@ export async function POST(request: Request) {
       customerEmail: parsed.data.customerEmail,
       whatsapp: parsed.data.whatsapp,
       fieldValues: customerFields.values,
+      isTest: launchTest,
     });
 
     const payment = await createToyyibPayBill({
@@ -70,6 +80,7 @@ export async function POST(request: Request) {
       customerName: parsed.data.customerName,
       customerEmail: parsed.data.customerEmail,
       whatsapp: parsed.data.whatsapp,
+      expiresAt: pending.expiresAt,
     });
     await attachPaymentReference(orderId, payment.providerReference);
 
@@ -78,6 +89,7 @@ export async function POST(request: Request) {
       paymentUrl: payment.paymentUrl,
       paymentSetupRequired: payment.paymentSetupRequired,
       pricing,
+      expiresAt: pending.expiresAt,
     });
   } catch (error) {
     console.error("Checkout failed", {

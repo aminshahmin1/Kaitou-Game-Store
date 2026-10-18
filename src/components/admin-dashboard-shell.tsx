@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   BarChart3,
   Boxes,
+  ClipboardList,
   KeyRound,
   LayoutDashboard,
   Settings,
@@ -30,6 +31,7 @@ const navigation: Array<{
 }> = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/products", label: "Products", icon: Boxes, permission: "products" },
+  { href: "/dashboard/orders", label: "Orders", icon: ClipboardList, permission: "review" },
   { href: "/dashboard/review", label: "Failed review", icon: AlertTriangle, permission: "review" },
   { href: "/dashboard/revenue", label: "Revenue", icon: BarChart3, permission: "revenue" },
   { href: "/dashboard/staff", label: "Staff", icon: Users, permission: "staff" },

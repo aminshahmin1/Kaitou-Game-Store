@@ -21,6 +21,7 @@ type AdminOrderRow = {
   created_at: string;
   updated_at: string;
   paid_at: string | null;
+  is_test_order: boolean;
   products: unknown;
   product_variations: unknown;
 };
@@ -44,12 +45,13 @@ export type AdminOrder = {
   createdAt: string;
   updatedAt: string;
   paidAt: string | null;
+  isTest: boolean;
 };
 
 const reviewStatuses: AdminOrderStatus[] = ["review", "failed", "refunded"];
 const allowedStatuses: AdminOrderStatus[] = ["processing", "completed", "review", "failed", "refunded"];
 
-export async function getReviewOrders() {
+export async function getReviewOrders(options: { allPaid?: boolean } = {}) {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -59,9 +61,10 @@ export async function getReviewOrders() {
   const { data, error } = await supabase
     .from("orders")
     .select(
-      "id, order_number, status, customer_name, customer_email, customer_whatsapp, customer_fields, amount_myr, payment_reference, fulfillment_reference, failure_reason, support_notes, refund_reference, created_at, updated_at, paid_at, products(title), product_variations(title)",
+      "id, order_number, status, customer_name, customer_email, customer_whatsapp, customer_fields, amount_myr, payment_reference, fulfillment_reference, failure_reason, support_notes, refund_reference, created_at, updated_at, paid_at, is_test_order, products(title), product_variations(title)",
     )
-    .in("status", reviewStatuses)
+    .in("status", options.allPaid ? allowedStatuses : reviewStatuses)
+    .not("paid_at", "is", null)
     .order("updated_at", { ascending: false });
 
   if (error) {
@@ -163,6 +166,7 @@ function mapAdminOrder(row: AdminOrderRow): AdminOrder {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     paidAt: row.paid_at,
+    isTest: row.is_test_order === true,
   };
 }
 

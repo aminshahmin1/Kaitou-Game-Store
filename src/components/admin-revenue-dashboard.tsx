@@ -260,6 +260,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
                   <th className="px-4 py-3">Credited</th>
                   <th className="px-4 py-3">MYR spent</th>
                   <th className="px-4 py-3">Rate</th>
+                  <th className="px-4 py-3">Earlier use</th>
                   <th className="px-4 py-3">Allocated</th>
                   <th className="px-4 py-3">Remaining</th>
                 </tr>
@@ -275,6 +276,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
                       <td className="px-4 py-4">{batch.usdCredited.toFixed(4)} USDT</td>
                       <td className="px-4 py-4">{formatMyr(batch.myrSpent + batch.feesMyr)}</td>
                       <td className="px-4 py-4">RM {batch.effectiveRate.toFixed(4)}</td>
+                      <td className="px-4 py-4">{batch.openingUsedUsd.toFixed(4)} USDT</td>
                       <td className="px-4 py-4">{batch.allocatedUsd.toFixed(4)} USDT</td>
                       <td className="px-4 py-4 font-bold">{batch.remainingUsd.toFixed(4)} USDT</td>
                     </tr>

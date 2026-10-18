@@ -3,6 +3,7 @@ import { createFazerCardsOrder } from "./integrations/fazercards";
 import { allocateFundingForOrder } from "./revenue";
 import { getCheckoutPricing } from "./checkout-pricing";
 import { createFulfillmentSnapshot, readFulfillmentSnapshot } from "./fulfillment-snapshot";
+import { reserveSupplierCredit } from "./supplier-credit";
 import type { OrderStatus, Product, ProductVariation } from "./types";
 
 type CreatePendingOrderInput = {
@@ -13,6 +14,7 @@ type CreatePendingOrderInput = {
   customerEmail: string;
   whatsapp: string;
   fieldValues: Record<string, string>;
+  isTest?: boolean;
 };
 
 export async function createPendingOrder(input: CreatePendingOrderInput) {
@@ -23,6 +25,7 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     throw new Error("Order storage is not configured.");
   }
 
+  const expiresAt = new Date(Date.now() + 15 * 60_000).toISOString();
   const { error } = await supabase.from("orders").insert({
     order_number: input.orderId,
     product_id: input.product.id,
@@ -39,11 +42,17 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
     cost_myr: input.variation.costMyr,
     payment_fee_myr: 1,
     fulfillment_snapshot: createFulfillmentSnapshot(input.product, input.variation),
+    product_title: input.product.title,
+    variation_title: input.variation.title,
+    payment_expires_at: expiresAt,
+    is_test_order: input.isTest === true,
   });
 
   if (error) {
     throw new Error(error.message);
   }
+  if (!await reserveSupplierCredit(input.orderId)) throw new Error("This package has just gone out of stock. Please choose another package.");
+  return { expiresAt };
 }
 
 export async function attachPaymentReference(orderId: string, paymentReference: string | null) {
@@ -188,6 +197,7 @@ export async function markOrderPaymentCallback(input: {
 
   try {
     const snapshot = readFulfillmentSnapshot(order.fulfillment_snapshot);
+    if (!await reserveSupplierCredit(input.orderId)) throw new Error("Supplier credit is no longer sufficient for this paid order. Support must arrange delivery or refund.");
     const fulfillment = await createFazerCardsOrder({
       orderId: input.orderId,
       product: snapshot.product,

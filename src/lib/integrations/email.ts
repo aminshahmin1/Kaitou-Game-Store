@@ -16,9 +16,16 @@ export function getEmailConfiguration() {
 
 export async function sendAdminEmail(subject: string, text: string) {
   const config = getEmailConfiguration();
+  if (!config.recipient) throw new Error("Admin email is not configured.");
+  return sendStoreEmail(config.recipient, subject, text);
+}
+
+export async function sendStoreEmail(to: string, subject: string, text: string, messageId?: string) {
+  const config = getEmailConfiguration();
   if (!config.configured || !config.from || !config.recipient) {
     throw new Error("Email configuration is incomplete.");
   }
+  if (!z.email().safeParse(to).success) throw new Error("Recipient email is invalid.");
   const port = Number(process.env.SMTP_PORT ?? "465");
   if (![465, 587].includes(port)) throw new Error("SMTP must use a TLS-enabled port.");
   const transport = nodemailer.createTransport({
@@ -36,7 +43,8 @@ export async function sendAdminEmail(subject: string, text: string) {
   try {
     const result = await transport.sendMail({
       from: { name: "Kaitou Game Store", address: config.from },
-      to: config.recipient,
+      to,
+      ...(messageId ? { messageId } : {}),
       subject: subject.replace(/[\r\n]/g, " ").slice(0, 200),
       text,
     });

@@ -3,6 +3,7 @@ import { createSupabaseAdminClient } from "./supabase/admin";
 import { readFulfillmentSnapshot } from "./fulfillment-snapshot";
 import { createFazerCardsOrder } from "./integrations/fazercards";
 import { allocateFundingForOrder } from "./revenue";
+import { hasSupplierReservation } from "./supplier-credit";
 
 export async function recoverInterruptedFulfillment() {
   const db = createSupabaseAdminClient();
@@ -30,6 +31,7 @@ export async function recoverInterruptedFulfillment() {
   let result;
   try {
     const snapshot = readFulfillmentSnapshot(order.fulfillment_snapshot);
+    if (!await hasSupplierReservation(order.id)) throw new Error("No supplier reservation exists for this order.");
     result = await createFazerCardsOrder({
       orderId: order.order_number, product: snapshot.product, variation: snapshot.variation,
       fieldValues: order.customer_fields ?? {},

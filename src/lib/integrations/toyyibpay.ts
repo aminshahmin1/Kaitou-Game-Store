@@ -11,6 +11,7 @@ type ToyyibPayBillInput = {
   customerName: string;
   customerEmail: string;
   whatsapp: string;
+  expiresAt?: string;
 };
 
 function cleanToyyibText(value: string, maxLength: number) {
@@ -29,6 +30,7 @@ export async function createToyyibPayBill(input: ToyyibPayBillInput) {
     customerName: input.customerName,
     customerEmail: input.customerEmail,
     whatsapp: input.whatsapp,
+    expiresAt: input.expiresAt,
   });
 }
 
@@ -40,6 +42,7 @@ export async function createToyyibPayPayment(input: {
   customerEmail: string;
   whatsapp: string;
   test?: boolean;
+  expiresAt?: string;
 }) {
   const secretKey = process.env.TOYYIBPAY_SECRET_KEY;
   const categoryCode = process.env.TOYYIBPAY_CATEGORY_CODE;
@@ -54,6 +57,12 @@ export async function createToyyibPayPayment(input: {
   }
 
   const billAmountInSen = Math.round(input.amountMyr * 100);
+  const expiry = new Date(input.expiresAt ?? Date.now() + 15 * 60_000);
+  if (!Number.isFinite(expiry.getTime()) || expiry.getTime() <= Date.now()) throw new Error("Payment link has expired. Start a new checkout.");
+  const expiryParts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kuala_Lumpur", day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+  }).formatToParts(expiry).map(({ type, value }) => [type, value]));
   if (!Number.isSafeInteger(billAmountInSen) || billAmountInSen < 100) {
     throw new Error("FPX payments require an order total of at least RM1.00.");
   }
@@ -80,7 +89,7 @@ export async function createToyyibPayPayment(input: {
     billContentEmail: "Thank you for ordering from Kaitou Game Store.",
     // Already included in billAmount; asking the gateway to add it would double-charge.
     billChargeToCustomer: "",
-    billExpiryDays: "1",
+    billExpiryDate: `${expiryParts.day}-${expiryParts.month}-${expiryParts.year} ${expiryParts.hour}:${expiryParts.minute}:${expiryParts.second}`,
   });
 
   const response = await fetch(`${apiBaseUrl.replace(/\/$/, "")}/index.php/api/createBill`, {

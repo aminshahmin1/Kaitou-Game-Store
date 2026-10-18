@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getReviewOrders } from "@/lib/admin-orders";
 import { getAdminApiSession } from "@/lib/auth/admin-api";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getAdminApiSession("review");
 
   if (!session) {
@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    const orders = await getReviewOrders();
+    const orders = await getReviewOrders({ allPaid: new URL(request.url).searchParams.get("scope") === "all" });
     return NextResponse.json({ orders });
   } catch (error) {
     console.error("Review orders load failed", {

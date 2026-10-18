@@ -36,7 +36,7 @@ const db = { from(table) {
   return query;
 } };
 const products = load("../src/lib/products.ts", {
-  "./integrations/fazercards-balance": {}, "./funding-cost": { getFundingCostBasis: async () => null },
+  "./supplier-credit": {}, "./funding-cost": { getFundingCostBasis: async () => null },
   "./cost-conversion": {}, "./stock": {}, "./integrations/fazercards-pricing": {},
   "./integrations/fazercards-catalog": {}, "./supabase/admin": { createSupabaseAdminClient: () => db },
   "./validation": { adminProductUpdateSchema: { parse: (input) => input } },

@@ -13,6 +13,7 @@ const env = { TOYYIBPAY_SECRET_KEY: "test-secret", TOYYIBPAY_CATEGORY_CODE: "tes
 let order, tests, purchases = 0, confirmed = true, bodySent, session = null;
 let failBill = false;
 let duringPurchase = () => {};
+let creditAvailable = true;
 function reset() {
   order = { id: "order1", order_number: "KGS-TEST", status: "pending_payment", payment_reference: "bill123", amount_myr: 10, paid_at: null, fulfillment_reference: null, products: { id: "p1", type: "topup" }, product_variations: { id: "v1" }, customer_fields: {} };
   tests = [{ id: "KTEST-TEST", bill_code: "testbill", status: "pending", amount_myr: 1 }];
@@ -20,6 +21,7 @@ function reset() {
   order.fulfillment_snapshot = { version: 1, product: { type: "topup", fazercardsProductId: "original-game" }, variation: { sku: "original", fazercardsSku: "original-game:original-pack" } };
   confirmed = true;
   duringPurchase = () => {};
+  creditAvailable = true;
 }
 reset();
 const database = {
@@ -71,6 +73,7 @@ function load(file) {
       if (name.endsWith("auth/admin-api")) return { getAdminApiSession: async () => session };
       if (name === "./integrations/fazercards") return { createFazerCardsOrder: async (input) => { assert.equal(input.variation.fazercardsSku, "original-game:original-pack"); purchases++; duringPurchase(); return { status: "processing", providerReference: "fazer123" }; } };
       if (name === "./revenue") return { allocateFundingForOrder: async () => {} };
+      if (name === "./supplier-credit") return { reserveSupplierCredit: async () => creditAvailable };
       if (name.startsWith("@/")) return load(`src/${name.slice(2)}.ts`);
       if (name.startsWith(".")) return load(path.resolve(path.dirname(absolute), `${name}.ts`));
       return require(name);
@@ -117,6 +120,12 @@ confirmed = true;
 const concurrent = await Promise.all([webhook.POST(callback()), webhook.POST(callback()), webhook.POST(callback())]);
 assert.ok(concurrent.every((response) => response.status === 200));
 assert.equal(purchases, 1);
+assert.ok(order.paid_at);
+reset();
+creditAvailable = false;
+await webhook.POST(callback());
+assert.equal(purchases, 0);
+assert.equal(order.status, "review");
 assert.ok(order.paid_at);
 reset();
 duringPurchase = () => { order.status = "refunded"; order.refund_reference = "MANUAL-REFUND"; };

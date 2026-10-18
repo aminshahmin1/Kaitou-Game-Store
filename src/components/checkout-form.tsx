@@ -7,7 +7,7 @@ import { formatMyr } from "@/lib/catalog";
 import type { CheckoutResult, Product } from "@/lib/types";
 import { getCheckoutPricing } from "@/lib/checkout-pricing";
 
-export function CheckoutForm({ product }: { product: Product }) {
+export function CheckoutForm({ product, launchTest = false }: { product: Product; launchTest?: boolean }) {
   const [result, setResult] = useState<CheckoutResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +25,7 @@ export function CheckoutForm({ product }: { product: Product }) {
     );
 
     const payload = {
+      ...(launchTest ? { launchTest: true } : {}),
       productSlug: product.slug,
       variationId: String(formData.get("variationId") ?? ""),
       customerName: String(formData.get("customerName") ?? ""),
@@ -57,7 +58,7 @@ export function CheckoutForm({ product }: { product: Product }) {
   }
 
   return (
-    <form action={onSubmit} className="trust-surface grid gap-5 rounded-lg border border-sky-100 p-5 shadow-2xl shadow-sky-950/20 md:p-6">
+    <form action={onSubmit} onChange={() => { if (result) setResult(null); }} className="trust-surface grid gap-5 rounded-lg border border-sky-100 p-5 shadow-2xl shadow-sky-950/20 md:p-6">
       <div className="flex items-start justify-between gap-4 border-b border-sky-100 pb-5">
         <div>
           <p className="text-sm font-bold uppercase text-sky-600">Secure checkout</p>
@@ -164,6 +165,7 @@ export function CheckoutForm({ product }: { product: Product }) {
       {result ? (
         <div className="rounded-md border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
           <strong className="block">Payment link created for order {result.orderId}.</strong>
+          {result.expiresAt && <p className="mt-1">Pay before {new Intl.DateTimeFormat("en-MY", { timeZone: "Asia/Kuala_Lumpur", hour: "2-digit", minute: "2-digit", hour12: true }).format(new Date(result.expiresAt))} MYT.</p>}
           {result.paymentSetupRequired ? "Payment setup is not active yet. This order was not charged." : "Continue to ToyyibPay."}
           <a
             href={result.paymentUrl}
@@ -182,7 +184,7 @@ export function CheckoutForm({ product }: { product: Product }) {
 
       <button
         type="submit"
-        disabled={isSubmitting || !pricing}
+        disabled={isSubmitting || !pricing || Boolean(result)}
         className="flex min-h-12 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}

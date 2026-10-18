@@ -31,6 +31,8 @@ console.log("PASS: Trimmed IDs, preserved leading zeroes, strict product fields,
 const nativeRequire = createRequire(import.meta.url);
 let saved = null;
 let billCalls = 0;
+const env = { CHECKOUT_ENABLED: "true" };
+let adminSession = null;
 const variation = { id: "option1", active: true, available: true, priceMyr: 1.10 };
 const product = { available: true, requiredFields: fields, variations: [variation] };
 const modules = new Map();
@@ -40,10 +42,11 @@ function load(relative) {
   modules.set(relative, target);
   vm.runInNewContext(ts.transpileModule(readFileSync(new URL(`../${relative}`, import.meta.url), "utf8"), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-  }).outputText, { exports: target, console, process: { env: { CHECKOUT_ENABLED: "true" } }, require(name) {
+  }).outputText, { exports: target, console, URL, process: { env }, require(name) {
     if (name === "next/server") return { NextResponse: Response };
     if (name === "@/lib/products") return { getStoreProductBySlug: async () => product };
-    if (name === "@/lib/orders") return { createPendingOrder: async (input) => { saved = input; }, attachPaymentReference: async () => {} };
+    if (name === "@/lib/auth/admin-api") return { getAdminApiSession: async () => adminSession };
+    if (name === "@/lib/orders") return { createPendingOrder: async (input) => { saved = input; return { expiresAt: new Date(Date.now() + 900000).toISOString() }; }, attachPaymentReference: async () => {} };
     if (name === "@/lib/integrations/toyyibpay") return { createToyyibPayBill: async () => { billCalls++; return { paymentUrl: "https://example.test/bill", providerReference: "mock", paymentSetupRequired: false }; } };
     if (name.startsWith("@/")) return load(`src/${name.slice(2)}.ts`);
     return nativeRequire(name);
@@ -64,3 +67,13 @@ assert.equal((await response.json()).pricing.totalMyr, 2.10);
 assert.equal(saved.fieldValues.player_id, "0012345678901234567890");
 assert.equal(billCalls, 1);
 console.log("PASS: Real checkout handler rejects invalid fields before storage/payment and uses normalized valid fields plus RM1 fee.");
+env.CHECKOUT_ENABLED = "false";
+assert.equal((await POST(new Request("https://example.test/api/checkout", { method: "POST", body: JSON.stringify(payload) }))).status, 503);
+const launchRequest = () => new Request("https://example.test/api/checkout", { method: "POST", headers: { origin: "https://example.test" }, body: JSON.stringify({ ...payload, launchTest: true }) });
+assert.equal((await POST(launchRequest())).status, 403);
+adminSession = { role: "staff" };
+assert.equal((await POST(launchRequest())).status, 403);
+adminSession = { role: "owner" };
+assert.equal((await POST(launchRequest())).status, 200);
+assert.equal(saved.isTest, true);
+console.log("PASS: Public checkout remains closed while owner-only launch tests are authenticated and marked separately.");

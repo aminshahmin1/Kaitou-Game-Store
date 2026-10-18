@@ -14,6 +14,7 @@ type FundingBatchRow = {
   currency: string;
   myr_spent: MoneyValue;
   usd_credited: MoneyValue;
+  opening_used_usd: MoneyValue;
   fees_myr: MoneyValue;
   effective_rate: MoneyValue;
   reference: string | null;
@@ -50,6 +51,7 @@ export type FundingBatch = {
   currency: string;
   myrSpent: number;
   usdCredited: number;
+  openingUsedUsd: number;
   feesMyr: number;
   effectiveRate: number;
   allocatedUsd: number;
@@ -135,7 +137,7 @@ export async function getRevenueDashboard(input: { from?: string; to?: string; r
       supabase
         .from("funding_batches")
         .select(
-          "id, topup_date, provider, currency, myr_spent, usd_credited, fees_myr, effective_rate, reference, notes, created_at, order_funding_allocations(amount_usd, cost_myr)",
+          "id, topup_date, provider, currency, myr_spent, usd_credited, opening_used_usd, fees_myr, effective_rate, reference, notes, created_at, order_funding_allocations(amount_usd, cost_myr)",
         )
         .order("topup_date", { ascending: false })
         .order("created_at", { ascending: false }),
@@ -145,6 +147,7 @@ export async function getRevenueDashboard(input: { from?: string; to?: string; r
           "id, order_number, status, amount_myr, cost_usd, cost_myr, payment_fee_myr, gross_profit_myr, net_profit_myr, profit_allocated_at, paid_at, created_at, products(title), product_variations(title)",
         )
         .in("status", paidOrderStatuses)
+        .eq("is_test_order", false)
         .not("paid_at", "is", null)
         .order("created_at", { ascending: false }),
     ]);
@@ -305,11 +308,12 @@ function mapFundingBatch(row: FundingBatchRow): FundingBatch {
     currency: row.currency,
     myrSpent: round2(toNumber(row.myr_spent)),
     usdCredited,
+    openingUsedUsd: round4(toNumber(row.opening_used_usd)),
     feesMyr: round2(toNumber(row.fees_myr)),
     effectiveRate: round6(toNumber(row.effective_rate)),
     allocatedUsd,
     allocatedMyr,
-    remainingUsd: round4(Math.max(0, usdCredited - allocatedUsd)),
+    remainingUsd: round4(Math.max(0, usdCredited - allocatedUsd - toNumber(row.opening_used_usd))),
     reference: row.reference,
     notes: row.notes,
     createdAt: row.created_at,

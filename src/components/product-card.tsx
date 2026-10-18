@@ -10,7 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/products/${product.slug}`}
       className="group overflow-hidden rounded-lg border border-cyan-300/20 bg-white/[0.045] shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:-translate-y-1 hover:border-cyan-300/50"
     >
-      <div className={`min-h-44 bg-gradient-to-br ${product.imageTone} p-5`}>
+      <div data-dark-surface className={`min-h-44 bg-gradient-to-br ${product.imageTone} p-5`}>
         <div className="flex items-center justify-between">
           <span className="rounded-md bg-black/35 px-3 py-1 text-xs font-bold uppercase text-cyan-100">
             {product.category}

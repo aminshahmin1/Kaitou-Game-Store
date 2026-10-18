@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 
 import { updateAdminOrder } from "@/lib/admin-orders";
 import { getAdminApiSession } from "@/lib/auth/admin-api";
+import { hasDashboardPermission } from "@/lib/auth/permissions";
 
 const orderUpdateSchema = z.object({
   status: z.enum(["processing", "completed", "review", "failed", "refunded"]).optional(),
@@ -24,6 +25,9 @@ export async function PATCH(
   try {
     const { id } = await params;
     const payload = orderUpdateSchema.parse(await request.json());
+    if ((payload.status === "refunded" || Boolean(payload.refundReference?.trim())) && !hasDashboardPermission(session, "revenue")) {
+      return NextResponse.json({ error: "Revenue permission is required to record customer refunds." }, { status: 403 });
+    }
     await updateAdminOrder(id, payload);
 
     return NextResponse.json({ ok: true });

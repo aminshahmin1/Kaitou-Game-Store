@@ -34,7 +34,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             Back to products
           </Link>
 
-          <div className={`min-h-[420px] rounded-lg border border-cyan-300/20 bg-gradient-to-br ${product.imageTone} p-6 shadow-2xl shadow-black/30`}>
+          <div data-dark-surface className={`min-h-[420px] rounded-lg border border-cyan-300/20 bg-gradient-to-br ${product.imageTone} p-6 shadow-2xl shadow-black/30`}>
             <div className="flex items-center justify-between">
               <span className="rounded-md bg-black/35 px-3 py-1 text-xs font-bold uppercase text-cyan-100">
                 {product.category}
@@ -49,8 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {product.title}
               </h1>
               <p className="mt-4 max-w-md text-sm font-medium leading-6 text-slate-200">
-                Fill the required fields carefully. Paid orders are automatically moved
-                into processing and reviewed by support if fulfillment fails.
+                Choose a package and enter your game details. We will send an email update after payment and when your order is delivered.
               </p>
             </div>
           </div>
