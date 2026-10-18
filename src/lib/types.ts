@@ -10,6 +10,7 @@ export type RequiredField = {
 };
 
 export type Product = {
+  leaderboardUnit?: string;
   id: string;
   slug: string;
   title: string;
@@ -28,6 +29,10 @@ export type Product = {
 };
 
 export type ProductVariation = {
+  currencyUnits?: number;
+  supplierQuantity?: number;
+  repeatable?: boolean;
+  basePackageTitle?: string | null;
   id: string;
   title: string;
   sku: string;

@@ -25,6 +25,10 @@ const requiredFieldSchema = z.object({
 });
 
 const variationSchema = z.object({
+  currencyUnits: z.number().int().min(0).max(5_000_000_000).default(0),
+  supplierQuantity: z.number().int().min(1).max(5).default(1),
+  repeatable: z.boolean().default(false),
+  basePackageTitle: z.string().max(120).nullable().optional(),
   id: z.string().uuid().optional(),
   title: z.string().min(1).max(120),
   sku: z.string().min(1).max(120),
@@ -37,6 +41,7 @@ const variationSchema = z.object({
 });
 
 const adminProductBaseSchema = z.object({
+  leaderboardUnit: z.string().trim().max(40).default(""),
   title: z.string().min(2).max(160),
   slug: z.string().min(2).max(180).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   type: z.enum(["topup", "steam_gift_game"]),

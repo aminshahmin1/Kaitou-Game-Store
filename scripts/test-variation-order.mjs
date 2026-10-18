@@ -36,6 +36,7 @@ const db = { from(table) {
   return query;
 } };
 const products = load("../src/lib/products.ts", {
+  "./custom-packages": { normalizeCustomPackages: (_type, variations) => variations },
   "./supplier-credit": {}, "./funding-cost": { getFundingCostBasis: async () => null },
   "./cost-conversion": {}, "./stock": {}, "./integrations/fazercards-pricing": {},
   "./integrations/fazercards-catalog": {}, "./supabase/admin": { createSupabaseAdminClient: () => db },

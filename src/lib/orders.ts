@@ -4,6 +4,7 @@ import { allocateFundingForOrder } from "./revenue";
 import { getCheckoutPricing } from "./checkout-pricing";
 import { createFulfillmentSnapshot, readFulfillmentSnapshot } from "./fulfillment-snapshot";
 import { reserveSupplierCredit } from "./supplier-credit";
+import { makeRankingSnapshot } from "./currency-ranking";
 import type { OrderStatus, Product, ProductVariation } from "./types";
 
 type CreatePendingOrderInput = {
@@ -27,6 +28,7 @@ export async function createPendingOrder(input: CreatePendingOrderInput) {
 
   const expiresAt = new Date(Date.now() + 15 * 60_000).toISOString();
   const { error } = await supabase.from("orders").insert({
+    ...makeRankingSnapshot(input.product, input.variation, input.fieldValues),
     order_number: input.orderId,
     product_id: input.product.id,
     product_variation_id: input.variation.id,
@@ -182,6 +184,8 @@ export async function markOrderPaymentCallback(input: {
       payment_reference: input.billCode || null,
       payment_raw: input.rawPayload,
       paid_at: paidAt,
+      ...(order.fulfillment_snapshot?.variation?.supplierQuantity > 1
+        ? { bundle_lease_until: new Date(Date.now() + 2 * 60_000).toISOString() } : {}),
     })
     .eq("id", order.id)
     .is("paid_at", null)
@@ -209,6 +213,7 @@ export async function markOrderPaymentCallback(input: {
       .from("orders")
       .update({
         status: fulfillment.status,
+        bundle_lease_until: null,
         fulfillment_reference: fulfillment.providerReference,
         fulfillment_raw: fulfillment.raw ?? {
           message: fulfillment.message,
@@ -246,6 +251,7 @@ export async function markOrderPaymentCallback(input: {
       .update({
         status: "review",
         failure_reason: message,
+        bundle_lease_until: null,
         fulfillment_raw: { error: message },
       })
       .eq("id", order.id)

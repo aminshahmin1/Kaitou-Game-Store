@@ -8,6 +8,8 @@ const snapshotSchema = z.object({
     fazercardsProductId: z.string().min(1).nullable(),
   }),
   variation: z.object({
+    supplierQuantity: z.number().int().min(1).max(5).default(1),
+    basePackageTitle: z.string().max(120).nullable().optional(),
     sku: z.string().min(1),
     fazercardsSku: z.string().min(1),
   }),
@@ -17,7 +19,8 @@ export function createFulfillmentSnapshot(product: Product, variation: ProductVa
   return snapshotSchema.parse({
     version: 1,
     product: { type: product.type, fazercardsProductId: product.fazercardsProductId || null },
-    variation: { sku: variation.sku, fazercardsSku: variation.fazercardsSku },
+    variation: { sku: variation.sku, fazercardsSku: variation.fazercardsSku,
+      supplierQuantity: variation.supplierQuantity ?? 1, basePackageTitle: variation.basePackageTitle },
   });
 }
 

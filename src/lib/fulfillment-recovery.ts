@@ -18,14 +18,15 @@ export async function recoverInterruptedFulfillment() {
 
   const claimedAt = new Date().toISOString();
   const { data: claimed, error: claimError } = await db.from("orders")
-    .update({ updated_at: claimedAt }).eq("id", order.id).eq("updated_at", order.updated_at)
+    .update({ updated_at: claimedAt, ...(order.fulfillment_snapshot?.variation?.supplierQuantity > 1
+      ? { bundle_lease_until: new Date(Date.now() + 2 * 60_000).toISOString() } : {}) }).eq("id", order.id).eq("updated_at", order.updated_at)
     .eq("status", "processing").not("paid_at", "is", null).is("fulfillment_reference", null)
     .select("updated_at").maybeSingle();
   if (claimError) throw new Error("Could not claim interrupted fulfillment.");
   if (!claimed) return { recovered: 0, review: 0 };
 
   // The DB trigger owns updated_at; use its returned value as the claim token.
-  const save = (patch: Record<string, unknown>) => db.from("orders").update(patch)
+  const save = (patch: Record<string, unknown>) => db.from("orders").update({ ...patch, bundle_lease_until: null })
     .eq("id", order.id).eq("status", "processing").is("fulfillment_reference", null)
     .eq("updated_at", claimed.updated_at).select("id").maybeSingle();
   let result;

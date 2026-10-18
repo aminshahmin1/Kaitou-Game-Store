@@ -1,10 +1,12 @@
 import "server-only";
 
 import { createSupabaseAdminClient } from "./supabase/admin";
+import type { BundleProgress } from "./integrations/fazercards-bundles";
 
 type AdminOrderStatus = "processing" | "completed" | "failed" | "review" | "refunded";
 
 type AdminOrderRow = {
+  fulfillment_raw?: unknown;
   id: string;
   order_number: string;
   status: AdminOrderStatus;
@@ -27,6 +29,7 @@ type AdminOrderRow = {
 };
 
 export type AdminOrder = {
+  deliveries?: BundleProgress["children"];
   id: string;
   orderNumber: string;
   status: AdminOrderStatus;
@@ -61,7 +64,7 @@ export async function getReviewOrders(options: { allPaid?: boolean } = {}) {
   const { data, error } = await supabase
     .from("orders")
     .select(
-      "id, order_number, status, customer_name, customer_email, customer_whatsapp, customer_fields, amount_myr, payment_reference, fulfillment_reference, failure_reason, support_notes, refund_reference, created_at, updated_at, paid_at, is_test_order, products(title), product_variations(title)",
+      "id, order_number, status, customer_name, customer_email, customer_whatsapp, customer_fields, amount_myr, payment_reference, fulfillment_reference, fulfillment_raw, failure_reason, support_notes, refund_reference, created_at, updated_at, paid_at, is_test_order, products(title), product_variations(title)",
     )
     .in("status", options.allPaid ? allowedStatuses : reviewStatuses)
     .not("paid_at", "is", null)
@@ -115,18 +118,25 @@ export async function updateAdminOrder(
   }
 
   const { data: order, error: readError } = await supabase.from("orders")
-    .select("id,status,paid_at,updated_at,refund_reference,support_notes")
+    .select("id,status,paid_at,updated_at,refund_reference,support_notes,fulfillment_reference,bundle_lease_until")
     .eq("id", orderId).maybeSingle();
   if (readError) throw new Error("Could not load the order. Please try again.");
   if (!order) throw new Error("Order not found.");
 
   const nextStatus = input.status ?? order.status;
+  if (input.status && input.status !== order.status && order.bundle_lease_until
+    && new Date(order.bundle_lease_until).getTime() > Date.now()) {
+    throw new Error("A package delivery is being checked. Wait for it to finish before changing status.");
+  }
   if (input.status && input.status !== order.status) {
     if (!order.paid_at) throw new Error("Payment must be verified before changing order status.");
     if (order.status === "refunded") throw new Error("A refunded order cannot be reopened.");
     const supportNotes = "support_notes" in update ? update.support_notes : order.support_notes;
     if (nextStatus === "completed" && !supportNotes?.trim()) {
       throw new Error("Add support notes confirming delivery before marking this order completed.");
+    }
+    if (nextStatus === "processing" && order.fulfillment_reference?.startsWith("bundle-") && !supportNotes?.trim()) {
+      throw new Error("Record why unconfirmed package deliveries should be retried. Successful deliveries are never repeated.");
     }
   }
   const refundReference = "refund_reference" in update ? update.refund_reference : order.refund_reference;
@@ -147,7 +157,9 @@ export async function updateAdminOrder(
 }
 
 function mapAdminOrder(row: AdminOrderRow): AdminOrder {
+  const progress = row.fulfillment_raw as Partial<BundleProgress> | null;
   return {
+    deliveries: progress?.kind === "bundle" && Array.isArray(progress.children) ? progress.children : undefined,
     id: row.id,
     orderNumber: row.order_number,
     status: row.status,

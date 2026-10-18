@@ -2,15 +2,17 @@ import "server-only";
 
 import type { Product } from "../types";
 import type { ProductVariation } from "../types";
+import { fulfillCustomPackage } from "./fazercards-bundles";
 
-type FazerCardsOrderInput = {
+export type FazerCardsOrderInput = {
+  previous?: unknown;
   orderId: string;
   product: Pick<Product, "type" | "fazercardsProductId">;
-  variation: Pick<ProductVariation, "sku" | "fazercardsSku">;
+  variation: Pick<ProductVariation, "sku" | "fazercardsSku" | "supplierQuantity" | "basePackageTitle">;
   fieldValues: Record<string, string>;
 };
 
-type FazerCardsOrderResult = {
+export type FazerCardsOrderResult = {
   setupRequired: boolean;
   providerReference: string;
   status: "processing" | "completed" | "review" | "failed";
@@ -27,6 +29,13 @@ function getConfig() {
 }
 
 export async function createFazerCardsOrder(input: FazerCardsOrderInput): Promise<FazerCardsOrderResult> {
+  if ((input.variation.supplierQuantity ?? 1) > 1) {
+    return fulfillCustomPackage(input, createSingleOrder, getFazerCardsOrder);
+  }
+  return createSingleOrder(input);
+}
+
+async function createSingleOrder(input: FazerCardsOrderInput): Promise<FazerCardsOrderResult> {
   const { apiBaseUrl, apiKey } = getConfig();
 
   if (!apiKey) {

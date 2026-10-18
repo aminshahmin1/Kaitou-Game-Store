@@ -167,6 +167,17 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
                 </div>
 
                 <div className="grid gap-3 lg:grid-cols-3">
+                  {order.deliveries && <section className="min-w-0 border-y border-slate-200 py-4 lg:col-span-3">
+                    <h4 className="font-bold">Package deliveries</h4>
+                    <ol className="mt-2 divide-y divide-slate-100 text-sm">
+                      {order.deliveries.map((part) => <li key={part.index} className="grid min-w-0 gap-1 py-3 sm:grid-cols-3">
+                        <span>Delivery {part.index}: <strong>{part.status}</strong></span>
+                        <span className="break-all">{part.reference ?? "Not confirmed"}</span>
+                        <span>{part.chargedUsd === null ? "Cost unconfirmed" : `USD ${part.chargedUsd.toFixed(4)}`}</span>
+                        <p className="text-xs text-slate-600 sm:col-span-3">{part.message}</p>
+                      </li>)}
+                    </ol>
+                  </section>}
                   <label className="grid gap-1 text-sm font-semibold text-slate-700 lg:col-span-2">
                     Failure reason
                     <input

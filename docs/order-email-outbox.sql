@@ -30,7 +30,9 @@ begin
     'name',new.customer_name,'email',new.customer_email,'whatsapp',new.customer_whatsapp,
     'fields',new.customer_fields,'amountMyr',new.amount_myr,'subtotalMyr',new.product_amount_myr,
     'feeMyr',new.payment_surcharge_myr,'paidAt',new.paid_at,'refundReference',new.refund_reference,
-    'paymentReference',new.payment_reference);
+    'paymentReference',new.payment_reference,
+    'packageQuantity',coalesce((new.fulfillment_snapshot->'variation'->>'supplierQuantity')::integer,1),
+    'basePackageTitle',new.fulfillment_snapshot->'variation'->>'basePackageTitle');
   insert into public.order_email_outbox(order_id,audience,order_status,payload)
     values(new.id,'customer',new.status::text,payload),(new.id,'admin',new.status::text,payload)
     on conflict(order_id,audience,order_status) do nothing;

@@ -10,6 +10,8 @@ const payloadSchema = z.object({
   subtotalMyr: z.coerce.number().nullable(), feeMyr: z.coerce.number(), paidAt: z.string(),
   refundReference: z.string().nullable(),
   paymentReference: z.string().nullable().optional(),
+  packageQuantity: z.number().int().min(1).max(5).optional(),
+  basePackageTitle: z.string().nullable().optional(),
 });
 const statusText = {
   processing: "Processing", completed: "Completed", failed: "Failed", review: "Review", refunded: "Refunded",
@@ -35,6 +37,7 @@ export function formatOrderEmail(raw: unknown, audience: "customer" | "admin") {
     ...(p.paymentReference ? [["Payment reference", p.paymentReference]] : []),
     ["Order status", statusText[p.status]], ["Customer", p.name], ["Email", p.email],
     ["WhatsApp", p.whatsapp], ["Product", p.product], ["Package", p.variation || "Standard"], ["Quantity", "1"],
+    ...((p.packageQuantity ?? 1) > 1 ? [["Package contents", `${p.packageQuantity} x ${p.basePackageTitle ?? "base top-up"}`]] : []),
     ...Object.entries(p.fields).map(([key, value]) => [key.replace(/_/g, " "), value]),
     ...(p.subtotalMyr !== null ? [["Items", `RM${p.subtotalMyr.toFixed(2)}`], ["FPX fee", `RM${p.feeMyr.toFixed(2)}`]] : []),
     ["Order total", `RM${p.amountMyr.toFixed(2)}`],

@@ -62,7 +62,7 @@ end $$;
 create function public.settle_supplier_reservation()
 returns trigger language plpgsql security invoker set search_path='' as $$
 begin
-  if new.supplier_cost_confirmed_at is not null and new.fulfillment_reference like 'ord-%' then
+  if new.supplier_cost_confirmed_at is not null and (new.fulfillment_reference like 'ord-%' or new.fulfillment_reference like 'bundle-%') then
     update public.supplier_reservations set state='debited',amount_usd=new.cost_usd,debited_at=clock_timestamp()
       where order_id=new.id and state='held';
   elsif new.status::text='refunded' then

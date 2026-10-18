@@ -36,9 +36,10 @@ export function SiteHeader() {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-200 md:flex">
+        <nav className="hidden items-center gap-4 text-sm font-semibold text-slate-200 md:flex xl:gap-7">
           <Link href="/#products">Products</Link>
           <Link href="/order-status">Order status</Link>
+          <Link href="/leaderboard">Rankings</Link>
           <Link href="/about">About</Link>
         </nav>
 
@@ -67,7 +68,7 @@ export function SiteHeader() {
             className="grid h-10 w-10 place-items-center rounded-md border border-cyan-300/20 text-cyan-100 md:hidden">
             {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
-          <div className="hidden items-center gap-2 rounded-md border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-xs font-bold text-cyan-100 sm:flex">
+          <div className="hidden items-center gap-2 rounded-md border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-xs font-bold text-cyan-100 lg:flex">
             <ShieldCheck className="h-4 w-4" />
             MYR Secure Checkout
           </div>
@@ -81,6 +82,7 @@ export function SiteHeader() {
       {menuOpen && <nav className="grid gap-1 border-t border-cyan-300/15 px-5 py-3 text-sm font-semibold md:hidden">
         <Link className="py-3" href="/#products" onClick={() => setMenuOpen(false)}>Products</Link>
         <Link className="py-3" href="/order-status" onClick={() => setMenuOpen(false)}>Order status</Link>
+        <Link className="py-3" href="/leaderboard" onClick={() => setMenuOpen(false)}>Rankings</Link>
         <Link className="py-3" href="/about" onClick={() => setMenuOpen(false)}>About</Link>
       </nav>}
     </header>

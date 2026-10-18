@@ -1,3 +1,4 @@
+import { normalizeCustomPackages } from "./custom-packages";
 import { getAvailableSupplierCredit } from "./supplier-credit";
 import { getFundingCostBasis } from "./funding-cost";
 import { estimateCostMyr } from "./cost-conversion";
@@ -14,6 +15,7 @@ import type { Product, ProductVariation, RequiredField } from "./types";
 import { adminProductCreateSchema, adminProductUpdateSchema } from "./validation";
 
 type ProductRow = {
+  leaderboard_unit?: string;
   id: string;
   slug: string;
   title: string;
@@ -32,6 +34,10 @@ type ProductRow = {
 };
 
 type VariationRow = {
+  currency_units?: number;
+  supplier_quantity?: number;
+  repeatable?: boolean;
+  base_package_title?: string | null;
   id: string;
   title: string;
   sku: string;
@@ -53,7 +59,7 @@ export async function getStoreProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .eq("active", true)
     .eq("available", true)
@@ -84,7 +90,7 @@ export async function getStoreProductBySlug(slug: string) {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .eq("slug", slug)
     .eq("active", true)
@@ -111,7 +117,7 @@ export async function getAdminProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .order("created_at", { ascending: false })
     .order("sort_order", { referencedTable: "product_variations", ascending: true });
@@ -125,6 +131,7 @@ export async function getAdminProducts() {
 
 export async function createAdminProduct(input: unknown) {
   const parsed = adminProductCreateSchema.parse(input);
+  parsed.variations = normalizeCustomPackages(parsed.type, parsed.variations);
   const basis = await getFundingCostBasis();
   const supabase = createSupabaseAdminClient();
 
@@ -146,6 +153,7 @@ export async function createAdminProduct(input: unknown) {
       delivery_type: parsed.deliveryType,
       fazercards_product_id: parsed.fazercardsProductId || null,
       required_fields: parsed.requiredFields,
+      leaderboard_unit: parsed.leaderboardUnit,
       active: parsed.active,
       available: parsed.available,
       source: "manual",
@@ -163,6 +171,9 @@ export async function createAdminProduct(input: unknown) {
       title: variation.title,
       sku: variation.sku,
       fazercards_sku: variation.fazercardsSku || null,
+      supplier_quantity: variation.supplierQuantity, repeatable: variation.repeatable,
+      currency_units: variation.currencyUnits ?? 0,
+      base_package_title: variation.basePackageTitle ?? null,
       cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
       cost_myr: basis && variation.costUsd > 0 ? estimateCostMyr(variation.costUsd, basis.rate) : variation.costMyr,
@@ -181,6 +192,7 @@ export async function createAdminProduct(input: unknown) {
 
 export async function updateAdminProduct(productId: string, input: unknown) {
   const parsed = adminProductUpdateSchema.parse(input);
+  parsed.variations = normalizeCustomPackages(parsed.type, parsed.variations);
   const basis = await getFundingCostBasis();
   const supabase = createSupabaseAdminClient();
 
@@ -202,6 +214,7 @@ export async function updateAdminProduct(productId: string, input: unknown) {
       delivery_type: parsed.deliveryType,
       fazercards_product_id: parsed.fazercardsProductId || null,
       required_fields: parsed.requiredFields,
+      leaderboard_unit: parsed.leaderboardUnit,
       active: parsed.active,
       available: parsed.available,
     })
@@ -217,6 +230,9 @@ export async function updateAdminProduct(productId: string, input: unknown) {
       title: variation.title,
       sku: variation.sku,
       fazercards_sku: variation.fazercardsSku || null,
+      supplier_quantity: variation.supplierQuantity, repeatable: variation.repeatable,
+      currency_units: variation.currencyUnits ?? 0,
+      base_package_title: variation.basePackageTitle ?? null,
       cost_usd: variation.costUsd,
       price_myr: variation.priceMyr,
       cost_myr: basis && variation.costUsd > 0 ? estimateCostMyr(variation.costUsd, basis.rate) : variation.costMyr,
@@ -452,6 +468,7 @@ function mapProductRow(
     available: row.available,
     fazercardsProductId: row.fazercards_product_id,
     requiredFields: row.required_fields ?? [],
+    leaderboardUnit: row.leaderboard_unit ?? "",
     variations: (row.product_variations ?? [])
       .map(mapVariationRow)
       .filter(
@@ -464,6 +481,9 @@ function mapProductRow(
 
 function mapVariationRow(row: VariationRow): ProductVariation {
   return {
+    supplierQuantity: row.supplier_quantity ?? 1, repeatable: row.repeatable ?? false,
+    currencyUnits: Number(row.currency_units ?? 0),
+    basePackageTitle: row.base_package_title ?? null,
     id: row.id,
     title: row.title,
     sku: row.sku,

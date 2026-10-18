@@ -24,12 +24,17 @@ import type { Product, ProductVariation, RequiredField } from "@/lib/types";
 import type { FundingCostBasis } from "@/lib/funding-cost";
 import { estimateCostMyr } from "@/lib/cost-conversion";
 import { moveVariation } from "@/lib/variation-order";
+import { isRepeatableCurrency, isRankingCurrency } from "@/lib/custom-packages";
 
 type CatalogKind = "all" | "topup" | "gift_card" | "steam_gift";
 
 type FieldDraft = RequiredField & { localId: string };
 
 type VariationDraft = {
+  currencyUnits: string;
+  supplierQuantity: number;
+  repeatable: boolean;
+  basePackageTitle: string | null;
   localId: string;
   id?: string;
   title: string;
@@ -69,6 +74,7 @@ const defaultFields: FieldDraft[] = [
 
 const defaultVariations: VariationDraft[] = [
   {
+    supplierQuantity: 1, repeatable: false, basePackageTitle: null, currencyUnits: "0",
     localId: crypto.randomUUID(),
     title: "Weekly Diamond Pass",
     sku: "mobile-legends-weekly-diamond-pass-my",
@@ -104,6 +110,10 @@ function fieldDraft(field?: Partial<RequiredField>): FieldDraft {
 
 function variationDraft(variation?: Partial<ProductVariation>): VariationDraft {
   return {
+    currencyUnits: String(variation?.currencyUnits ?? 0),
+    supplierQuantity: variation?.supplierQuantity ?? 1,
+    repeatable: variation?.repeatable ?? false,
+    basePackageTitle: variation?.basePackageTitle ?? null,
     localId: crypto.randomUUID(),
     id: variation?.id,
     title: variation?.title ?? "",
@@ -138,6 +148,9 @@ export function AdminProductManager() {
   const [requiredFields, setRequiredFields] = useState<FieldDraft[]>(defaultFields);
   const [variations, setVariations] = useState<VariationDraft[]>(defaultVariations);
   const [draggedVariation, setDraggedVariation] = useState<string | null>(null);
+  const [customBaseId, setCustomBaseId] = useState("");
+  const [customQuantity, setCustomQuantity] = useState(2);
+  const [customPrice, setCustomPrice] = useState("");
   const [productSearch, setProductSearch] = useState("");
   const [catalogKind, setCatalogKind] = useState<CatalogKind>("all");
   const [catalogSearch, setCatalogSearch] = useState("");
@@ -207,6 +220,7 @@ export function AdminProductManager() {
       type: String(formData.get("type") ?? ""),
       category: String(formData.get("category") ?? ""),
       game: String(formData.get("game") ?? ""),
+      leaderboardUnit: String(formData.get("leaderboardUnit") ?? ""),
       description: String(formData.get("description") ?? ""),
       imageTone: String(formData.get("imageTone") ?? ""),
       fazercardsProductId: String(formData.get("fazercardsProductId") ?? ""),
@@ -232,6 +246,10 @@ export function AdminProductManager() {
 
           return {
             id: variation.id,
+            currencyUnits: Number(variation.currencyUnits),
+            supplierQuantity: variation.supplierQuantity,
+            repeatable: variation.repeatable,
+            basePackageTitle: variation.basePackageTitle,
             title: variation.title,
             sku: variation.sku,
             fazercardsSku: variation.fazercardsSku,
@@ -276,6 +294,7 @@ export function AdminProductManager() {
   }
 
   function startEditing(product: Product) {
+    setCustomBaseId(""); setCustomQuantity(2); setCustomPrice("");
     setView("editor");
     setEditingProduct(product);
     setMessage(null);
@@ -413,9 +432,38 @@ export function AdminProductManager() {
   }
 
   function updateVariation(localId: string, patch: Partial<VariationDraft>) {
-    setVariations((current) =>
-      current.map((variation) => (variation.localId === localId ? { ...variation, ...patch } : variation)),
-    );
+    setVariations((current) => {
+      const next = current.map((variation) => variation.localId === localId ? { ...variation, ...patch } : variation);
+      return next.map((variation) => {
+        if (variation.supplierQuantity === 1) return variation;
+        const base = next.find((item) => item.supplierQuantity === 1 && item.fazercardsSku === variation.fazercardsSku);
+        return base ? { ...variation, basePackageTitle: base.title,
+          costUsd: String(Math.round(Number(base.costUsd) * variation.supplierQuantity * 10000) / 10000),
+          costMyr: String(Math.round(Number(base.costMyr) * variation.supplierQuantity * 100) / 100),
+          currencyUnits: String(Number(base.currencyUnits) * variation.supplierQuantity) } : variation;
+      });
+    });
+  }
+
+  const customSources = variations.filter((v) => v.supplierQuantity === 1 && v.repeatable
+    && v.fazercardsSku && isRepeatableCurrency(v.title));
+  const customBase = customSources.find((v) => v.localId === customBaseId);
+  function addCustomPackage() {
+    if (!customBase || !Number.isInteger(customQuantity) || customQuantity < 2 || customQuantity > 5
+      || !Number.isFinite(Number(customPrice)) || Number(customPrice) <= 0) {
+      setMessage("Select a repeatable currency package, quantity 2 to 5, and a positive selling price.");
+      return;
+    }
+    setVariations((current) => [...current, variationDraft({
+      title: `${customQuantity} x ${customBase.title}`, sku: `custom-${crypto.randomUUID()}`,
+      fazercardsSku: customBase.fazercardsSku, supplierQuantity: customQuantity,
+      repeatable: true, basePackageTitle: customBase.title,
+      currencyUnits: Number(customBase.currencyUnits) * customQuantity,
+      costUsd: Math.round(Number(customBase.costUsd) * customQuantity * 10000) / 10000,
+      costMyr: Math.round(Number(customBase.costMyr) * customQuantity * 100) / 100,
+      priceMyr: Number(customPrice), active: true, available: true,
+    })]);
+    setMessage("Custom package added. Save changes to publish it with this listing.");
   }
 
   return (
@@ -533,6 +581,7 @@ export function AdminProductManager() {
         <div className="grid gap-4 md:grid-cols-2">
           <Field name="title" label="Product title" placeholder="Mobile Legends (Malaysia)" defaultValue={editingProduct?.title} />
           <SelectField name="region" label="Region" defaultValue={editingProduct?.region ?? "MY"} options={[["MY", "Malaysia"], ["SEA", "Southeast Asia"], ["Global", "Global"]]} />
+          <Field name="leaderboardUnit" label="Leaderboard unit" placeholder="Diamonds or UC" defaultValue={editingProduct?.leaderboardUnit ?? ""} required={false} />
         </div>
         <details open={!editingProduct} className="border-y border-slate-200 py-3">
           <summary className="cursor-pointer text-sm font-semibold text-slate-600">Advanced product settings</summary>
@@ -622,6 +671,30 @@ export function AdminProductManager() {
           actionLabel="Add package"
           onAdd={() => setVariations((current) => [...current, variationDraft()])}
         >
+          {editingProduct?.type === "topup" && <fieldset className="grid min-w-0 gap-3 border-b border-slate-200 pb-5 sm:grid-cols-2 xl:grid-cols-4">
+            <legend className="mb-3 text-base font-bold">Custom package</legend>
+            <label className="grid min-w-0 gap-2 text-sm font-semibold">Existing package
+              <select value={customBaseId} onChange={(event) => {
+                setCustomBaseId(event.target.value);
+                const source = customSources.find((v) => v.localId === event.target.value);
+                setCustomPrice(source ? (Number(source.priceMyr) * customQuantity).toFixed(2) : "");
+              }} className="min-w-0 rounded-md border border-slate-300 px-3 py-3">
+                <option value="">{customSources.length ? "Select package" : "No repeatable currency packages"}</option>
+                {customSources.map((v) => <option key={v.localId} value={v.localId}>{v.title}</option>)}
+              </select>
+            </label>
+            <label className="grid min-w-0 gap-2 text-sm font-semibold">Quantity
+              <select value={customQuantity} onChange={(event) => {
+                const quantity = Number(event.target.value); setCustomQuantity(quantity);
+                if (customBase) setCustomPrice((Number(customBase.priceMyr) * quantity).toFixed(2));
+              }} className="min-w-0 rounded-md border border-slate-300 px-3 py-3">
+                {[2, 3, 4, 5].map((quantity) => <option key={quantity} value={quantity}>{quantity}</option>)}
+              </select>
+            </label>
+            <SmallInput label="Your package price (RM)" type="number" value={customPrice} onChange={setCustomPrice} placeholder="0.00" />
+            <button type="button" disabled={isSaving || !customBase} onClick={addCustomPackage}
+              className="inline-flex min-h-11 items-center justify-center gap-2 self-end rounded-md bg-slate-950 px-4 py-3 text-sm font-bold text-white disabled:opacity-40"><Plus className="h-4 w-4" />Add custom package</button>
+          </fieldset>}
           <div className="flex justify-end">
             <button type="button" disabled={isSaving || variations.length < 2}
               onClick={() => setVariations((current) => [...current].sort((a, b) => Number(a.priceMyr) - Number(b.priceMyr)))}
@@ -665,6 +738,7 @@ export function AdminProductManager() {
                     className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 disabled:opacity-30"><ArrowDown className="h-4 w-4" /></button>
                 </div>
                 <SmallInput label="Package" value={variation.title} onChange={(value) => updateVariation(variation.localId, { title: value })} placeholder="Weekly Diamond Pass" />
+                {variation.supplierQuantity > 1 && <p className="text-sm text-slate-600 sm:col-span-2 xl:col-span-4">{variation.supplierQuantity} x {variation.basePackageTitle}</p>}
                 <details className="order-last min-w-0 sm:col-span-2 xl:col-span-4">
                 <summary className="cursor-pointer text-xs font-semibold text-slate-500">Supplier mapping</summary>
                 <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-3">
@@ -685,6 +759,13 @@ export function AdminProductManager() {
                     <input type="checkbox" checked={variation.active && variation.available} onChange={(event) => updateVariation(variation.localId, { active: event.target.checked, available: event.target.checked })} />
                     Sell this package
                   </label>
+                  {editingProduct?.type === "topup" && variation.supplierQuantity === 1 && isRepeatableCurrency(variation.title) && <label className="flex items-center gap-2 text-sm font-normal" title="Enable only for currency top-ups that can be purchased repeatedly. Passes and subscriptions are excluded.">
+                    <input type="checkbox" checked={variation.repeatable} onChange={(event) => updateVariation(variation.localId, { repeatable: event.target.checked })} />Repeatable currency top-up
+                  </label>}
+                  {editingProduct?.type === "topup" && variation.supplierQuantity === 1 && isRankingCurrency(variation.title) && <SmallInput
+                    label="Leaderboard currency units (0 = excluded)" type="number" value={variation.currencyUnits}
+                    onChange={(value) => updateVariation(variation.localId, { currencyUnits: value })} placeholder="0" />}
+                  {variation.supplierQuantity > 1 && <p className="font-normal">Ranking units: {Number(variation.currencyUnits) || 0}</p>}
                 </div>
                 {!variation.id && <button
                   type="button"

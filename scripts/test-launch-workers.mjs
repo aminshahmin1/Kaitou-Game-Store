@@ -40,6 +40,7 @@ assert.match(customer.text, /Payment received: .*MYT/);
 assert.match(customer.text, /FPX fee: RM1.00/);
 assert.match(customer.html, /Your payment receipt/);
 assert.match(customer.html, /KAITOU/);
+assert.match(emails.formatOrderEmail({ ...payload, packageQuantity: 2, basePackageTitle: "8100 UC" }, "customer").text, /Package contents: 2 x 8100 UC/);
 assert.match(emails.formatOrderEmail(payload, "admin").text, /user id: 00123/);
 for (const status of ["processing", "completed", "failed", "review", "refunded"]) {
   const receipt = emails.formatOrderEmail({ ...payload, status, paymentReference: "bill-123", refundReference: "refund-123" }, "customer");
