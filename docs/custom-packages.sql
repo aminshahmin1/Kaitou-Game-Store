@@ -31,3 +31,12 @@ begin
 end $$;
 revoke all on function public.settle_supplier_reservation() from public,anon,authenticated;
 grant execute on function public.settle_supplier_reservation() to service_role;
+
+-- Run only after deploying /api/cron/bundles. The existing Vault entry remains private.
+select cron.schedule('kaitou-custom-package-fulfillment','* * * * *', $job$
+  select net.http_post(
+    url := 'https://kaitou.shop/api/cron/bundles',
+    headers := jsonb_build_object('Content-Type','application/json','Authorization',
+      'Bearer '||(select decrypted_secret from vault.decrypted_secrets where name='kaitou_balance_monitor' limit 1)),
+    body := '{}'::jsonb, timeout_milliseconds := 55000);
+$job$);
