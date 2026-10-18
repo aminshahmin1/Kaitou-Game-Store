@@ -1,4 +1,7 @@
 import { AdminDashboardShell } from "@/components/admin-dashboard-shell";
+import { AdminExchangeRate } from "@/components/admin-exchange-rate";
+import { getFundingCostBasis } from "@/lib/funding-cost";
+import { getAdminApiSession } from "@/lib/auth/admin-api";
 
 export const metadata = {
   title: "Settings | Kaitou Admin",
@@ -28,6 +31,8 @@ const settings = [
 ];
 
 export default async function DashboardSettingsPage() {
+  const session = await getAdminApiSession("settings");
+  const basis = session?.role === "owner" ? await getFundingCostBasis() : null;
   return (
     <AdminDashboardShell title="Settings" eyebrow="Store controls" requiredPermission="settings">
       <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -37,6 +42,7 @@ export default async function DashboardSettingsPage() {
         </p>
       </section>
 
+      {basis && <AdminExchangeRate initialRate={basis.rate} />}
       <section className="grid gap-4 md:grid-cols-2">
         {settings.map((setting) => (
           <article key={setting.label} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">

@@ -471,6 +471,7 @@ export function AdminProductManager() {
       <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
         <div>
           <h2 className="text-xl font-bold">{view === "editor" ? editingProduct?.title ?? "New product" : view === "catalog" ? "Add from FazerCards" : "My products"}</h2>
+          {fundingCostBasis && <p className="mt-2 text-sm text-slate-600">USD 1 = RM {fundingCostBasis.rate.toFixed(6).replace(/0+$/, "").replace(/\.$/, "")}</p>}
         </div>
         <button
           type="button"

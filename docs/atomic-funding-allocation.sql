@@ -58,9 +58,12 @@ begin
     exit when v_remaining = 0;
     v_take := least(v_batch.remaining, v_remaining);
     if v_take <= 0 then continue; end if;
-    v_piece := round(v_take * v_batch.effective_rate, 2);
+    -- New orders retain their manual rate; historical orders keep original FIFO costs.
+    v_piece := case when v_order.cost_exchange_rate is not null
+      then round((v_order.cost_usd-v_remaining+v_take)*v_order.cost_exchange_rate,2)-v_cost
+      else round(v_take*v_batch.effective_rate,2) end;
     insert into public.order_funding_allocations(order_id, funding_batch_id, amount_usd, effective_rate, cost_myr)
-      values(p_order_id, v_batch.id, v_take, v_batch.effective_rate, v_piece);
+      values(p_order_id, v_batch.id, v_take, coalesce(v_order.cost_exchange_rate,v_batch.effective_rate), v_piece);
     v_cost := v_cost + v_piece;
     v_remaining := v_remaining - v_take;
   end loop;

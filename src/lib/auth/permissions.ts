@@ -44,7 +44,7 @@ export const permissionDetails: Array<{
   {
     id: "settings",
     label: "Settings",
-    description: "View store controls and future store configuration.",
+    description: "View store controls. Only the owner can change the supplier exchange rate.",
   },
 ];
 

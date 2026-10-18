@@ -5,11 +5,14 @@ import ts from "typescript";
 const source = ts.transpileModule(readFileSync(new URL("../src/lib/funding-cost.ts", import.meta.url), "utf8"), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 }).outputText;
-async function run(batches, config, error = null) {
+async function run(rate, error = null) {
   const exports = {};
   const db = { from(table) {
-    const result = table === "funding_batches" ? { data: batches, error } : { data: config ? { public_config: config } : null, error: null };
-    const query = { select() { return query; }, eq() { return query; }, order() { return query; }, maybeSingle() { return Promise.resolve(result); }, then(resolve) { return Promise.resolve(result).then(resolve); } };
+    assert.equal(table, "integration_settings");
+    const result = { data: rate === undefined ? null : { public_config: { usdMyr: rate } }, error };
+    const query = { select() { return query; }, eq(key, value) {
+      assert.equal(key, "id"); assert.equal(value, "supplier-exchange-rate"); return query;
+    }, maybeSingle() { return Promise.resolve(result); } };
     return query;
   } };
   vm.runInNewContext(source, { exports, require(name) {
@@ -19,10 +22,8 @@ async function run(batches, config, error = null) {
   } });
   return exports.getFundingCostBasis();
 }
-assert.equal((await run([], { totalMyr: 57.93, creditedUsd: 14 })).rate, 57.93 / 14);
-assert.equal(await run([], null), null);
-assert.equal(await run([], { totalMyr: 10, creditedUsd: 0 }), null);
-assert.equal((await run([{ effective_rate: 4.2, usd_credited: 10, order_funding_allocations: [{ amount_usd: 3 }] }], null)).rate, 4.2);
-assert.equal(await run([{ effective_rate: 4.2, usd_credited: 10, order_funding_allocations: [{ amount_usd: 10 }] }], { totalMyr: 57.93, creditedUsd: 14 }), null);
-await assert.rejects(() => run([], null, { message: "database down" }));
-console.log("PASS: Opening estimate, missing basis, remaining funding and exhausted ledger without stale fallback.");
+assert.equal((await run(4.08)).rate, 4.08);
+assert.equal((await run("4.25")).rate, 4.25);
+for (const rate of [undefined, null, "bad", 0, -1, 10001, Infinity]) await assert.rejects(() => run(rate));
+await assert.rejects(() => run(4.08, { message: "database down" }));
+console.log("PASS: One manual USD/MYR rate, changes reflected without funding-batch dependence, missing/invalid settings fail closed.");

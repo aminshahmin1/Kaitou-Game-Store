@@ -31,10 +31,10 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
   const impliedRate = useMemo(() => {
     const batch = data.fundingBatches[0];
     if (!batch) {
-      return "Add a top-up batch to start tracking real cost.";
+      return "No funding deposits recorded.";
     }
 
-    return `Latest batch rate: RM ${batch.effectiveRate.toFixed(4)} per USDT`;
+    return `Latest deposit funding rate: RM ${batch.effectiveRate.toFixed(4)} per USDT`;
   }, [data.fundingBatches]);
 
   async function loadRevenue(nextFrom = from, nextTo = to) {
@@ -78,7 +78,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
       return;
     }
 
-    setMessage("Funding batch saved. New paid orders can now use this balance for FIFO costing.");
+    setMessage("Funding batch saved. The store exchange rate is unchanged.");
     setFormKey((current) => current + 1);
     await loadRevenue();
   }
@@ -142,7 +142,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
             <div>
               <h2 className="font-display text-3xl font-bold">Profit report</h2>
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                Costs are counted after orders are allocated to your FazerCards funding batches.
+                New order costs use the manual USD/MYR rate saved at checkout. Funding and transfer fees are excluded. Historical order costs are unchanged.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -250,7 +250,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         <div className="min-w-0 rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-200 p-5">
             <h2 className="font-display text-3xl font-bold">Funding ledger</h2>
-            <p className="mt-1 text-sm text-slate-500">Oldest available balance is used first when allocating order cost.</p>
+            <p className="mt-1 text-sm text-slate-500">Deposit amounts track wallet funding. Their funding rates do not change the manual product-cost rate.</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[820px] text-left text-sm">
@@ -259,7 +259,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
                   <th className="px-4 py-3">Date</th>
                   <th className="px-4 py-3">Credited</th>
                   <th className="px-4 py-3">MYR spent</th>
-                  <th className="px-4 py-3">Rate</th>
+                  <th className="px-4 py-3">Funding rate</th>
                   <th className="px-4 py-3">Earlier use</th>
                   <th className="px-4 py-3">Allocated</th>
                   <th className="px-4 py-3">Remaining</th>
