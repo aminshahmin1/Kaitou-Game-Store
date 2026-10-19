@@ -20,7 +20,8 @@ assert.equal(normalized[1].priceMyr, 800);
 assert.equal(normalized[1].basePackageTitle, "8100 UC");
 assert.throws(() => packages.normalizeCustomPackages("steam_gift_game", [base, custom]));
 assert.throws(() => packages.normalizeCustomPackages("topup", [{ ...base, repeatable: false }, custom]));
-assert.throws(() => packages.normalizeCustomPackages("topup", [{ ...base, title: "Weekly Pass" }, custom]));
+assert.equal(packages.normalizeCustomPackages("topup", [{ ...base, title: "Weekly Pass" }, custom])[1].currencyUnits, 0);
+assert.throws(() => packages.normalizeCustomPackages("topup", [{ ...base, title: "First purchase pack" }, custom]));
 for (const supplierQuantity of [0, 1.5, 6, NaN]) assert.throws(() => packages.normalizeCustomPackages("topup", [base, { ...custom, supplierQuantity }]));
 const { fulfillCustomPackage } = load("src/lib/integrations/fazercards-bundles.ts");
 const input = { orderId: "KGS-UNIT", product: { type: "topup" }, variation: { sku: "custom", fazercardsSku: "pubg:8100", supplierQuantity: 2 }, fieldValues: { player_id: "00123" } };
@@ -64,6 +65,15 @@ assert.equal((await fulfillCustomPackage({ ...input, previous: missingCost.raw }
 const conflict = await fulfillCustomPackage({ ...five, previous: progress }, slowCreate, async (ref) => ({ providerReference: ref, status: "completed", chargedUsd: 0.2, message: "Changed" }));
 assert.equal(conflict.status, "review");
 assert.equal(conflict.chargedUsd, undefined);
+const three = { ...input, variation: { ...input.variation, supplierQuantity: 3 } };
+const threeCalls = [];
+const deliverThree = async (part) => { threeCalls.push({ key: part.orderId, fields: part.fieldValues }); return { providerReference: `ord-${threeCalls.length}`, status: "completed", chargedUsd: 1, message: "Completed" }; };
+let threeResult = await fulfillCustomPackage(three, deliverThree, get);
+assert.equal(threeResult.status, "processing");
+threeResult = await fulfillCustomPackage({ ...three, previous: threeResult.raw }, deliverThree, get);
+assert.equal(threeResult.status, "completed"); assert.equal(threeResult.chargedUsd, 3);
+assert.deepEqual(threeCalls.map((part) => part.key), ["KGS-UNIT:part:1", "KGS-UNIT:part:2", "KGS-UNIT:part:3"]);
+assert.ok(threeCalls.every((part) => part.fields === input.fieldValues));
 let stock = null;
 const pricing = load("src/lib/integrations/fazercards-pricing.ts", {
   "../custom-packages": packages,

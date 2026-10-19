@@ -12,6 +12,7 @@ import {
 } from "./integrations/fazercards-catalog";
 import { createSupabaseAdminClient } from "./supabase/admin";
 import type { Product, ProductVariation, RequiredField } from "./types";
+import { prepareSteamProduct } from "./steam-library";
 import { adminProductCreateSchema, adminProductUpdateSchema } from "./validation";
 
 type ProductRow = {
@@ -64,6 +65,7 @@ export async function getStoreProducts() {
     )
     .eq("active", true)
     .eq("available", true)
+    .neq("source", "steam_library")
     .order("sort_order", { ascending: true })
     .order("title", { ascending: true })
     .order("sort_order", { referencedTable: "product_variations", ascending: true });
@@ -82,6 +84,7 @@ export async function getStoreProducts() {
 }
 
 export async function getStoreProductBySlug(slug: string) {
+  if (/^steam-library-[1-9][0-9]*$/.test(slug)) return prepareSteamProduct(slug.slice("steam-library-".length));
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -120,6 +123,7 @@ export async function getAdminProducts() {
     .select(
       "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, image_url, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
+    .neq("source", "steam_library")
     .order("created_at", { ascending: false })
     .order("sort_order", { referencedTable: "product_variations", ascending: true });
 

@@ -24,7 +24,7 @@ import type { Product, ProductVariation, RequiredField } from "@/lib/types";
 import type { FundingCostBasis } from "@/lib/funding-cost";
 import { estimateCostMyr } from "@/lib/cost-conversion";
 import { moveVariation } from "@/lib/variation-order";
-import { isRepeatableCurrency, isRankingCurrency } from "@/lib/custom-packages";
+import { isRepeatableTopup, isRankingCurrency } from "@/lib/custom-packages";
 
 type CatalogKind = "all" | "topup" | "gift_card" | "steam_gift";
 
@@ -447,12 +447,12 @@ export function AdminProductManager() {
   }
 
   const customSources = variations.filter((v) => v.supplierQuantity === 1 && v.repeatable
-    && v.fazercardsSku && isRepeatableCurrency(v.title));
+    && v.fazercardsSku && isRepeatableTopup(v.title));
   const customBase = customSources.find((v) => v.localId === customBaseId);
   function addCustomPackage() {
     if (!customBase || !Number.isInteger(customQuantity) || customQuantity < 2 || customQuantity > 5
       || !Number.isFinite(Number(customPrice)) || Number(customPrice) <= 0) {
-      setMessage("Select a repeatable currency package, quantity 2 to 5, and a positive selling price.");
+      setMessage("Select an approved repeatable package, quantity 2 to 5, and a positive selling price.");
       return;
     }
     setVariations((current) => [...current, variationDraft({
@@ -682,7 +682,7 @@ export function AdminProductManager() {
                 const source = customSources.find((v) => v.localId === event.target.value);
                 setCustomPrice(source ? (Number(source.priceMyr) * customQuantity).toFixed(2) : "");
               }} className="min-w-0 rounded-md border border-slate-300 px-3 py-3">
-                <option value="">{customSources.length ? "Select package" : "No repeatable currency packages"}</option>
+                <option value="">{customSources.length ? "Select package" : "Approve a base package as repeatable first"}</option>
                 {customSources.map((v) => <option key={v.localId} value={v.localId}>{v.title}</option>)}
               </select>
             </label>
@@ -762,8 +762,8 @@ export function AdminProductManager() {
                     <input type="checkbox" checked={variation.active && variation.available} onChange={(event) => updateVariation(variation.localId, { active: event.target.checked, available: event.target.checked })} />
                     Sell this package
                   </label>
-                  {editingProduct?.type === "topup" && variation.supplierQuantity === 1 && isRepeatableCurrency(variation.title) && <label className="flex items-center gap-2 text-sm font-normal" title="Enable only for currency top-ups that can be purchased repeatedly. Passes and subscriptions are excluded.">
-                    <input type="checkbox" checked={variation.repeatable} onChange={(event) => updateVariation(variation.localId, { repeatable: event.target.checked })} />Repeatable currency top-up
+                  {editingProduct?.type === "topup" && variation.supplierQuantity === 1 && isRepeatableTopup(variation.title) && <label className="flex items-center gap-2 text-sm font-normal" title="Approve only after checking the game's purchase and stacking limits. Bundles submit the same account details once per delivery. Packs and passes never earn ranking units.">
+                    <input type="checkbox" checked={variation.repeatable} onChange={(event) => updateVariation(variation.localId, { repeatable: event.target.checked })} />Allow repeat purchases (check account limits)
                   </label>}
                   {editingProduct?.type === "topup" && variation.supplierQuantity === 1 && isRankingCurrency(variation.title) && <SmallInput
                     label="Leaderboard currency units (0 = excluded)" type="number" value={variation.currencyUnits}

@@ -36,30 +36,45 @@ textarea {
   font: inherit;
 }
 
-:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+:is(button, a[href], summary, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
   transition: scale 120ms ease-out, filter 120ms ease-out, background-color 150ms ease-out,
     border-color 150ms ease-out, box-shadow 150ms ease-out;
   -webkit-tap-highlight-color: transparent;
 }
 
-:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):active {
+:is(button, a[href], summary, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):active {
   scale: 0.97;
   filter: brightness(0.9);
 }
 
-:is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):focus-visible {
+:is(button, a[href], summary, [role="button"], input, select, textarea):focus-visible {
   outline: 2px solid var(--kaitou-blue);
   outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+  :is(button, a[href], summary, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
     transition: none;
   }
-  :is(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):active {
+  :is(button, a[href], summary, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):active {
     scale: 1;
   }
 }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :is(button, a[href], summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover:not(:active) {
+    filter: brightness(1.12);
+  }
+  :is(button, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover:not(:active) {
+    scale: 1.015;
+  }
+  a[href]:has([data-product-poster]):hover:not(:active), .steam-game-link:hover:not(:active) {
+    scale: 1.01;
+    box-shadow: 0 8px 24px rgb(0 149 255 / 18%);
+  }
+}
+input:is([type="checkbox"], [type="radio"]) { accent-color: #0284c7; transition: filter 120ms ease; }
+input:is([type="checkbox"], [type="radio"]):enabled:active { filter: brightness(0.75); }
 
 a {
   text-decoration: none;
@@ -111,3 +126,8 @@ html[data-theme="light"] .kaitou-shell :is(.text-slate-400, .text-slate-500, .te
 .ranking-promo::backdrop { background: rgb(0 0 0 / 70%); }
 
 html[data-theme="light"] { --background: #f1f7fb; --foreground: #10263a; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .steam-guide-step { animation: steam-guide 6s ease-in-out infinite; }
+  @keyframes steam-guide { 0%, 28% { background-color: #e0f2fe; } 34%,100% { background-color: transparent; } }
+}

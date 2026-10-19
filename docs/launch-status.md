@@ -2,6 +2,10 @@
 
 ## Current checkpoint: 2026-10-18
 
+## Steam library and help release: 2026-10-19
+
+- Approved scope implemented and verified on isolated Vercel production deployments; final domain assignment pending. Universal press/hover feedback; seller-approved pack bundles; FAQ/support/About rewrite; Steam Gifts Library with tiered MYR pricing, region/edition selection, invite guide and review. Full supplier feed of 178,483 entries indexed; paid-game metadata/image verification is progressive and on demand, not a claim of 178,483 paid games. No supplier purchase/payment test performed. Exact account-name/avatar preview requires a supported FazerCards API resolver; current review states format-only verification. Details/limits: docs/library-release-2026-10-19.md.
+
 ## Customer support and automation: 2026-10-19
 
 - LIVE completion checkpoint: application e6819e7 + banner fix 247db6d, deployment dpl_85ysVeSMN4HfjvgCAPBfcrdXW8hR Ready at kaitou.shop. Fulfillment and new revenue cron scheduled every minute; authenticated reconciliation HTTP200. Production verification and limits: docs/support-release-2026-10-19.md. Statements about pending deployment below describe the earlier checkpoint.

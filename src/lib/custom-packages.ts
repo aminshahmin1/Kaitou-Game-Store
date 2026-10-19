@@ -1,5 +1,9 @@
 export const maxPackageQuantity = 5;
 
+export function isRepeatableTopup(title: string) {
+  return !/first[ -]?(purchase|top.?up)|one[ -]?time|once[ -]?only/i.test(title);
+}
+
 export function isRepeatableCurrency(title: string) {
   return !/pass|subscription|membership|weekly|monthly|elite|twilight|first[ -]?(purchase|top.?up)/i.test(title);
 }
@@ -24,8 +28,8 @@ export function normalizeCustomPackages<T extends Package>(type: string, variati
       currencyUnits: type === "topup" && isRankingCurrency(variation.title) ? variation.currencyUnits ?? 0 : 0 };
     const base = variations.find((item) => (item.supplierQuantity ?? 1) === 1
       && item.fazercardsSku && item.fazercardsSku === variation.fazercardsSku);
-    if (type !== "topup" || !base?.repeatable || !isRepeatableCurrency(base.title)) {
-      throw new Error("Custom packages require an approved repeatable currency top-up from this product. Passes and subscriptions cannot be repeated.");
+    if (type !== "topup" || !base?.repeatable || !isRepeatableTopup(base.title)) {
+      throw new Error("Custom packages require a seller-approved repeatable top-up from this product. First-purchase and one-time offers cannot be repeated.");
     }
     return { ...variation, supplierQuantity: quantity, repeatable: true, basePackageTitle: base.title,
       currencyUnits: isRankingCurrency(base.title) ? (base.currencyUnits ?? 0) * quantity : 0,

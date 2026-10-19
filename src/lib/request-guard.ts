@@ -3,11 +3,12 @@ import { createHmac } from "node:crypto";
 import { isIP } from "node:net";
 import { createSupabaseAdminClient } from "./supabase/admin";
 
-type Scope = "login" | "checkout" | "order-status";
+type Scope = "login" | "checkout" | "order-status" | "steam-library";
 const limits: Record<Scope, { limit: number; seconds: number }> = {
   login: { limit: 10, seconds: 900 },
   checkout: { limit: 8, seconds: 900 },
   "order-status": { limit: 30, seconds: 60 },
+  "steam-library": { limit: 30, seconds: 60 },
 };
 
 export async function guardRequest(request: Request, scope: Scope): Promise<Response | null> {

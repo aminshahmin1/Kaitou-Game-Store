@@ -3,6 +3,7 @@ import { z } from "zod";
 export const checkoutSchema = z.object({
   productSlug: z.string().min(1).max(180),
   variationId: z.string().min(1).max(80),
+  expectedPriceMyr: z.number().finite().positive().optional(),
   customerName: z.string().trim().min(2).max(80),
   customerEmail: z.email().max(120),
   whatsapp: z

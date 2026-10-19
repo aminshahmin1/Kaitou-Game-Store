@@ -1,4 +1,5 @@
 import type { RequiredField } from "@/lib/types";
+import { createSupabaseAdminClient } from "../supabase/admin";
 
 const defaultBaseUrl = "https://api.fzr.cards/api/v2";
 
@@ -53,6 +54,7 @@ export type FazerCardsCatalogDetails = {
     minOrderQuantity?: number;
     maxOrderQuantity?: number;
     region?: string;
+    edition?: string;
   }>;
 };
 
@@ -94,11 +96,15 @@ export async function listFazerCardsTopups() {
 
 export async function listFazerCardsCatalog(kind: FazerCardsCatalogKind, query = "") {
   if (kind === "steam_gift") {
-    const body = await fazerCardsFetch<{
-      games?: Array<{ appid: number; name: string }>;
-    }>("/steam-gifts/games?limit=500");
+    const db = createSupabaseAdminClient();
+    if (!db) throw new Error("Steam catalogue is unavailable.");
+    let request = db.from("steam_library_games").select("appid,name").eq("supplier_active",true);
+    if (/^[0-9]+$/.test(query.trim())) request = request.eq("appid", Number(query.trim()));
+    else if (query.trim()) request = request.ilike("name", `%${query.trim().replace(/[\\%_]/g,"\\$&")}%`);
+    const { data, error } = await request.order("source_rank").limit(80);
+    if (error) throw new Error("Steam catalogue is being updated. Please try again shortly.");
     return rankCatalogItems(
-      (body.games ?? [])
+      (data ?? [])
       .map((game): FazerCardsCatalogItem => ({
         id: String(game.appid),
         name: game.name,
@@ -261,6 +267,7 @@ async function getFazerCardsSteamGiftDetails(
       offer.regions.map((region) => ({
         offerId: `${offer.sub_id}:${region.region}`,
         name: `${offer.name} (${region.region})`,
+        edition: offer.name,
         priceUsd: Number(region.price),
         region: region.region,
       })),

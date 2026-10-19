@@ -1,7 +1,7 @@
 import "server-only";
 import type { Product } from "../types";
 import { getFazerCardsCatalogDetails } from "./fazercards-catalog";
-import { isRepeatableCurrency } from "../custom-packages";
+import { isRepeatableTopup } from "../custom-packages";
 
 export async function refreshSupplierPrices(products: Product[]) {
   const refreshed: Product[] = [];
@@ -20,7 +20,7 @@ export async function refreshSupplierPrices(products: Product[]) {
         const quantity = variation.supplierQuantity ?? 1;
         const permitted = Number.isInteger(quantity) && quantity >= 1 && quantity <= 5
           && (quantity === 1 || (product.type === "topup" && variation.repeatable === true
-            && isRepeatableCurrency(variation.basePackageTitle ?? variation.title)));
+            && isRepeatableTopup(variation.basePackageTitle ?? variation.title)));
         const costUsd = permitted && offer && Number.isFinite(offer.priceUsd) && offer.priceUsd > 0
           ? Math.round(offer.priceUsd * 10000 * quantity) / 10000 : 0;
         return { ...variation, costUsd, available: variation.available && costUsd > 0

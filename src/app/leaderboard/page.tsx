@@ -2,6 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Trophy, Medal, ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { getCurrencyRankings, getRankingGroups, type RankingRow } from "@/lib/currency-ranking";
 
 export const metadata = { title: "Top-up rankings | Kaitou Game Store" };
@@ -34,6 +35,6 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
         </tr>)}</tbody>
       </table></div> : <div role="status" className="mt-8 border-y border-slate-200 py-10 text-slate-600"><p>{unavailable ? "Rankings are temporarily unavailable. Please check back soon." : "Be the first to claim a place on this leaderboard."}</p>{!unavailable && <Link href="/#products" className="mt-4 inline-flex items-center gap-2 font-semibold text-sky-800">Top up and get ranked<ArrowRight className="h-4 w-4" /></Link>}</div>}
       <p className="mt-6 text-xs leading-6 text-slate-500">Completed currency top-ups only. Packs, passes, refunded orders and test purchases are excluded. Player IDs are masked.</p>
-    </main>
+    </main><SiteFooter />
   </div>;
 }

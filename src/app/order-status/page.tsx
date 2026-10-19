@@ -2,6 +2,7 @@ import { MessageCircle } from "lucide-react";
 
 import { OrderStatusLookup } from "@/components/order-status-lookup";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export default async function OrderStatusPage({ searchParams }: { searchParams: Promise<{ order_id?: string | string[] }> }) {
   const params = await searchParams;
@@ -30,6 +31,7 @@ export default async function OrderStatusPage({ searchParams }: { searchParams: 
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

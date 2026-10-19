@@ -28,6 +28,7 @@ const db = { from(table) {
   const filters = {};
   const query = {
     select() { return query; }, eq(key, value) { filters[key] = value; return query; },
+    neq() { return query; },
     update(value) { patch = value; return query; },
     order(key, options) { ordering.push({ key, ...options }); return query; },
     maybeSingle: async () => ({ data: null, error: null }),
@@ -41,6 +42,7 @@ const products = load("../src/lib/products.ts", {
   "./cost-conversion": {}, "./stock": {}, "./integrations/fazercards-pricing": {},
   "./integrations/fazercards-catalog": {}, "./supabase/admin": { createSupabaseAdminClient: () => db },
   "./validation": { adminProductUpdateSchema: { parse: (input) => input } },
+  "./steam-library": {},
 });
 await products.updateAdminProduct("product", { variations: moved });
 const saved = writes.filter((w) => w.table === "product_variations");

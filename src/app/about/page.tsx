@@ -1,135 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, Headphones, MessageCircle, ShieldCheck, Zap } from "lucide-react";
-
+import { ShieldCheck, Mail, Zap } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
-
-const trustPoints = [
-  {
-    title: "Malaysia-first checkout",
-    copy: "Shop with prices in Malaysian ringgit and pay securely through FPX.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Fast digital delivery",
-    copy: "Your order starts processing after payment is confirmed. Delivery times vary by game and package.",
-    icon: Zap,
-  },
-  {
-    title: "Customer support",
-    copy: "Contact our team with your order number if you need help with a purchase or delivery.",
-    icon: Headphones,
-  },
-];
-
-export const metadata = {
-  title: "About | Kaitou Game Store",
-  description: "About Kaitou Game Store, Malaysia-first game top-ups and Steam gift games.",
-};
-
+import { SiteFooter } from "@/components/site-footer";
+export const metadata = { title: "About Kaitou | Kaitou Game Store", description: "Game top-ups and Steam gifts with clear MYR prices, FPX payments and order support." };
 export default function AboutPage() {
-  return (
-    <div className="kaitou-shell blue-grid">
-      <SiteHeader />
-      <main>
-        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15 bg-[#030817] text-white">
-          <div className="absolute inset-0 opacity-25">
-            <Image
-              src="/brand/logo-current.png"
-              alt=""
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#030817] via-[#030817]/92 to-[#030817]/62" />
-          <div className="relative mx-auto grid min-h-[520px] w-full max-w-7xl items-center gap-10 px-5 py-16 lg:grid-cols-[1fr_0.72fr]">
-            <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-md border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 text-sm font-bold text-cyan-100">
-                <BadgeCheck className="h-4 w-4" />
-                Kaitou Game Store
-              </div>
-              <h1 className="font-display text-6xl font-bold uppercase leading-[0.9] text-white text-balance md:text-8xl">
-                Kaitou Game Store
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-200">
-                Kaitou Game Store is built for players who want game top-ups and Steam
-                gift games with fast delivery, clear MYR pricing, and a support process
-                that treats every paid order seriously.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/#products"
-                  className="inline-flex min-h-12 items-center justify-center rounded-md bg-cyan-300 px-6 py-3 font-black uppercase text-slate-950 shadow-[0_0_28px_rgba(0,213,255,0.38)]"
-                >
-                  Browse products
-                </Link>
-                <Link
-                  href="/order-status"
-                  className="inline-flex min-h-12 items-center justify-center rounded-md border border-cyan-300/30 bg-white/5 px-6 py-3 font-bold text-cyan-100"
-                >
-                  Check order status
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-cyan-300/20 bg-black/42 p-5 shadow-2xl shadow-black/30 backdrop-blur">
-              <Image
-                src="/brand/logo-current.png"
-                alt="Kaitou Game Store logo"
-                width={420}
-                height={420}
-                className="mx-auto aspect-square w-full max-w-[340px] rounded-full object-cover"
-              />
-              <div className="mt-5 rounded-md border border-cyan-300/20 bg-cyan-300/10 p-4 text-sm font-medium leading-6 text-cyan-50">
-                Kaitou keeps the shopping experience bold and gaming-first, while checkout,
-                receipts, order lookup, and support stay clean so every customer can follow
-                their payment and order clearly.
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto grid w-full max-w-7xl gap-5 px-5 py-14 lg:grid-cols-3">
-          {trustPoints.map((point) => (
-            <article key={point.title} className="rounded-lg border border-cyan-300/20 bg-white/[0.045] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
-              <span className="grid h-12 w-12 place-items-center rounded-md bg-cyan-300 text-slate-950">
-                <point.icon className="h-5 w-5" />
-              </span>
-              <h2 className="mt-5 font-display text-3xl font-bold uppercase leading-none text-white">
-                {point.title}
-              </h2>
-              <p className="mt-3 text-sm font-medium leading-6 text-slate-300">{point.copy}</p>
-            </article>
-          ))}
-        </section>
-
-        <section className="trust-surface">
-          <div className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-14 lg:grid-cols-[0.76fr_1fr]">
-            <div>
-              <p className="text-sm font-bold uppercase text-sky-600">How Kaitou handles orders</p>
-              <h2 className="mt-2 font-display text-5xl font-bold leading-none text-slate-950">
-                Built around paid-order clarity.
-              </h2>
-            </div>
-            <div className="grid gap-3">
-              {[
-                "Unpaid or incomplete checkout does not trigger customer messages.",
-                "Paid orders move into Processing automatically.",
-                "Successful fulfillment becomes Completed.",
-                "Fulfillment issues move to Failed, then Review for support action.",
-                "Refunded is used only after refund handling is recorded.",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3 rounded-lg border border-sky-100 bg-white p-4 text-sm font-semibold text-slate-700">
-                  <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-sky-600" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+  return <div className="kaitou-shell"><SiteHeader /><main>
+    <section data-dark-surface className="relative overflow-hidden bg-[#030817] text-white"><Image src="/brand/logo-current.png" alt="" fill priority sizes="100vw" className="object-cover opacity-20" /><div className="absolute inset-0 bg-black/70" /><div className="relative mx-auto max-w-7xl px-5 py-16 md:py-20"><p className="font-semibold text-cyan-200">For the games you keep coming back to.</p><h1 className="mt-4 max-w-3xl font-display text-5xl font-bold md:text-7xl">Kaitou Game Store</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">A top-up should get you back into the game, not leave you wondering where your money went. We keep the price clear, start delivery after payment is confirmed, and give you an order number you can follow.</p><Link href="/#products" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-cyan-300 px-6 py-3 font-bold text-slate-950">Find your game<Zap className="h-5 w-5" /></Link></div></section>
+    <section className="trust-surface"><div className="mx-auto max-w-7xl px-5 py-12"><h2 className="font-display text-3xl font-bold">Know what you&apos;re paying for.</h2><p className="mt-4 max-w-3xl leading-7 text-slate-600">Choose your game, check the package and see the total in MYR before paying. The RM1 FPX fee is shown separately. No customer account is needed, and we never need your game password.</p><div className="mt-10 grid gap-8 border-y border-slate-200 py-8 md:grid-cols-3">{[
+      { icon: ShieldCheck, title: "Your details stay yours", text: "Top-ups use your player ID and the fields required for your game. Steam gifts use an invite link. Never share your password or verification codes." },
+      { icon: Zap, title: "Straight into processing", text: "Once payment is confirmed, delivery starts automatically. Timing varies by game and supplier. Your status and email updates keep you informed." },
+      { icon: Mail, title: "Help when it matters", text: "If something goes wrong, keep your order number and contact us. We check the payment and delivery rather than asking you to start over." },
+    ].map(({ icon: Icon, title, text }) => <article key={title}><Icon className="h-6 w-6 text-sky-700" /><h3 className="mt-4 text-lg font-bold">{title}</h3><p className="mt-3 text-sm leading-7 text-slate-600">{text}</p></article>)}</div></div></section>
+    <section className="trust-surface"><div className="mx-auto grid max-w-7xl gap-8 px-5 pb-14 md:grid-cols-2"><div><h2 className="font-display text-3xl font-bold">A store worth returning to.</h2><p className="mt-4 leading-7 text-slate-600">Fair prices matter. So does knowing who to contact after you pay. That is what we want you to remember about Kaitou, whether it is your first small top-up or your next game night.</p></div><div className="border-t border-slate-200 pt-6 md:border-l md:border-t-0 md:pl-8"><h2 className="text-xl font-bold">Check once. Play with confidence.</h2><p className="mt-4 text-sm leading-7 text-slate-600">Before paying, double-check your player ID, server and region. Buying a Steam gift? Confirm the receiving account and edition too. If you are unsure, ask us first.</p><div className="mt-6 flex flex-wrap gap-5 font-semibold text-sky-800"><Link href="/faq">Common questions</Link><Link href="/support">Contact Kaitou</Link></div></div></div></section>
+  </main><SiteFooter /></div>;
 }

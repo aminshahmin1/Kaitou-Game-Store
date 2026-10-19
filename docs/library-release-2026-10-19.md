@@ -1,0 +1,30 @@
+# Steam library, packs and customer help
+
+## Approved scope
+
+- Universal short press feedback for buttons, links and summaries; restrained desktop hover feedback; keyboard focus and reduced-motion support. Dashboard uses the same stylesheet.
+- Seller-approved repeat bundles for top-up packs, not a customer quantity selector. In Products, edit the base listing, approve Allow repeat purchases after checking account/stacking limits, then add a 2-5 quantity custom package, set its selling price and save. First-purchase/one-time offers remain blocked. Packs and passes always have zero ranking units.
+- One store payment for 3x produces three independent supplier deliveries with the same saved account fields and unique part keys. Completion requires all parts; unsuccessful parts go to review without repeating successful deliveries. One RM1 FPX fee applies to the store order, not each part.
+- Rewritten About, FAQs, support page and shared help footer. Support prepares an email draft addressed to amin@kaitou.shop; the customer sends it through their email app and can attach a receipt. No fake sent-message confirmation or unconfigured support-ticket service.
+
+## Steam catalogue
+
+- Source feed: 178,483 entries indexed completely using bounded 2,000-row requests. This is NOT 178,483 verified paid base games. Supplier feed includes free games and DLC; metadata/image validation is progressive and also runs on matching search results. Only verified paid base games appear publicly. An exact title search checks matching uncached entries; classification may need a retry during rate limits. Unknown types stay hidden.
+- Images come from verified Steam metadata. Gift editions must contain the selected base app according to Steam package metadata. Standalone DLC, demos and free games are excluded; Deluxe editions containing the base game are allowed.
+- Quotes/editions/regions are fetched when a game is opened and again before checkout. Buyer props omit supplier USD cost, MYR cost and provider SKUs. Auto-library records use their own namespace and are not mixed into normal manually priced product listings. Existing manual product prices/publication flags and historical financials are untouched.
+- Continuous approved tiers on rounded MYR supplier cost: <=10 +1, <=20 +2, <=50 +3, <=80 +4, <=100 +5, <=150 +6, <=200 +7, <=250 +8, <=300 +9, >300 +10. Shared manual exchange rate applies. RM1 FPX fee stays separate. This is the owner's simplified margin basis, not a guarantee covering absorbed funding/transfer costs or later supplier price changes.
+- Malaysian region is the initial choice if offered; changing edition preserves the chosen account region or requires a fresh region selection. Never silently switch to the cheapest foreign region. Review dialog shows edition, region, invite, game price, fee and total before creating payment. Price changes return409 without creating a payment/order. Inputs stay frozen during submission.
+- Existing live supplier-credit reservations protect purchase affordability. Read-only edition/region browsing remains possible when out of stock. The observed USD1.7017 balance makes many Steam games correctly unavailable. Tests used an affordable non-MY option with a dummy invite and intercepted payment request, never an actual purchase.
+
+## Profile-preview limitation
+
+The published FazerCards Steam API has catalogue/details/order endpoints but no invite-profile resolver. The supplied public Steam invite redirects anonymous requests to Steam login. No login/session bypass was attempted. The site checks the s.team/p/ link format and explicitly says the receiving profile is not verified; it does not invent an avatar/name. For the exact supplier-style verified profile preview, FazerCards must provide a supported API endpoint returning the resolved Steam ID, display name and avatar, with authentication/rate-limit documentation.
+
+## Operations and verification
+
+- Source refresh daily; authenticated five-minute worker resumes interrupted imports and verifies pending metadata within shared Steam request/time budgets. Supplier catalogue fetches obey the three-minute minimum. Initial oversized imports timed out, so small requests and persistent generation/cursor/hash checks replaced them. Earlier unbounded function execution retired for service_role.
+- Applied DDL is recorded in steam-library.sql, steam-library-pricing.sql, steam-library-packages.sql, steam-library-batches.sql and steam-library-chunk-upload.sql, in that order. The latest bounded chunk functions are authoritative; earlier staging functions are obsolete. Private tables have RLS and no anon/authenticated access. Security advisor has no new warning; pre-existing pg_net/public warning remains (https://supabase.com/docs/guides/database/database-linter?lint=0014_extension_in_public). No-policy INFO notices are deliberate private default denial.
+- Regression suite passed, including exact three-part delivery, Steam provider request payload, price tiers/boundaries, malformed invites, free/DLC/type checks, base-package membership, privacy projection, manual disables and checkout price-change rejection. SQL rollback verified private access, serialized sync, cursor resume and price-only updates; fixtures rolled back.
+- Isolated deployment passed 36 route/width/theme browser cases (390/1024/1440, both themes), FAQ, actual hover/press/reduced-motion checks, guide, confirmation, cancellation and intercepted error retry with retained values. Actual mismatch found and fixed: server/browser Intl.DisplayNames produced different Hong Kong labels; fixed labels now have zero text differences and zero hydration errors.
+- No real bill, bank payment, supplier purchase, customer refund, staff account or funding deposit created. No real Steam gift delivery test performed or authorized. Screenshots and JSON reports are ignored under artifacts/library-release.
+- Final domain assignment/cron/live smoke result will be appended after completion. English/email scope unchanged; chatbot and deferred WhatsApp/Bahasa Malaysia additions not implemented.

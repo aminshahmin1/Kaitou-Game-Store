@@ -4,6 +4,7 @@ import { ArrowLeft, BadgeCheck, ShieldCheck } from "lucide-react";
 
 import { CheckoutForm } from "@/components/checkout-form";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import { getStoreProductBySlug } from "@/lib/products";
 import { toCheckoutProduct } from "@/lib/checkout-product";
@@ -107,6 +108,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           )}
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

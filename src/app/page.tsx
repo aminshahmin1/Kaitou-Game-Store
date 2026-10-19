@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/product-card";
 import { SiteHeader } from "@/components/site-header";
 import { getStoreProducts } from "@/lib/products";
 import { RankingPromotion } from "@/components/ranking-promotion";
+import { SiteFooter } from "@/components/site-footer";
 
 const categories = [
   { label: "Game Top-Ups", value: "Delivered to your game account", icon: Zap },
@@ -142,6 +143,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

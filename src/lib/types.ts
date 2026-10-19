@@ -30,6 +30,8 @@ export type Product = {
 };
 
 export type ProductVariation = {
+  edition?: string;
+  region?: string;
   currencyUnits?: number;
   supplierQuantity?: number;
   repeatable?: boolean;
