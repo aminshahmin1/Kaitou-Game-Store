@@ -4,6 +4,8 @@
 
 ## Customer support and automation: 2026-10-19
 
+- LIVE completion checkpoint: application e6819e7 + banner fix 247db6d, deployment dpl_85ysVeSMN4HfjvgCAPBfcrdXW8hR Ready at kaitou.shop. Fulfillment and new revenue cron scheduled every minute; authenticated reconciliation HTTP200. Production verification and limits: docs/support-release-2026-10-19.md. Statements about pending deployment below describe the earlier checkpoint.
+
 - Implementation verified locally; production deployment and one-minute cron activation pending. Smaller native-resolution artwork frames, ranking medals/empty boards/session promotion, non-completed-order email support, generic phone examples and light-theme contrast changes implemented. Removed the old public cover image containing personal contact details; originals outside this project unchanged.
 - The first genuine customer order was already Completed by the supplier and database; Orders is paid history, not a mandatory review queue. Added 15-second visible-tab/focus order refresh that preserves unsaved support drafts. Revenue refreshes every 30 seconds. Only problematic orders require support action.
 - Applied automatic_manual_rate_profit migration: confirmed supplier debit times the frozen checkout rate records cost/profit without requiring or inventing a funding deposit. Existing recorded profit is not rewritten. Reconciled the genuine completed customer's previously missing profit: RM21.91 total, RM18.91 confirmed cost, RM1 FPX fee, RM2 net. No paid test, bill, refund or supplier purchase was created.

@@ -27,9 +27,10 @@ try {
     "/products/pubg-mobile-auto-pubg-mobile-auto", "/products/free-fire-my-sg-free-fire-my-sg", "/products/wuthering-waves-wuthering-waves"];
   for (const width of [390, 1440]) for (const theme of ["light", "dark"]) for (const route of routes) {
     await page.setViewportSize({ width, height: 960 });
-    await page.addInitScript((theme) => localStorage.setItem("kaitou-theme", theme), theme);
+    await page.evaluate((theme) => localStorage.setItem("kaitou-theme", theme), theme);
     const response = await navigate(`${base}${route}`);
     await page.getByRole("main").waitFor();
+    await page.waitForFunction((theme) => document.documentElement.dataset.theme === theme, theme);
     assert.equal(response.status(), 200, `${route} unavailable`);
     const content = await page.content();
     assert.ok(!content.includes(["017", "263", "7043"].join("")), "Private phone in public page");
