@@ -21,5 +21,8 @@ assert.ok(queries.includes("imageUrl: row.image_url ?? null"));
 const checkout = read("src/components/checkout-form.tsx");
 assert.match(checkout, /<div data-dark-surface className="shrink-0/);
 assert.match(checkout, /<button\s+data-dark-surface/);
+assert.ok(checkout.includes("event.preventDefault()"));
+assert.ok(!checkout.includes("action={onSubmit}"));
+assert.ok(read("src/components/order-status-lookup.tsx").includes("event.preventDefault()"));
 assert.ok(!/a\s*\{\s*color:\s*inherit/.test(read("src/app/globals.css")));
 console.log("PASS: HTTPS-only artwork, read/write/import mapping, contrast-protected checkout badge and payment button, no anchor colour override.");

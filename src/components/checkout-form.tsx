@@ -59,7 +59,10 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
   }
 
   return (
-    <form action={onSubmit} onChange={() => { if (result) setResult(null); }} className="trust-surface grid gap-5 rounded-lg border border-sky-100 p-5 shadow-2xl shadow-sky-950/20 md:p-6">
+    <form onSubmit={(event) => {
+      event.preventDefault();
+      if (!isSubmitting) void onSubmit(new FormData(event.currentTarget));
+    }} onChange={() => { if (result) setResult(null); }} className="trust-surface grid gap-5 rounded-lg border border-sky-100 p-5 shadow-2xl shadow-sky-950/20 md:p-6">
       <div className="flex items-start justify-between gap-4 border-b border-sky-100 pb-5">
         <div>
           <p className="text-sm font-bold uppercase text-sky-600">Secure checkout</p>

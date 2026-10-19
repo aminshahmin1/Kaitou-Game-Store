@@ -101,7 +101,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
         </div>
         <div className="flex flex-wrap gap-2">
           <span className="inline-flex min-h-10 items-center rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">
-            {orders.length} in queue
+            {orders.length} {allPaid ? "paid orders" : "in queue"}
           </span>
           <button
             type="button"

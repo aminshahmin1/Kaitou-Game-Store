@@ -4,3 +4,4 @@
 .next-verify
 node_modules
 .git
+artifacts

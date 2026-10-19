@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 const require = createRequire(import.meta.url);
 const { chromium } = require(path.join(process.env.TEMP, "kaitou-audit-tools/node_modules/playwright"));
@@ -8,7 +8,9 @@ const label = process.env.AUDIT_LABEL ?? "production";
 const output = path.resolve("artifacts", `audit-2026-10-19-${label}`);
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
-const report = { base, cases: [], errors: [], api: [], interactions: [] };
+const report = process.env.AUDIT_INTERACTIONS_ONLY === "1"
+  ? JSON.parse(await readFile(path.join(output, "report.json"), "utf8"))
+  : { base, cases: [], errors: [], api: [], interactions: [] };
 const context = await browser.newContext();
 const page = await context.newPage();
 page.on("pageerror", (error) => report.errors.push({ path: new URL(page.url()).pathname, message: error.message }));
@@ -20,6 +22,11 @@ async function inspect(route, width, theme, admin = false) {
   await page.addInitScript((theme) => localStorage.setItem("kaitou-theme", theme), theme);
   const response = await page.goto(`${base}${route}`, { waitUntil: "networkidle", timeout: 60000 });
   await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(async () => {
+    const images = [...document.querySelectorAll('[data-product-poster] img')];
+    images.forEach((image) => { image.loading = "eager"; });
+    await Promise.all(images.map((image) => image.decode().catch(() => undefined)));
+  });
   const metrics = await page.evaluate(() => {
     const visible = (el) => el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height > 0;
     const overflow = [...document.querySelectorAll("main *")].filter((el) => {
@@ -47,7 +54,9 @@ async function inspect(route, width, theme, admin = false) {
   await writeFile(path.join(output, "report.json"), JSON.stringify(report, null, 2));
   console.log(`Checked ${route} ${width}px ${theme}: HTTP${response.status()}, overflow=${metrics.pageOverflow}, posters=${metrics.posters.filter((x) => x.loaded && !x.fallback).length}`);
 }
-for (const width of [390, 1440]) for (const theme of ["light", "dark"]) for (const route of paths) await inspect(route, width, theme);
+if (process.env.AUDIT_INTERACTIONS_ONLY !== "1") {
+  for (const width of [390, 1440]) for (const theme of ["light", "dark"]) for (const route of paths) await inspect(route, width, theme);
+}
 await page.setViewportSize({ width: 390, height: 844 });
 await page.goto(base, { waitUntil: "networkidle" });
 await page.getByRole("button", { name: "Open menu", exact: true }).click();
@@ -65,8 +74,19 @@ if (await page.locator('form input[name="customerName"]').count()) {
   for (const input of await page.locator('form input[inputmode="numeric"]').all()) await input.fill("123456");
   await page.route("**/api/checkout", (route) => route.fulfill({ status: 502, contentType: "application/json", body: JSON.stringify({ error: "Simulated connection failure" }) }));
   await page.locator('form button[type="submit"]').click();
-  await page.getByRole("alert").waitFor();
+  await page.locator('form [role="alert"]').waitFor();
   report.interactions.push({ name: "Checkout error recovery (mock only)", passed: await page.locator('form button[type="submit"]').isEnabled() });
+  report.interactions.push({ name: "Checkout preserves customer details after failure", passed: await page.locator('input[name="customerName"]').inputValue() === "Development Audit" });
+  await page.unroute("**/api/checkout");
+  await page.route("**/api/checkout", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({
+    orderId: "DEVELOPMENT-SIMULATED", paymentUrl: "https://toyyibpay.com/DEVELOPMENT-NOT-A-REAL-BILL", paymentSetupRequired: false,
+  }) }));
+  await page.locator('form button[type="submit"]').click();
+  const payment = page.getByRole("link", { name: "Continue payment", exact: true });
+  await payment.waitFor();
+  report.interactions.push({ name: "Payment continuation state (mock only)", passed: await payment.isVisible(),
+    color: await payment.evaluate((el) => getComputedStyle(el).color) });
+  await page.screenshot({ path: path.join(output, "simulated-payment-link.png"), fullPage: true });
   await page.unroute("**/api/checkout");
 }
 for (const route of ["/api/admin/products", "/api/admin/orders", "/api/admin/staff", "/api/admin/revenue", "/api/admin/fazercards/balance"]) {

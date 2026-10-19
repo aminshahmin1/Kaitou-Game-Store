@@ -93,7 +93,10 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
 
   return (
     <>
-      <form action={onSubmit} className="mt-8 grid gap-4 md:grid-cols-[1fr_1fr_auto]">
+      <form onSubmit={(event) => {
+        event.preventDefault();
+        if (!isLoading) void onSubmit(new FormData(event.currentTarget));
+      }} className="mt-8 grid gap-4 md:grid-cols-[1fr_1fr_auto]">
         <label className="grid gap-2 text-sm font-semibold text-slate-700">
           Order ID
           <input
@@ -123,7 +126,7 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
       </form>
 
       {error ? (
-        <div className="mt-6 rounded-md border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+        <div role="alert" className="mt-6 rounded-md border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
           {error}
         </div>
       ) : null}
