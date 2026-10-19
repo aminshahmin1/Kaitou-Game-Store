@@ -103,3 +103,11 @@ html[data-theme="light"] .kaitou-shell :is(.text-white, .text-slate-200, .text-s
 html[data-theme="light"] .kaitou-shell :is(.text-emerald-300, .text-emerald-200):not([data-dark-surface], [data-dark-surface] *) {
   color: #086c4b;
 }
+
+html[data-theme="light"] .kaitou-shell :is(.text-slate-400, .text-slate-500, .text-cyan-100\/80, .text-cyan-200\/80):not([data-dark-surface], [data-dark-surface] *) {
+  color: #42566b;
+}
+
+.ranking-promo::backdrop { background: rgb(0 0 0 / 70%); }
+
+html[data-theme="light"] { --background: #f1f7fb; --foreground: #10263a; }

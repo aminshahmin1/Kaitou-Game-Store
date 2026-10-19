@@ -22,7 +22,7 @@ begin
     return jsonb_build_object('allocated', false, 'reason', 'Order already allocated.');
   end if;
   if v_order.paid_at is null or v_order.supplier_cost_confirmed_at is null
-     or v_order.status::text not in ('processing', 'completed', 'review') then
+     or v_order.status::text not in ('processing', 'completed', 'review', 'failed', 'refunded') then
     return jsonb_build_object('allocated', false, 'reason', 'Verified payment and confirmed supplier debit are required.');
   end if;
   if v_order.cost_usd <= 0 or v_order.cost_usd::text in ('NaN','Infinity','-Infinity') then
@@ -30,6 +30,16 @@ begin
   end if;
   if exists (select 1 from public.order_funding_allocations where order_id = p_order_id) then
     return jsonb_build_object('allocated', false, 'reason', 'Existing partial allocations require reconciliation.');
+  end if;
+
+  -- Manual-rate sales do not require a deposit ledger entry to recognise profit.
+  if v_order.cost_exchange_rate is not null then
+    v_cost := round(v_order.cost_usd*v_order.cost_exchange_rate,2);
+    update public.orders set cost_myr=v_cost,
+      gross_profit_myr=round((case when status::text='refunded' then 0 else amount_myr end)-v_cost,2),
+      net_profit_myr=round((case when status::text='refunded' then 0 else amount_myr end)-v_cost-payment_fee_myr,2),
+      profit_allocated_at=now() where id=p_order_id;
+    return jsonb_build_object('allocated',true,'costMyr',v_cost,'mode','manual_exchange');
   end if;
 
   -- Lock funding batches before deriving their unspent amounts.

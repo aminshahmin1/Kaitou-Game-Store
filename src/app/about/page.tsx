@@ -35,7 +35,7 @@ export default function AboutPage() {
         <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
           <div className="absolute inset-0 opacity-25">
             <Image
-              src="/brand/facebook-cover-current.png"
+              src="/brand/logo-current.png"
               alt=""
               fill
               priority

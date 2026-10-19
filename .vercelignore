@@ -2,6 +2,7 @@
 .next
 .next-build
 .next-verify
+.next-support
 node_modules
 .git
 artifacts

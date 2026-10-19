@@ -1,6 +1,7 @@
 import "server-only";
 import { createSupabaseAdminClient } from "./supabase/admin";
 import { getFazerCardsOrder } from "./integrations/fazercards";
+import { allocateFundingForOrder } from "./revenue";
 
 export async function reconcileProviderOrders() {
   const db = createSupabaseAdminClient();
@@ -32,6 +33,9 @@ export async function reconcileProviderOrders() {
         .eq("updated_at", order.updated_at).select("id");
       if (updateError) throw new Error("Could not save supplier status.");
       updated += saved?.length ?? 0;
+      if (saved?.length && !costConflict && (costLocked || result.chargedUsd !== undefined)) {
+        await allocateFundingForOrder(order.id).catch(() => undefined);
+      }
     } catch {
       failed++;
       // Move failed lookups behind untouched orders without changing payment or status.

@@ -3,7 +3,7 @@ import "server-only";
 import { createSupabaseAdminClient } from "./supabase/admin";
 import { malaysiaDate, revenueQuickRange } from "./revenue-dates";
 
-const paidOrderStatuses = ["processing", "completed", "review"] as const;
+const paidOrderStatuses = ["processing", "completed", "review", "failed", "refunded"] as const;
 
 type MoneyValue = string | number | null | undefined;
 
@@ -29,7 +29,7 @@ type FundingBatchRow = {
 type RevenueOrderRow = {
   id: string;
   order_number: string;
-  status: "processing" | "completed" | "review";
+  status: typeof paidOrderStatuses[number];
   amount_myr: MoneyValue;
   cost_usd: MoneyValue;
   cost_myr: MoneyValue;
@@ -65,7 +65,7 @@ export type FundingBatch = {
 export type RevenueOrder = {
   id: string;
   orderNumber: string;
-  status: "processing" | "completed" | "review";
+  status: typeof paidOrderStatuses[number];
   productTitle: string | null;
   variationTitle: string | null;
   amountMyr: number;
@@ -242,7 +242,7 @@ export async function createFundingBatch(input: FundingBatchInput) {
   return data.id as string;
 }
 
-export async function allocatePaidOrdersFunding(options: { orderId?: string } = {}) {
+export async function allocatePaidOrdersFunding(options: { orderId?: string; limit?: number; manualOnly?: boolean } = {}) {
   const supabase = createSupabaseAdminClient();
   if (!supabase) throw new Error("Supabase is not configured.");
   let query = supabase.from("orders").select("id,order_number")
@@ -250,6 +250,8 @@ export async function allocatePaidOrdersFunding(options: { orderId?: string } = 
     .not("supplier_cost_confirmed_at", "is", null).is("profit_allocated_at", null)
     .order("paid_at", { ascending: true }).order("id", { ascending: true });
   if (options.orderId) query = query.eq("id", options.orderId);
+  if (options.manualOnly) query = query.filter("cost_exchange_rate", "not.is", null);
+  if (options.limit) query = query.limit(options.limit);
   const { data: orders, error } = await query;
   if (error) throw new Error(error.message);
   const result: AllocationResult = { allocatedOrders: 0, skippedOrders: [] };
@@ -327,18 +329,18 @@ function mapRevenueOrder(row: RevenueOrderRow): RevenueOrder {
     status: row.status,
     productTitle: getRelationTitle(row.products),
     variationTitle: getRelationTitle(row.product_variations),
-    amountMyr: round2(toNumber(row.amount_myr)),
+    amountMyr: row.status === "refunded" ? 0 : round2(toNumber(row.amount_myr)),
     costUsd: round4(toNumber(row.cost_usd)),
     costMyr: round2(toNumber(row.cost_myr)),
     paymentFeeMyr: round2(toNumber(row.payment_fee_myr ?? 1)),
     grossProfitMyr:
       row.gross_profit_myr === null || row.gross_profit_myr === undefined
         ? null
-        : round2(toNumber(row.gross_profit_myr)),
+        : row.status === "refunded" ? -round2(toNumber(row.cost_myr)) : round2(toNumber(row.gross_profit_myr)),
     netProfitMyr:
       row.net_profit_myr === null || row.net_profit_myr === undefined
         ? null
-        : round2(toNumber(row.net_profit_myr)),
+        : row.status === "refunded" ? -round2(toNumber(row.cost_myr) + toNumber(row.payment_fee_myr ?? 1)) : round2(toNumber(row.net_profit_myr)),
     profitAllocatedAt: row.profit_allocated_at,
     paidAt: row.paid_at ?? row.created_at,
   };

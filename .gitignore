@@ -18,6 +18,7 @@
 /.next/
 /.next-build/
 /.next-verify/
+/.next-support/
 /out/
 
 # production

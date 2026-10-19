@@ -21,6 +21,15 @@ export function makeRankingSnapshot(product: Product, variation: ProductVariatio
 }
 
 export type RankingRow = { game: string; unit: string; player: string; units: number };
+export async function getRankingGroups(): Promise<string[]> {
+  const db = createSupabaseAdminClient();
+  if (!db) throw new Error("Rankings are unavailable.");
+  const { data, error } = await db.from("products").select("game,region,leaderboard_unit")
+    .eq("active", true).eq("type", "topup");
+  if (error) throw new Error("Rankings are unavailable.");
+  return [...new Set<string>((data ?? []).filter((row) => row.leaderboard_unit?.trim())
+    .map((row) => `${row.game.trim()} (${row.region}) | ${row.leaderboard_unit.trim()}`))].sort();
+}
 export async function getCurrencyRankings(): Promise<RankingRow[]> {
   const db = createSupabaseAdminClient();
   if (!db) throw new Error("Rankings are unavailable.");

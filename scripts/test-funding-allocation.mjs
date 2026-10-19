@@ -12,6 +12,8 @@ const query = {
   not(...args) { filters.push(args); return query; },
   is(...args) { filters.push(args); return query; },
   eq(...args) { filters.push(args); return query; },
+  filter(...args) { filters.push(args); return query; },
+  limit(...args) { filters.push(["limit", ...args]); return query; },
   order() { return query; },
   then(resolve) { return Promise.resolve({ data: [{ id: "one", order_number: "KGS-ONE" }], error: null }).then(resolve); },
 };
@@ -40,6 +42,9 @@ assert.ok(filters.some((f) => f[0] === "id" && f[1] === "one"));
 const repeated = await exports.allocateFundingForOrder("one");
 assert.equal(repeated.allocatedOrders, 0);
 assert.equal(repeated.skippedOrders[0].reason, "Order already allocated.");
+await exports.allocatePaidOrdersFunding({ manualOnly: true, limit: 25 });
+assert.ok(filters.some((f) => f[0] === "cost_exchange_rate" && f[1] === "not.is"));
+assert.ok(filters.some((f) => f[0] === "limit" && f[1] === 25));
 fail = true;
 await assert.rejects(exports.allocateFundingForOrder("one"), /No partial allocation/);
 console.log("PASS: Allocation delegates to server transaction, filters verified orders, reports duplicates and handles RPC failure.");

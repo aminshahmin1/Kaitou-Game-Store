@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader2, RefreshCw, Save } from "lucide-react";
 
 import type { AdminOrder } from "@/lib/admin-orders";
@@ -26,14 +26,41 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
   const [isLoading, setIsLoading] = useState(false);
   const [savingOrderId, setSavingOrderId] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const dirtyOrders = useRef(new Set<string>());
+  const requestVersion = useRef(0);
+
+  useEffect(() => {
+    let stopped = false, pending = false;
+    async function refresh() {
+      if (document.visibilityState !== "visible" || pending || dirtyOrders.current.size) return;
+      pending = true;
+      const version = requestVersion.current;
+      try {
+        const response = await fetch(allPaid ? "/api/admin/orders?scope=all" : "/api/admin/orders", { cache: "no-store" });
+        const body = await response.json();
+        if (!response.ok) throw new Error("Refresh unavailable");
+        if (!stopped && version === requestVersion.current && !dirtyOrders.current.size) {
+          setOrders(body.orders ?? []); setDrafts(createDrafts(body.orders ?? []));
+        }
+      } catch { if (!stopped) setMessage("Live updates are temporarily unavailable. Use Refresh to try again."); }
+      finally { pending = false; }
+    }
+    const timer = window.setInterval(() => void refresh(), 15000);
+    const onVisible = () => void refresh();
+    window.addEventListener("focus", onVisible);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => { stopped = true; window.clearInterval(timer); window.removeEventListener("focus", onVisible); document.removeEventListener("visibilitychange", onVisible); };
+  }, [allPaid]);
 
   async function loadOrders() {
+    const version = ++requestVersion.current;
     setIsLoading(true);
     setMessage(null);
 
     try {
     const response = await fetch(allPaid ? "/api/admin/orders?scope=all" : "/api/admin/orders");
     const body = await response.json().catch(() => ({}));
+    if (version !== requestVersion.current) return;
     setIsLoading(false);
 
     if (!response.ok) {
@@ -43,10 +70,11 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
 
     const nextOrders = body.orders ?? [];
     setOrders(nextOrders);
+    dirtyOrders.current.clear();
     setDrafts(createDrafts(nextOrders));
     } catch {
       setMessage("Connection failed. Please try refreshing again.");
-    } finally { setIsLoading(false); }
+    } finally { if (version === requestVersion.current) setIsLoading(false); }
   }
 
   async function saveOrder(order: AdminOrder) {
@@ -57,6 +85,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
     }
 
     setSavingOrderId(order.id);
+    ++requestVersion.current;
     setMessage(null);
 
     try {
@@ -81,6 +110,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
   }
 
   function updateDraft(orderId: string, patch: Partial<Draft>) {
+    dirtyOrders.current.add(orderId);
     setDrafts((current) => ({
       ...current,
       [orderId]: {
@@ -96,7 +126,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
         <div>
           <h2 className="font-display text-3xl font-bold">{allPaid ? "Paid orders" : "Failed order review"}</h2>
           <p className="text-sm text-slate-500">
-            Review paid fulfillment issues, record support notes, and move orders to the right final status.
+            {allPaid ? "Order history updates automatically. Completed orders need no action. Only delivery problems need support review." : "Only problematic orders need manual support. Normal deliveries are completed automatically."}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -144,7 +174,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
                     <p className="break-all text-sm text-slate-500">{order.customerWhatsapp}</p>
                   </div>
                   <label className="grid gap-1 text-sm font-semibold text-slate-700">
-                    Status
+                      Support status override
                     <select
                       value={draft.status}
                       onChange={(event) => updateDraft(order.id, { status: event.target.value as AdminOrder["status"] })}
@@ -157,7 +187,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
                       ))}
                     </select>
                   </label>
-                </div>
+                  </div>
 
                 <div className="grid gap-3 rounded-md bg-slate-50 p-4 text-sm md:grid-cols-2">
                   <Info label="Product" value={`${order.productTitle ?? "Product"} / ${order.variationTitle ?? "Variation"}`} />
@@ -224,7 +254,7 @@ export function AdminReviewQueue({ initialOrders, allPaid = false }: { initialOr
           })
         ) : (
           <div className="rounded-md border border-dashed border-slate-200 p-8 text-center text-sm font-semibold text-slate-500">
-            No failed, review, or refunded orders are waiting here.
+            {allPaid ? "No paid orders yet." : "No failed, review, or refunded orders are waiting here."}
           </div>
         )}
       </div>

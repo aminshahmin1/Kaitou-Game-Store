@@ -22,7 +22,7 @@ begin
   result:=public.allocate_order_funding(o);
   if (result->>'allocated')::boolean is not true or (result->>'costMyr')::numeric<>6.38 then raise exception 'Snapshot allocation mismatch: %',result; end if;
   if (select net_profit_myr from public.orders where id=o)<>3.62 then raise exception 'Profit mismatch'; end if;
-  if (select effective_rate from public.order_funding_allocations where order_id=o)<>4.25 then raise exception 'Funding fee rate leaked into cost'; end if;
+  if exists(select 1 from public.order_funding_allocations where order_id=o) then raise exception 'Manual-rate costing invented a funding allocation'; end if;
   if (select cost_exchange_rate from public.orders where id=o)<>4.25 then raise exception 'Rate change rewrote order'; end if;
   if (public.allocate_order_funding(o)->>'allocated')::boolean is not false then raise exception 'Duplicate allocation'; end if;
 end $$;

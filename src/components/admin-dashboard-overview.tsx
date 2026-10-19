@@ -29,8 +29,8 @@ export async function AdminDashboardOverview({ session }: { session: AdminSessio
     canProducts ? { label: "Visible products", value: visibleProducts.length.toString(), icon: Boxes } : null,
     canProducts ? { label: "Listed product value", value: formatMyr(listedValue), icon: CircleDollarSign } : null,
     canRevenue && revenue ? { label: "Month net profit", value: formatMyr(revenue.summary.netProfitMyr), icon: BarChart3 } : null,
-    canRevenue && revenue ? { label: "Funding available", value: `${revenue.summary.availableFundingUsd.toFixed(4)} USDT`, icon: Layers3 } : null,
-    canRevenue && revenue ? { label: "Pending allocation", value: revenue.summary.unallocatedOrders.toString(), icon: CircleDollarSign } : null,
+    canRevenue && revenue ? { label: "Confirmed supplier cost", value: formatMyr(revenue.summary.allocatedCostMyr), icon: Layers3 } : null,
+    canRevenue && revenue ? { label: "Awaiting cost confirmation", value: revenue.summary.unallocatedOrders.toString(), icon: CircleDollarSign } : null,
     canReview ? { label: "Review queue", value: reviewOrders.length.toString(), icon: AlertTriangle } : null,
   ].filter((card): card is { label: string; value: string; icon: typeof Boxes } => Boolean(card));
 
@@ -44,7 +44,7 @@ export async function AdminDashboardOverview({ session }: { session: AdminSessio
     canRevenue ? {
       href: "/dashboard/revenue",
       title: "Revenue",
-      copy: "Add funding batches, allocate paid order costs, and monitor profit reports.",
+      copy: "Automatic revenue, supplier cost and profit reports for your paid orders.",
       icon: BarChart3,
     } : null,
     canReview ? {

@@ -43,6 +43,7 @@ vm.runInNewContext(ts.transpileModule(readFileSync(new URL("../src/lib/fulfillme
 }).outputText, { exports, require(name) {
   if (name === "server-only") return {};
   if (name === "./supabase/admin") return { createSupabaseAdminClient: () => db };
+  if (name === "./revenue") return { allocateFundingForOrder: async () => ({ allocatedOrders: 1 }) };
   if (name === "./integrations/fazercards") return { getFazerCardsOrder: (reference) => lookup(reference) };
   throw new Error(`Unexpected import: ${name}`);
 } });

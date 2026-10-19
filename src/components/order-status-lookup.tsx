@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertTriangle, CheckCircle2, Clock3, Loader2, Search } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock3, Loader2, Search, Mail } from "lucide-react";
 
 import { formatMyr } from "@/lib/catalog";
 import type { OrderStatus } from "@/lib/types";
@@ -113,7 +113,7 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
             name="contact"
             required
             className="rounded-md border border-sky-100 px-3 py-3 outline-none ring-sky-300 focus:ring-4"
-            placeholder="you@example.com or 0172637043"
+            placeholder="you@example.com or 0123456789"
           />
         </label>
         <button
@@ -157,6 +157,11 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
               </dd>
             </div>
           </dl>
+          {order.status !== "completed" && <a
+            href={`mailto:amin@kaitou.shop?subject=${encodeURIComponent(`Order support: ${order.orderNumber}`)}&body=${encodeURIComponent(`Hello Kaitou support,\n\nI need help with order ${order.orderNumber}.\nCurrent status: ${statusCopy[order.status].label}\n\nMy question:\n`)}`}
+            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-md bg-sky-800 px-4 py-3 font-semibold text-white" data-dark-surface>
+            <Mail className="h-4 w-4" />Get help
+          </a>}
           {order.failureReason ? (
             <p className="mt-4 rounded-md bg-amber-50 p-3 text-sm font-medium text-amber-800">
               {order.failureReason}

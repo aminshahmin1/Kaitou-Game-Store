@@ -6,6 +6,7 @@ import { BadgeCheck, Gamepad2, Gauge, ShieldCheck, Sparkles, Zap } from "lucide-
 import { ProductCard } from "@/components/product-card";
 import { SiteHeader } from "@/components/site-header";
 import { getStoreProducts } from "@/lib/products";
+import { RankingPromotion } from "@/components/ranking-promotion";
 
 const categories = [
   { label: "Game Top-Ups", value: "Delivered to your game account", icon: Zap },
@@ -24,11 +25,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   return (
     <div className="kaitou-shell blue-grid">
       <SiteHeader />
+      <RankingPromotion />
       <main>
         <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
           <div className="absolute inset-0 opacity-35">
             <Image
-              src="/brand/facebook-cover-current.png"
+              src="/brand/logo-current.png"
               alt=""
               fill
               priority

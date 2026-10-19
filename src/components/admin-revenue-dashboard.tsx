@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3,
   CircleDollarSign,
@@ -23,6 +23,25 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
   const [isAllocating, setIsAllocating] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [formKey, setFormKey] = useState(0);
+  const requestVersion = useRef(0);
+  useEffect(() => {
+    let cancelled = false, pending = false;
+    async function refresh() {
+      if (document.visibilityState !== "visible" || pending || isLoading || isSavingBatch || isAllocating) return;
+      pending = true;
+      try {
+        const response = await fetch(`/api/admin/revenue?${new URLSearchParams({ from, to })}`, { cache: "no-store" });
+        const body = await response.json();
+        if (!response.ok) throw new Error("Report unavailable");
+        if (!cancelled) setData(body.data);
+      } catch { if (!cancelled) setMessage("Live report refresh is temporarily unavailable. Your saved data is unchanged."); }
+      finally { pending = false; }
+    }
+    const timer = window.setInterval(() => void refresh(), 30000);
+    const onVisible = () => void refresh();
+    window.addEventListener("focus", onVisible); document.addEventListener("visibilitychange", onVisible);
+    return () => { cancelled = true; window.clearInterval(timer); window.removeEventListener("focus", onVisible); document.removeEventListener("visibilitychange", onVisible); };
+  }, [from, to, isLoading, isSavingBatch, isAllocating]);
   const exportHref = useMemo(() => {
     const params = new URLSearchParams({ from, to });
     return `/api/admin/revenue/export?${params.toString()}`;
@@ -38,26 +57,29 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
   }, [data.fundingBatches]);
 
   async function loadRevenue(nextFrom = from, nextTo = to) {
+    const version = ++requestVersion.current;
     setIsLoading(true);
     setMessage(null);
 
+    try {
     const params = new URLSearchParams({ from: nextFrom, to: nextTo });
     const response = await fetch(`/api/admin/revenue?${params.toString()}`);
     const body = await response.json().catch(() => ({}));
-    setIsLoading(false);
-
     if (!response.ok) {
-      setMessage(body.error ?? "Revenue data could not be loaded.");
+      if (version === requestVersion.current) setMessage(body.error ?? "Revenue data could not be loaded.");
       return;
     }
 
-    setData(body.data);
+    if (version === requestVersion.current) setData(body.data);
+    } catch { if (version === requestVersion.current) setMessage("Revenue could not be refreshed. Please try again."); }
+    finally { if (version === requestVersion.current) setIsLoading(false); }
   }
 
   async function onCreateFundingBatch(formData: FormData) {
     setIsSavingBatch(true);
     setMessage(null);
 
+    try {
     const response = await fetch("/api/admin/revenue/funding-batches", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -81,12 +103,15 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
     setMessage("Funding batch saved. The store exchange rate is unchanged.");
     setFormKey((current) => current + 1);
     await loadRevenue();
+    } catch { setMessage("Deposit save could not be confirmed. Refresh before retrying to avoid a duplicate record."); }
+    finally { setIsSavingBatch(false); }
   }
 
   async function allocateFunding() {
     setIsAllocating(true);
     setMessage(null);
 
+    try {
     const response = await fetch("/api/admin/revenue/allocate", { method: "POST" });
     const body = await response.json().catch(() => ({}));
     setIsAllocating(false);
@@ -100,10 +125,12 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
     const skippedCount = result?.skippedOrders?.length ?? 0;
     setMessage(
       skippedCount > 0
-        ? `Allocated ${result.allocatedOrders} order(s). ${skippedCount} order(s) need more funding balance.`
-        : `Allocated ${result.allocatedOrders} order(s).`,
+        ? `Recorded profit for ${result.allocatedOrders} order(s). ${skippedCount} order(s) are not yet eligible; check their confirmed supplier cost.`
+        : `Recorded profit for ${result.allocatedOrders} order(s).`,
     );
     await loadRevenue();
+    } catch { setMessage("Reconciliation could not be confirmed. Automatic reconciliation will retry eligible orders."); }
+    finally { setIsAllocating(false); }
   }
 
   function applyQuickRange(kind: "today" | "week" | "month") {
@@ -117,21 +144,19 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
     <>
       <section className="grid gap-4 lg:grid-cols-4">
         <SummaryCard label="Revenue" value={formatMyr(data.summary.revenueMyr)} icon={CircleDollarSign} />
-        <SummaryCard label="Allocated cost" value={formatMyr(data.summary.allocatedCostMyr)} icon={Layers3} />
+        <SummaryCard label="Confirmed supplier cost" value={formatMyr(data.summary.allocatedCostMyr)} icon={Layers3} />
         <SummaryCard label="Gross profit" value={formatMyr(data.summary.grossProfitMyr)} icon={BarChart3} />
         <SummaryCard label="Net profit" value={formatMyr(data.summary.netProfitMyr)} icon={BarChart3} />
       </section>
 
-      {data.summary.isLowFundingBalance ? (
+      {data.summary.unallocatedOrders > 0 ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
-          <h2 className="font-display text-2xl font-bold">Funding ledger needs attention</h2>
+          <h2 className="text-xl font-bold">Awaiting supplier cost confirmation</h2>
           <p className="mt-2">
-            Unallocated ledger credit is {data.summary.availableFundingUsd.toFixed(4)} USDT. The ledger threshold is{" "}
-            {data.summary.lowFundingThresholdUsd.toFixed(4)} USDT, and pending unallocated cost is{" "}
-            {data.summary.pendingCostUsd.toFixed(4)} USDT.
+            {data.summary.unallocatedOrders} paid order(s) are awaiting confirmed cost or reconciliation.
           </p>
           <p className="mt-2 font-semibold">
-            This is an accounting balance, not your live FazerCards balance. Reconcile prior usage before recording opening credit. Supplier stock alerts use the live balance separately.
+            Eligible orders are reconciled automatically. Supplier stock availability uses the live FazerCards balance, not the historical deposit ledger.
           </p>
         </section>
       ) : null}
@@ -183,8 +208,8 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
 
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             <MiniStat label="Paid orders" value={data.summary.paidOrders.toString()} />
-            <MiniStat label="Allocated orders" value={data.summary.allocatedOrders.toString()} />
-            <MiniStat label="Pending allocation" value={data.summary.unallocatedOrders.toString()} tone={data.summary.unallocatedOrders > 0 ? "amber" : "slate"} />
+            <MiniStat label="Profit recorded" value={data.summary.allocatedOrders.toString()} />
+            <MiniStat label="Awaiting confirmed cost" value={data.summary.unallocatedOrders.toString()} tone={data.summary.unallocatedOrders > 0 ? "amber" : "slate"} />
             <MiniStat label="Unallocated revenue" value={formatMyr(data.summary.unallocatedRevenueMyr)} tone={data.summary.unallocatedRevenueMyr > 0 ? "amber" : "slate"} />
             <MiniStat label="Pending cost" value={`${data.summary.pendingCostUsd.toFixed(4)} USDT`} tone={data.summary.pendingCostUsd > 0 ? "amber" : "slate"} />
             <MiniStat label="Payment fees" value={formatMyr(data.summary.paymentFeesMyr)} />
@@ -192,7 +217,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </div>
 
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="font-display text-3xl font-bold">Funding ledger summary</h2>
+          <details><summary className="cursor-pointer text-base font-bold">Historical funding summary (optional)</summary>
           <p className="mt-1 text-sm leading-6 text-slate-500">{impliedRate}</p>
           <div className="mt-5 grid gap-3">
             <MiniStat label="Total funded" value={`${data.summary.totalFundingUsd.toFixed(4)} USDT`} />
@@ -207,8 +232,9 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
             className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-sky-600 px-4 py-3 text-sm font-bold text-white disabled:opacity-60"
           >
             {isAllocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-            Allocate pending paid orders
+            Reconcile profit now
           </button>
+          </details>
         </div>
       </section>
 
@@ -218,8 +244,9 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
         </div>
       ) : null}
 
-      <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-        <form key={formKey} action={onCreateFundingBatch} className="grid gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <details className="border-y border-slate-200 py-4"><summary className="cursor-pointer font-semibold">Optional deposit records</summary>
+      <section className="mt-4 grid min-w-0 gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <form key={formKey} onSubmit={(event) => { event.preventDefault(); if (!isSavingBatch) void onCreateFundingBatch(new FormData(event.currentTarget)); }} className="grid gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <div>
             <h2 className="font-display text-3xl font-bold">Add funding batch</h2>
             <p className="mt-1 text-sm leading-6 text-slate-500">
@@ -293,11 +320,12 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
           </div>
         </div>
       </section>
+      </details>
 
       <section className="min-w-0 rounded-lg border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 p-5">
           <h2 className="font-display text-3xl font-bold">Recent paid orders</h2>
-          <p className="mt-1 text-sm text-slate-500">Orders without allocation are waiting for funding balance or cost data.</p>
+          <p className="mt-1 text-sm text-slate-500">Confirmed costs and profit update automatically. Refunded orders retain unrecovered costs and payment fees as losses.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] text-left text-sm">
@@ -333,7 +361,7 @@ export function AdminRevenueDashboard({ initialData }: { initialData: RevenueDas
                     <td className="px-4 py-4">{order.netProfitMyr === null ? "Pending" : formatMyr(order.netProfitMyr)}</td>
                     <td className="px-4 py-4">
                       {order.profitAllocatedAt ? (
-                        <span className="rounded-md bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Allocated</span>
+                        <span className="rounded-md bg-emerald-50 px-2 py-1 font-bold text-emerald-700">Recorded</span>
                       ) : (
                         <span className="rounded-md bg-amber-50 px-2 py-1 font-bold text-amber-700">Pending</span>
                       )}

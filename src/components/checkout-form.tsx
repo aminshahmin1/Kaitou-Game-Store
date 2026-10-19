@@ -118,7 +118,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
           <input
             name="whatsapp"
             required
-            placeholder="Example: 0172637043"
+            placeholder="Example: 0123456789"
             className="min-w-0 w-full rounded-md border border-sky-100 bg-white px-3 py-3 text-slate-950 outline-none ring-sky-300 transition focus:ring-4"
           />
         </label>
