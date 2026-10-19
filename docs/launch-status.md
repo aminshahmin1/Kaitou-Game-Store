@@ -4,7 +4,7 @@
 
 ## Steam library and help release: 2026-10-19
 
-- Approved scope implemented and verified on isolated Vercel production deployments; final domain assignment pending. Universal press/hover feedback; seller-approved pack bundles; FAQ/support/About rewrite; Steam Gifts Library with tiered MYR pricing, region/edition selection, invite guide and review. Full supplier feed of 178,483 entries indexed; paid-game metadata/image verification is progressive and on demand, not a claim of 178,483 paid games. No supplier purchase/payment test performed. Exact account-name/avatar preview requires a supported FazerCards API resolver; current review states format-only verification. Details/limits: docs/library-release-2026-10-19.md.
+- LIVE: application 115b14c, deployment dpl_FC6EHFpamTn2Z8BXkSTKtu9bgcdj promoted to kaitou.shop. Universal press/hover feedback; seller-approved pack bundles; FAQ/support/About rewrite; Steam Gifts Library with tiered MYR pricing, region/edition selection, invite guide and review. Full supplier feed of 178,483 entries indexed; paid-game metadata/image verification is progressive and on demand, not a claim of 178,483 paid games. Isolated 36-case responsive/theme pass plus final live interaction smoke passed with zero paid orders. All seven background jobs active; authenticated live Steam worker HTTP200. No real Steam delivery test performed. Exact account-name/avatar preview requires a supported FazerCards API resolver; current review states format-only verification. Details/limits: docs/library-release-2026-10-19.md. Earlier pending statements below are historical, not the current release state.
 
 ## Customer support and automation: 2026-10-19
 
