@@ -15,6 +15,7 @@ import type { Product, ProductVariation, RequiredField } from "./types";
 import { adminProductCreateSchema, adminProductUpdateSchema } from "./validation";
 
 type ProductRow = {
+  image_url?: string | null;
   leaderboard_unit?: string;
   id: string;
   slug: string;
@@ -59,7 +60,7 @@ export async function getStoreProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, image_url, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .eq("active", true)
     .eq("available", true)
@@ -90,7 +91,7 @@ export async function getStoreProductBySlug(slug: string) {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, image_url, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .eq("slug", slug)
     .eq("active", true)
@@ -117,7 +118,7 @@ export async function getAdminProducts() {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
+      "id, slug, title, type, category, game, description, image_tone, region, delivery_type, fazercards_product_id, required_fields, image_url, leaderboard_unit, active, available, product_variations(id, title, sku, fazercards_sku, cost_usd, price_myr, cost_myr, active, available, supplier_quantity, repeatable, base_package_title, currency_units)",
     )
     .order("created_at", { ascending: false })
     .order("sort_order", { referencedTable: "product_variations", ascending: true });
@@ -149,6 +150,7 @@ export async function createAdminProduct(input: unknown) {
       game: parsed.game,
       description: parsed.description ?? null,
       image_tone: parsed.imageTone,
+      image_url: parsed.imageUrl || null,
       region: parsed.region,
       delivery_type: parsed.deliveryType,
       fazercards_product_id: parsed.fazercardsProductId || null,
@@ -210,6 +212,7 @@ export async function updateAdminProduct(productId: string, input: unknown) {
       game: parsed.game,
       description: parsed.description ?? null,
       image_tone: parsed.imageTone,
+      image_url: parsed.imageUrl || null,
       region: parsed.region,
       delivery_type: parsed.deliveryType,
       fazercards_product_id: parsed.fazercardsProductId || null,
@@ -386,6 +389,7 @@ export async function importFazerCardsCatalogDraft(
           details.note ??
           "Imported from FazerCards as a hidden draft. Review sale prices and availability before publishing.",
         image_tone: isSteamGift ? "from-slate-700 via-sky-700 to-slate-950" : "from-sky-400 via-blue-600 to-slate-950",
+        image_url: details.imageUrl ?? (isSteamGift ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${Number(details.categoryId)}/header.jpg` : null),
         region: inferRegion(details.name),
         delivery_type: isSteamGift ? "Steam gift" : "Direct top-up",
         required_fields: details.fields,
@@ -464,6 +468,7 @@ function mapProductRow(
     region: row.region,
     deliveryType: row.delivery_type,
     imageTone: row.image_tone,
+    imageUrl: row.image_url ?? null,
     active: row.active,
     available: row.available,
     fazercardsProductId: row.fazercards_product_id,

@@ -65,7 +65,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
           <p className="text-sm font-bold uppercase text-sky-600">Secure checkout</p>
           <h2 className="mt-1 break-words font-display text-3xl font-bold text-slate-950">{product.title}</h2>
         </div>
-        <div className="shrink-0 rounded-md bg-slate-950 px-3 py-2 text-right text-white">
+        <div data-dark-surface className="shrink-0 rounded-md bg-slate-950 px-3 py-2 text-right text-white">
           <span className="block text-xs text-cyan-200">From</span>
           <strong>{formatMyr(Math.min(...product.variations.filter((v) => v.active && v.available).map((variation) => variation.priceMyr)))}</strong>
         </div>
@@ -158,7 +158,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
       </div>
 
       {error ? (
-        <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
+        <div role="alert" className="rounded-md border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
           {error}
         </div>
       ) : null}
@@ -170,6 +170,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
           {result.paymentSetupRequired ? "Payment setup is not active yet. This order was not charged." : "Continue to ToyyibPay."}
           <a
             href={result.paymentUrl}
+            data-dark-surface
             className="mt-3 inline-flex rounded-md bg-emerald-700 px-4 py-2 text-sm font-bold text-white"
           >
             Continue payment
@@ -184,6 +185,7 @@ export function CheckoutForm({ product, launchTest = false }: { product: Checkou
       </dl>}
 
       <button
+        data-dark-surface
         type="submit"
         disabled={isSubmitting || !pricing || Boolean(result)}
         className="flex min-h-12 items-center justify-center gap-2 rounded-md bg-slate-950 px-5 py-3 font-bold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"

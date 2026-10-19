@@ -49,6 +49,9 @@ const adminProductBaseSchema = z.object({
   game: z.string().min(1).max(120),
   description: z.string().max(600).optional(),
   imageTone: z.string().min(1).max(160),
+  imageUrl: z.union([z.literal(""), z.url().max(2000).refine((value) => {
+    const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password;
+  }, "Use an HTTPS image URL")]).default(""),
   region: z.enum(["MY", "SEA", "Global"]),
   deliveryType: z.enum(["Direct top-up", "Steam gift"]),
   fazercardsProductId: z.string().max(160).optional(),

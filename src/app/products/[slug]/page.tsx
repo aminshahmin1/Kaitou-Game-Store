@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import { getStoreProductBySlug } from "@/lib/products";
 import { toCheckoutProduct } from "@/lib/checkout-product";
+import { ProductPoster } from "@/components/product-poster";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -35,7 +36,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             Back to products
           </Link>
 
-          <div data-dark-surface className={`min-h-[420px] rounded-lg border border-cyan-300/20 bg-gradient-to-br ${product.imageTone} p-6 shadow-2xl shadow-black/30`}>
+          <div data-dark-surface className="overflow-hidden rounded-lg border border-cyan-300/20 bg-[#071225] shadow-2xl shadow-black/30">
+            <ProductPoster src={product.imageUrl} title={product.game} priority />
+            <div className="p-6">
             <div className="flex items-center justify-between">
               <span className="rounded-md bg-black/35 px-3 py-1 text-xs font-bold uppercase text-cyan-100">
                 {product.category}
@@ -44,19 +47,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 {product.region}
               </span>
             </div>
-            <div className="mt-48">
+            <div className="mt-5">
               <p className="text-sm font-semibold text-cyan-100/80">{product.game}</p>
-              <h1 className="font-display text-5xl font-bold uppercase leading-none text-white">
+              <h1 className="break-words font-display text-3xl font-bold leading-tight text-white">
                 {product.title}
               </h1>
               <p className="mt-4 max-w-md text-sm font-medium leading-6 text-slate-200">
                 Choose a package and enter your game details. We will send an email update after payment and when your order is delivered.
               </p>
             </div>
+            </div>
           </div>
 
           <div className="grid gap-3 rounded-lg border border-cyan-300/20 bg-white/[0.045] p-5">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="text-sm font-semibold text-slate-300">Price</span>
               <strong className="text-2xl text-white">{product.available ? `From ${formatMyr(getProductStartingPrice(product))}` : "Out of stock"}</strong>
             </div>

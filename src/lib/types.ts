@@ -20,6 +20,7 @@ export type Product = {
   region: "MY" | "SEA" | "Global";
   deliveryType: "Direct top-up" | "Steam gift";
   imageTone: string;
+  imageUrl?: string | null;
   description?: string | null;
   active: boolean;
   available: boolean;

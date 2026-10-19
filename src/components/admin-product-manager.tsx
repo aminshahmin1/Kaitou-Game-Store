@@ -223,6 +223,7 @@ export function AdminProductManager() {
       leaderboardUnit: String(formData.get("leaderboardUnit") ?? ""),
       description: String(formData.get("description") ?? ""),
       imageTone: String(formData.get("imageTone") ?? ""),
+      imageUrl: String(formData.get("imageUrl") ?? ""),
       fazercardsProductId: String(formData.get("fazercardsProductId") ?? ""),
       region: String(formData.get("region") ?? ""),
       deliveryType: String(formData.get("deliveryType") ?? ""),
@@ -623,6 +624,7 @@ export function AdminProductManager() {
           Description
           <textarea name="description" defaultValue={editingProduct?.description ?? ""} className="min-h-20 rounded-md border border-slate-200 px-3 py-3" />
         </label>
+        <Field name="imageUrl" label="Game poster URL (HTTPS)" defaultValue={editingProduct?.imageUrl ?? ""} placeholder="https://..." required={false} />
 
         <details className="border-b border-slate-200 pb-3">
         <summary className="cursor-pointer text-sm font-semibold text-slate-600">Customer details ({requiredFields.length} fields)</summary>
