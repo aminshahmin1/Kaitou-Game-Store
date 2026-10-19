@@ -27,7 +27,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       <SiteHeader />
       <RankingPromotion />
       <main>
-        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
+        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15 bg-[#030817] text-white">
           <div className="absolute inset-0 opacity-35">
             <Image
               src="/brand/logo-current.png"

@@ -38,10 +38,12 @@ try {
       images.forEach((image) => { image.loading = "eager"; });
       await Promise.all(images.map((image) => image.decode().catch(() => undefined)));
       return { overflow: document.documentElement.scrollWidth > innerWidth + 2,
+        heroText: [...document.querySelectorAll('section[data-dark-surface] .font-display')].map((el) => getComputedStyle(el).color),
         posters: images.map((img) => ({ width: img.clientWidth, natural: img.naturalWidth, loaded: img.naturalWidth > 0 })),
         checkout: [...document.querySelectorAll('form button[type="submit"], form strong')].map((el) => ({ text: el.textContent, color: getComputedStyle(el).color })) };
     });
     assert.equal(result.overflow, false, `${route} overflow`);
+    assert.ok(result.heroText.every((color) => color === "rgb(255, 255, 255)"), "Dark hero headings lost their white colour");
     assert.ok(result.posters.every((img) => img.loaded && img.natural >= img.width), "Artwork enlarged beyond original size");
     if (route.includes("mobile-legends")) assert.ok(result.checkout.every((el) => el.color === "rgb(255, 255, 255)"));
     findings.push({ route, width, theme, ...result });

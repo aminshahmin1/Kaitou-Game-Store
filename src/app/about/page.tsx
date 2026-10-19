@@ -32,7 +32,7 @@ export default function AboutPage() {
     <div className="kaitou-shell blue-grid">
       <SiteHeader />
       <main>
-        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15">
+        <section data-dark-surface className="relative overflow-hidden border-b border-cyan-300/15 bg-[#030817] text-white">
           <div className="absolute inset-0 opacity-25">
             <Image
               src="/brand/logo-current.png"
