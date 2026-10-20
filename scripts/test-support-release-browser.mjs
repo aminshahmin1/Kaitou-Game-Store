@@ -68,7 +68,7 @@ try {
     await page.getByRole("heading", { name: "DEVELOPMENT-ONLY" }).waitFor();
     const help = page.getByRole("link", { name: "Get help", exact: true });
     assert.equal(await help.count(), status === "completed" ? 0 : 1);
-    if (status !== "completed") assert.ok((await help.getAttribute("href")).startsWith("mailto:amin@kaitou.shop?"));
+    if (status !== "completed") assert.equal(await help.getAttribute("href"), "/support?order=DEVELOPMENT-ONLY");
     await page.unroute("**/api/order-status");
   }
   const removed = await context.request.get(`${base}/brand/facebook-cover-current.png`);

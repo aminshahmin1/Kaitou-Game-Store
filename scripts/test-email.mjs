@@ -47,9 +47,13 @@ if (live) {
   assert.equal(sent.replyTo, env.EMAIL_FROM);
   assert.equal(exports.escapeEmailHtml('<script>"&'), '&lt;script&gt;&quot;&amp;');
   assert.equal(closed, 1);
+  await exports.sendStoreEmail(env.ADMIN_ORDER_EMAIL, "Support", "Hello", undefined, undefined, { replyTo: "customer@example.com", attachments: [{ filename: "receipt.pdf", content: new Uint8Array([1]), contentType: "application/pdf" }] });
+  assert.equal(sent.replyTo, "customer@example.com");
+  assert.equal(sent.attachments[0].filename, "receipt.pdf");
+  await assert.rejects(exports.sendStoreEmail(env.ADMIN_ORDER_EMAIL, "Support", "Hello", undefined, undefined, { replyTo: "bad\r\nheader" }));
   rejected = true;
   await assert.rejects(exports.sendAdminEmail("Test", "Hello"));
-  assert.equal(closed, 2);
+  assert.equal(closed, 3);
   env.SMTP_PASSWORD = "";
   assert.equal(exports.getEmailConfiguration().configured, false);
   await assert.rejects(exports.sendAdminEmail("Test", "Hello"));

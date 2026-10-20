@@ -158,7 +158,7 @@ export function OrderStatusLookup({ initialOrderId = "" }: { initialOrderId?: st
             </div>
           </dl>
           {order.status !== "completed" && <a
-            href={`mailto:amin@kaitou.shop?subject=${encodeURIComponent(`Order support: ${order.orderNumber}`)}&body=${encodeURIComponent(`Hello Kaitou support,\n\nI need help with order ${order.orderNumber}.\nCurrent status: ${statusCopy[order.status].label}\n\nMy question:\n`)}`}
+            href={`/support?order=${encodeURIComponent(order.orderNumber)}`}
             className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-md bg-sky-800 px-4 py-3 font-semibold text-white" data-dark-surface>
             <Mail className="h-4 w-4" />Get help
           </a>}

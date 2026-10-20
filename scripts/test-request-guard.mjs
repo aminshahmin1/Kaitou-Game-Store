@@ -21,6 +21,9 @@ assert.equal(await exports.guardRequest(request({ "x-vercel-forwarded-for": "203
 assert.match(captured.p_key, /^[a-f0-9]{64}$/);
 assert.equal(captured.p_limit, 10);
 const first = captured.p_key;
+await exports.guardRequest(request(), "support");
+assert.equal(captured.p_limit, 3);
+assert.equal(captured.p_seconds, 900);
 await exports.guardRequest(request({ "x-vercel-forwarded-for": "203.0.113.4" }), "login");
 assert.notEqual(captured.p_key, first);
 assert.equal((await exports.guardRequest(request({ origin: "https://evil.test" }), "login")).status, 403);

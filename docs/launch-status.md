@@ -1,5 +1,10 @@
 # Kaitou launch verification
 
+## Direct support release: 2026-10-20
+
+- LIVE at kaitou.shop/support: deployment dpl_Ed7HFodwNXC8fm7yCRWWLqtF8amF. Website form sends directly through existing Gmail SMTP, collects name/email/phone, optional order reference and up to three JPG/PNG/WebP/PDF attachments (2 MiB combined). Order Status Get help prefills the order number. No mail-app handoff for this flow. Fixed server recipient, validated customer reply-to, bounded uploads and private per-IP rate limiting. No persistent dashboard ticket queue added.
+- Unit/security regressions, TypeScript, scoped ESLint and production build pass. Final deployment and live-domain browser checks pass across desktop/mobile and both themes, including help navigation, attachment selection/removal, failure retention and success reset. One labelled real support email with PNG accepted by Gmail (SUP-F094D87D), inbox placement remains for owner confirmation. Live smoke used mocked delivery to avoid a second email; no paid order created. Details: docs/direct-support-2026-10-20.md.
+
 ## Current checkpoint: 2026-10-18
 
 ## Steam library and help release: 2026-10-19
