@@ -1,0 +1,21 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import vm from "node:vm";
+import ts from "typescript";
+const require=createRequire(import.meta.url);
+function load(file,deps={},globals={}){const exports={};vm.runInNewContext(ts.transpileModule(readFileSync(file,"utf8"),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,{exports,URL,AbortSignal,process,console,...globals,require:name=>name==="server-only"?{}:deps[name]??require(name)});return exports;}
+const collections=load("src/lib/steam-collections.ts"),audit=JSON.parse(readFileSync("docs/steam-research-source-2026-10-20.json","utf8"));
+assert.equal(audit.rows.length,500);assert.equal(new Set(audit.rows.filter(x=>x.appid).map(x=>x.appid)).size,488);assert.equal(audit.rows.filter(x=>!x.appid).length,12);
+assert.equal(collections.steamCollections.length,9);assert.equal(collections.steamCollection("invalid"),undefined);assert.ok(audit.rows.every(x=>collections.steamCollection(x.collection)));
+let calls=[],active=0,maxActive=0;
+const games=[1,2,3].map(appid=>({appid,name:`Candidate ${appid}`,supplier_active:true,metadata_status:"pending",curated_rank:appid,curated_category:"indie",metadata_checked_at:null}));
+function database(){return{from(table){assert.equal(table,"steam_library_games");const filters={};let patch,ids,range,limit;
+const q={select(){return q;},eq(k,v){filters[k]=v;return q;},or(v){calls.push({or:v});return q;},order(k,v){calls.push({order:k,options:v});return q;},limit(n){limit=n;return q;},range(a,b){range=[a,b];return q;},in(k,v){assert.equal(k,"appid");ids=v;return q;},update(v){patch=v;return q;},async maybeSingle(){return{data:games.find(x=>x.appid===filters.appid)??null};},then(resolve){let rows=games.filter(row=>Object.entries(filters).every(([k,v])=>row[k]===v));if(patch){for(const row of rows)Object.assign(row,patch);return Promise.resolve({error:null}).then(resolve);}if(ids)rows=rows.filter(x=>ids.includes(x.appid));const count=rows.length;if(limit)rows=rows.slice(0,limit);if(range)rows=rows.slice(range[0],range[1]+1);return Promise.resolve({data:rows,count,error:null}).then(resolve);}};return q;},rpc(name){assert.equal(name,"consume_request_limit");return Promise.resolve({data:[{allowed:true}]});}};}
+const library=load("src/lib/steam-library.ts",{"./supabase/admin":{createSupabaseAdminClient:database},"./funding-cost":{},"./supplier-credit":{},"./stock":{},"./integrations/fazercards-catalog":{},"./steam-pricing":{},"./steam-collections":collections},{fetch:async url=>{const id=Number(new URL(url).searchParams.get("appids"));active++;maxActive=Math.max(maxActive,active);await new Promise(r=>setTimeout(r,5));active--;if(id===1)throw Error("Fixture network failure");return{ok:true,json:async()=>({[id]:{success:true,data:{steam_appid:id,name:`Candidate ${id}`,type:"game",is_free:false,release_date:{coming_soon:false},header_image:`https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/header.jpg`}}})};}});
+const batch=await library.verifyPendingSteamGames(24);assert.equal(batch.checked,3);assert.equal(batch.verified,2);assert.ok(maxActive<=3);assert.equal(games[0].metadata_status,"pending");assert.equal(games[1].metadata_status,"eligible");assert.equal(games[2].metadata_status,"eligible");assert.ok(calls.some(x=>x.order==="curated_rank"));
+games.push({appid:1091500,name:"Featured",supplier_active:true,metadata_status:"eligible",image_url:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",curated_category:"action",curated_rank:100});
+games.push({appid:1245620,name:"Excluded feature",supplier_active:true,metadata_status:"excluded",image_url:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"});
+const featured=await library.getFeaturedSteamGames();assert.equal(featured.length,1);assert.equal(featured[0].appid,1091500);
+const indie=await library.searchSteamLibrary("",1,"indie");assert.equal(indie.total,2);assert.ok(indie.items.every(x=>[2,3].includes(x.appid)));
+console.log("PASS: 500-row/488-ID reconciliation, nine collections, bounded three-worker verification, failure isolation, curated priority, category filtering and verified-only features; no live requests.");

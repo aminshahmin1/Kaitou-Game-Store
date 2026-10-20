@@ -1,5 +1,10 @@
 # Kaitou launch verification
 
+## Steam research catalogue: 2026-10-20
+
+- LIVE: dpl_C88pVDod4zpqD1Maw9FMgL235wfX. Compared matching Excel/CSV 500-title sources; mapped 488 distinct active supplier App IDs, held 10 unavailable-feed titles plus two ambiguous names. Research is not an official sales ranking. Added eight verified editorial homepage Steam picks, nine library collections with search/pagination, and curated priority/revalidation in the existing five-minute worker. Upcoming/free/DLC/unverified entries stay hidden; no manual-price/order-history changes.
+- 18 isolated responsive/theme cases plus six live cases pass; actual artwork, filters/pagination, private costs, free-game404, worker401, unit regressions, TypeScript, lint and production build verified. Authenticated candidate/live workers each verified 24 candidates and returned HTTP200. Public catalogue reached 284 games at the completion checkpoint, with remaining research checks continuing automatically. Not all 500 were represented or verified; see docs/steam-research-release-2026-10-20.md and the 500-row source-resolution JSON. No paid orders/tests created.
+
 ## Hover-only currency rain: 2026-10-20
 
 - LIVE: dpl_D64E9UdghEtDHf7i58KPaPVma9jq. Rain starts on individual-card hover/keyboard-visible focus and sits behind the game image, not in front. Sixteen varied-size particles with drift, tumbling and subtle glow; idle and touch-only states do not animate, reduced-motion disables it. Poster area only; pricing/navigation unchanged. Production build, scoped lint and isolated/live hover browser checks pass. No orders created. Details: docs/rankings-redesign-2026-10-20.md.

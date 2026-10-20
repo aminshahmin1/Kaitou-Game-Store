@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { connection } from "next/server";
-import { BadgeCheck, Gamepad2, Gauge, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, BadgeCheck, Gamepad2, Gauge, ShieldCheck, Sparkles, Zap } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
 import { SiteHeader } from "@/components/site-header";
 import { getStoreProducts } from "@/lib/products";
 import { RankingPromotion } from "@/components/ranking-promotion";
 import { SiteFooter } from "@/components/site-footer";
+import { getFeaturedSteamGames } from "@/lib/steam-library";
+import { SteamGameTile } from "@/components/steam-game-tile";
 
 const categories = [
   { label: "Game Top-Ups", value: "Delivered to your game account", icon: Zap },
@@ -19,7 +21,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   await connection();
   const filters = await searchParams;
   const query = typeof filters.q === "string" ? filters.q.trim().slice(0, 100).toLowerCase() : "";
-  const products = (await getStoreProducts()).filter((p) =>
+  const [storeProducts, featuredGames] = await Promise.all([getStoreProducts(), getFeaturedSteamGames().catch(() => [])]);
+  const products = storeProducts.filter((p) =>
     (!query || `${p.title} ${p.game} ${p.category}`.toLowerCase().includes(query))
     && (!filters.category || p.type === filters.category));
 
@@ -126,6 +129,17 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
             </div>
           )}
         </section>
+
+        {featuredGames.length > 0 && !query && !filters.category && <section className="border-y border-cyan-300/15 bg-white/[0.025]" aria-labelledby="featured-steam-heading">
+          <div className="mx-auto grid w-full max-w-7xl gap-6 px-5 py-12">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div><p className="text-sm font-semibold text-cyan-200">Something for your next session</p><h2 id="featured-steam-heading" className="mt-2 font-display text-3xl font-bold text-white">Featured Steam Gifts</h2></div>
+              <Link href="/steam-gifts" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-cyan-100">Explore all games<ArrowRight className="h-4 w-4" /></Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">{featuredGames.map((game) => <SteamGameTile key={game.appid} game={game} headingLevel={3} />)}</div>
+            <p className="text-sm text-slate-300">Choose your edition and Steam account region to see the current MYR price.</p>
+          </div>
+        </section>}
 
         <section className="trust-surface">
           <div className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-14 lg:grid-cols-3">

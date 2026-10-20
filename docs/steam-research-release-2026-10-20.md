@@ -1,0 +1,35 @@
+# Steam research catalogue cross-check
+
+## Source reconciliation
+
+- Read-only comparison of the user's Downloads/Steam_500_Paid_Games_Catalogue.xlsx and .csv: both have 500 title/category rows in identical order. Workbook notes identify this as a research selection, not an official numerical bestseller chart. Originals unchanged; no embedded instructions executed.
+- Initial exact normalized supplier-title match: 469 unique matches, 23 unmatched, 8 name collisions. Reviewed 13 edition/title aliases and six unambiguous published App IDs. Final: 488 distinct active supplier App IDs tagged for curation; 12 held. Source-by-source evidence and resolution recorded in steam-research-source-2026-10-20.json. Research row order is curation priority, not a sales rank.
+- Reviewed aliases include Disco Elysium -> The Final Cut (632470, https://store.steampowered.com/app/632470/) and Divinity: Original Sin 2 -> Definitive Edition (435150, https://store.steampowered.com/app/435150/). Package editions still come from supplier quotes, never an assumption that a Deluxe edition is available. Reviewed collisions include Civilization V (8930, https://store.steampowered.com/app/8930/) and PEAK (3527290, https://store.steampowered.com/app/3527290/). No fuzzy or title-only auto-publication.
+
+## Held titles
+
+- Ambiguous: Dressmaker; Lords of the Fallen. Do not choose between different games/releases without an explicit App ID.
+- Not matched in the active supplier feed: Halloween: The Game; Grand Theft Auto V Legacy; Alan Wake Remastered; Alan Wake 2; Yakuza 0; Surviving Mars; Prison Architect 2; PC Building Simulator 2; Forza Horizon 4; F1 23. This is a statement about this supplier feed, not a claim that these games are unavailable everywhere. No substitute/remaster is silently sold in their place.
+
+## Import and publication
+
+- Most matched entries already existed in the private full supplier index but had not been classified for public browsing. Added private curated_rank/category annotations, not duplicate products. Migration: steam-research-curation.sql. Existing RLS/grants, source-active flags, manual listings, prices and order history unchanged.
+- Publication requires verified Steam identity, paid status, base-game type, known not-coming-soon status and safe official artwork. Free games, DLC, demos and upcoming games are excluded; unresolved metadata stays hidden. Curated excluded entries are revisited after 24 hours so a later release/paid-status change can be picked up.
+- First two operator batches: 90 checks, 86 newly eligible, three excluded, one pending metadata failure. Authenticated final candidate worker request11512 returned HTTP200, checked and verified 24 further candidates. Checkpoint after these checks: 236 total public games; 133 eligible curated entries, three excluded, 352 pending, plus 12 held source rows. Counts are snapshots, not a claim that all 500 are imported/verified or currently purchasable in every region.
+- Existing five-minute Steam worker now prioritises curated/stale curated entries, processes at most 24 with at most three concurrent metadata checks, isolates per-game failures, and uses at most 25 seconds with headroom inside the 60-second endpoint. Shared 90-requests/5-minute budget is unchanged; it stops when busy. Failed attempts cool down for one hour. No limit bypass or paid supplier order.
+- Source quotes, actual package membership, account region, shared manual USD/MYR rate, approved markup tiers, RM1 FPX fee and live supplier-credit reservation checks remain the existing purchase flow. Listing a game does not promise stock or gift availability; edition/region availability is checked on opening and again at checkout.
+
+## Storefront
+
+- Eight editorial Featured Steam Gifts on the homepage, with official game artwork and links into the existing purchase flow. Not labelled bestsellers or ranked by sales. Verified active picks only; no hardcoded price or availability claim. Featured games hidden on filtered top-up search results and on catalogue-query failure so they do not obscure the main task.
+- Nine library collections based on source categories, using customer-facing names rather than unverified chart claims. Category selection combines with search, resets pagination on submission, and survives Next/Previous links. Private cost/provider identifiers never enter tile props.
+- Shared SteamGameTile keeps homepage/library image framing and links consistent. Responsive two-column homepage games on phones, four on desktop; original top-up cards and hover-only rain unchanged.
+
+## Verification and operations
+
+- Unit tests pass for 500/488/12 reconciliation, collection filtering, verified-only featured selection, priority query, three-worker concurrency, failure isolation, upcoming/free/DLC exclusion, pricing tiers, invite validation, manual disable preservation and private buyer projection. TypeScript, scoped lint and production builds pass.
+- Final isolated deployment passed 18 browser route/width/theme cases (320/390/1440, light/dark): homepage, full library, Action collection; real artwork loaded, no page overflow, no private costs/credentials. Search+category, pagination, free-game404 and anonymous worker401 passed. Earlier test incorrectly searched a New & Noteworthy title within Action; exclusion was correct, test corrected to God of War. No paid bill/order/refund/funding change.
+- LIVE: final deployment dpl_C88pVDod4zpqD1Maw9FMgL235wfX promoted to kaitou.shop. Six additional live route/theme checks passed, including featured artwork, search+collection and pagination, privacy, free-game404 and worker401. Authenticated live worker request11552 returned HTTP200 and verified 24/24 candidates. Existing scheduled worker is active and also advances the curated queue. Latest observed total: 284 visible games; this is not a claim that every research candidate is published. Remaining candidates continue through the rate-limited background checks without further Codex runs or manual publication.
+- Desktop homepage and cropped mobile dark-mode featured section visually inspected: artwork loaded, readable titles, no overlaps. Existing top-up card effects, manual selling prices and paid checkout logic unchanged.
+- Final 500-row report checkpoint: 181 eligible research entries, three excluded, 304 queued and 12 held (500 total). The 284 public-game total also includes 103 existing games outside this research selection. This remaining verification work runs automatically; it is not represented as completed in this release. Report snapshot is ignored under artifacts/steam-curation/catalogue-audit.json; original Excel/CSV files were not edited.
+- Operator-only commands: node scripts/sync-steam-library.mjs --research verifies up to 45 more pending curated candidates with the existing shared budget; --research-report writes a current 500-row status report to ignored artifacts/steam-curation/catalogue-audit.json. Neither creates supplier orders. Do not run verification repeatedly to crowd out customer traffic; normal cron continues the remaining queue.

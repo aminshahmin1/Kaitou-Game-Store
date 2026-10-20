@@ -1,0 +1,7414 @@
+{
+  "source": "Steam_500_Paid_Games_Catalogue.csv / matching XLSX",
+  "date": "2026-10-20",
+  "note": "Research candidates, not a sales ranking or verified inventory. Metadata/type/release checks gate publication; quotes and stock are rechecked when opened.",
+  "rows": [
+    {
+      "n": 1,
+      "title": "DayZ",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "DayZ",
+          "appid": 221100,
+          "status": "pending"
+        }
+      ],
+      "appid": 221100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 2,
+      "title": "DayZ Badlands",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "DayZ Badlands",
+          "appid": 3816030,
+          "status": "pending"
+        }
+      ],
+      "appid": 3816030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 3,
+      "title": "over the hill",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "over the hill",
+          "appid": 2929250,
+          "status": "pending"
+        }
+      ],
+      "appid": 2929250,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 4,
+      "title": "Call of Duty: Modern Warfare 4",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Call of Duty®: Modern Warfare® 4",
+          "appid": 4435490,
+          "status": "pending"
+        }
+      ],
+      "appid": 4435490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 5,
+      "title": "Planet Zoo 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Planet Zoo 2",
+          "appid": 3219030,
+          "status": "pending"
+        }
+      ],
+      "appid": 3219030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 6,
+      "title": "Castlevania: Belmont's Curse",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Castlevania: Belmont's Curse",
+          "appid": 4231820,
+          "status": "pending"
+        }
+      ],
+      "appid": 4231820,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 7,
+      "title": "ARC Raiders",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "ARC Raiders",
+          "appid": 1808500,
+          "status": "pending"
+        }
+      ],
+      "appid": 1808500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 8,
+      "title": "EA SPORTS FC 27",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "EA SPORTS FC™ 27",
+          "appid": 4080220,
+          "status": "pending"
+        }
+      ],
+      "appid": 4080220,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 9,
+      "title": "Battlefield 6",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Battlefield™ 6",
+          "appid": 2807960,
+          "status": "pending"
+        }
+      ],
+      "appid": 2807960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 10,
+      "title": "WARDOGS",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "WARDOGS",
+          "appid": 1867240,
+          "status": "pending"
+        }
+      ],
+      "appid": 1867240,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 11,
+      "title": "Phantom Blade Zero",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Phantom Blade Zero",
+          "appid": 4115450,
+          "status": "pending"
+        }
+      ],
+      "appid": 4115450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 12,
+      "title": "Cyberpunk 2077",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Cyberpunk 2077",
+          "appid": 1091500,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1091500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 13,
+      "title": "Dead by Daylight",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Dead by Daylight",
+          "appid": 381210,
+          "status": "pending"
+        }
+      ],
+      "appid": 381210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 14,
+      "title": "STAR WARS: Galactic Racer",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "STAR WARS: Galactic Racer™",
+          "appid": 4078430,
+          "status": "pending"
+        }
+      ],
+      "appid": 4078430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 15,
+      "title": "Hood Warfare 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Hood Warfare 2",
+          "appid": 5155360,
+          "status": "pending"
+        }
+      ],
+      "appid": 5155360,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 16,
+      "title": "Valor Mortis",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Valor Mortis",
+          "appid": 2828710,
+          "status": "pending"
+        }
+      ],
+      "appid": 2828710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 17,
+      "title": "Risk of Rain 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Risk of Rain 2",
+          "appid": 632360,
+          "status": "pending"
+        }
+      ],
+      "appid": 632360,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 18,
+      "title": "Warhammer 40,000: Boltgun 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Warhammer 40,000: Boltgun 2",
+          "appid": 3115160,
+          "status": "pending"
+        }
+      ],
+      "appid": 3115160,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 19,
+      "title": "Enshrouded",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Enshrouded",
+          "appid": 1203620,
+          "status": "pending"
+        }
+      ],
+      "appid": 1203620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 20,
+      "title": "Warhammer 40,000: Space Marine 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Warhammer 40,000: Space Marine 2",
+          "appid": 2183900,
+          "status": "pending"
+        }
+      ],
+      "appid": 2183900,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 21,
+      "title": "Dressmaker",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "DressMaker",
+          "appid": 1487080,
+          "status": "pending"
+        },
+        {
+          "name": "Dressmaker",
+          "appid": 4019220,
+          "status": "pending"
+        }
+      ],
+      "appid": null,
+      "resolution": "ambiguous, held for review",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 22,
+      "title": "NBA 2K27",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "NBA 2K27",
+          "appid": 4356430,
+          "status": "pending"
+        }
+      ],
+      "appid": 4356430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 23,
+      "title": "Halo: The Master Chief Collection",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Halo: The Master Chief Collection",
+          "appid": 976730,
+          "status": "pending"
+        }
+      ],
+      "appid": 976730,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 24,
+      "title": "ACE COMBAT 8: WINGS OF THEVE",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "ACE COMBAT 8: WINGS OF THEVE",
+          "appid": 2288340,
+          "status": "pending"
+        }
+      ],
+      "appid": 2288340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 25,
+      "title": "Grand Theft Auto V Enhanced",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Grand Theft Auto V Enhanced",
+          "appid": 3240220,
+          "status": "pending"
+        }
+      ],
+      "appid": 3240220,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 26,
+      "title": "Street Fighter 6",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Street Fighter™ 6",
+          "appid": 1364780,
+          "status": "pending"
+        }
+      ],
+      "appid": 1364780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 27,
+      "title": "Gears of War: E-Day",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Gears of War: E-Day",
+          "appid": 3010850,
+          "status": "pending"
+        }
+      ],
+      "appid": 3010850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 28,
+      "title": "Red Dead Redemption 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Red Dead Redemption 2",
+          "appid": 1174180,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1174180,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 29,
+      "title": "Dragon's Dogma 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Dragon's Dogma 2",
+          "appid": 2054970,
+          "status": "pending"
+        }
+      ],
+      "appid": 2054970,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 30,
+      "title": "Total War: WARHAMMER III",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Total War: WARHAMMER III",
+          "appid": 1142710,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1142710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 31,
+      "title": "Big Walk",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Big Walk",
+          "appid": 1478500,
+          "status": "pending"
+        }
+      ],
+      "appid": 1478500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 32,
+      "title": "HELLDIVERS 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "HELLDIVERS™ 2",
+          "appid": 553850,
+          "status": "pending"
+        }
+      ],
+      "appid": 553850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 33,
+      "title": "Crusader Kings III",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Crusader Kings III",
+          "appid": 1158310,
+          "status": "pending"
+        }
+      ],
+      "appid": 1158310,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 34,
+      "title": "Black Desert",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Black Desert",
+          "appid": 582660,
+          "status": "pending"
+        }
+      ],
+      "appid": 582660,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 35,
+      "title": "FINAL FANTASY XIV Online",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "FINAL FANTASY XIV Online",
+          "appid": 39210,
+          "status": "pending"
+        }
+      ],
+      "appid": 39210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 36,
+      "title": "Rust",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Rust",
+          "appid": 252490,
+          "status": "eligible"
+        }
+      ],
+      "appid": 252490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 37,
+      "title": "Sekiro: Shadows Die Twice",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Sekiro™: Shadows Die Twice",
+          "appid": 814380,
+          "status": "eligible"
+        }
+      ],
+      "appid": 814380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 38,
+      "title": "Shipping Store Simulator 2037",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Shipping Store Simulator 2037",
+          "appid": 4098030,
+          "status": "pending"
+        }
+      ],
+      "appid": 4098030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 39,
+      "title": "How to Fish",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "How to Fish",
+          "appid": 4001890,
+          "status": "pending"
+        }
+      ],
+      "appid": 4001890,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 40,
+      "title": "The Witch's Bakery",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "The Witch's Bakery",
+          "appid": 2967950,
+          "status": "pending"
+        }
+      ],
+      "appid": 2967950,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 41,
+      "title": "Fallout 76",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Fallout 76",
+          "appid": 1151340,
+          "status": "pending"
+        }
+      ],
+      "appid": 1151340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 42,
+      "title": "Escape from Tarkov",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Escape from Tarkov",
+          "appid": 3932890,
+          "status": "pending"
+        }
+      ],
+      "appid": 3932890,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 43,
+      "title": "ELDEN RING",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "ELDEN RING",
+          "appid": 1245620,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1245620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 44,
+      "title": "Transport Fever 3",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Transport Fever 3",
+          "appid": 3493540,
+          "status": "pending"
+        }
+      ],
+      "appid": 3493540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 45,
+      "title": "Palworld",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Palworld",
+          "appid": 1623730,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1623730,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 46,
+      "title": "Planet Zoo",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Planet Zoo",
+          "appid": 703080,
+          "status": "pending"
+        }
+      ],
+      "appid": 703080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 47,
+      "title": "Resident Evil Requiem",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Resident Evil Requiem",
+          "appid": 3764200,
+          "status": "pending"
+        }
+      ],
+      "appid": 3764200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 48,
+      "title": "Crimson Desert",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Crimson Desert",
+          "appid": 3321460,
+          "status": "pending"
+        }
+      ],
+      "appid": 3321460,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 49,
+      "title": "Forza Horizon 6",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Forza Horizon 6",
+          "appid": 2483190,
+          "status": "pending"
+        }
+      ],
+      "appid": 2483190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 50,
+      "title": "Baldur's Gate 3",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Baldur's Gate 3",
+          "appid": 1086940,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1086940,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 51,
+      "title": "The Blood of Dawnwalker",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "The Blood of Dawnwalker",
+          "appid": 3751260,
+          "status": "pending"
+        }
+      ],
+      "appid": 3751260,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 52,
+      "title": "Onimusha: Way of the Sword",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Onimusha: Way of the Sword",
+          "appid": 2638890,
+          "status": "pending"
+        }
+      ],
+      "appid": 2638890,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 53,
+      "title": "STAR WARS Zero Company",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "STAR WARS Zero Company™",
+          "appid": 2075800,
+          "status": "pending"
+        }
+      ],
+      "appid": 2075800,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 54,
+      "title": "Halloween: The Game",
+      "category": "Current chart / 2026 releases",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 55,
+      "title": "Gamble With Your Friends",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Gamble With Your Friends",
+          "appid": 3892270,
+          "status": "pending"
+        }
+      ],
+      "appid": 3892270,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 56,
+      "title": "Ratatan",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Ratatan",
+          "appid": 2949320,
+          "status": "pending"
+        }
+      ],
+      "appid": 2949320,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 57,
+      "title": "Tales of Eternia Remastered",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Tales of Eternia Remastered",
+          "appid": 3470960,
+          "status": "pending"
+        }
+      ],
+      "appid": 3470960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 58,
+      "title": "Flipping is Hard",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Flipping is Hard",
+          "appid": 3826670,
+          "status": "pending"
+        }
+      ],
+      "appid": 3826670,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 59,
+      "title": "Tenebris Somnia",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Tenebris Somnia",
+          "appid": 2121510,
+          "status": "pending"
+        }
+      ],
+      "appid": 2121510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 60,
+      "title": "Penguin Colony",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Penguin Colony",
+          "appid": 3695930,
+          "status": "pending"
+        }
+      ],
+      "appid": 3695930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 61,
+      "title": "Beyond These Stars",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Beyond These Stars",
+          "appid": 2295060,
+          "status": "pending"
+        }
+      ],
+      "appid": 2295060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 62,
+      "title": "Kusan: City of Wolves",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Kusan : City of Wolves",
+          "appid": 1714510,
+          "status": "pending"
+        }
+      ],
+      "appid": 1714510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 63,
+      "title": "Mistfall Hunter",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Mistfall Hunter",
+          "appid": 3282300,
+          "status": "pending"
+        }
+      ],
+      "appid": 3282300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 64,
+      "title": "The Ranchers",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "The Ranchers",
+          "appid": 1501310,
+          "status": "pending"
+        }
+      ],
+      "appid": 1501310,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 65,
+      "title": "No More Room in Hell 2",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "No More Room in Hell 2",
+          "appid": 292000,
+          "status": "pending"
+        }
+      ],
+      "appid": 292000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 66,
+      "title": "Shift At Midnight",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Shift At Midnight",
+          "appid": 3722330,
+          "status": "pending"
+        }
+      ],
+      "appid": 3722330,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 67,
+      "title": "Cozy Builder",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "Cozy Builder",
+          "appid": 4059000,
+          "status": "pending"
+        }
+      ],
+      "appid": 4059000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 68,
+      "title": "BOMBANANA!",
+      "category": "Current chart / 2026 releases",
+      "matches": [
+        {
+          "name": "BOMBANANA!",
+          "appid": 4656000,
+          "status": "pending"
+        }
+      ],
+      "appid": 4656000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "new-noteworthy"
+    },
+    {
+      "n": 69,
+      "title": "Grand Theft Auto IV: The Complete Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Grand Theft Auto IV: The Complete Edition",
+          "appid": 12210,
+          "status": "pending"
+        }
+      ],
+      "appid": 12210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 70,
+      "title": "Grand Theft Auto V Legacy",
+      "category": "AAA action and open world",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "action"
+    },
+    {
+      "n": 71,
+      "title": "Red Dead Redemption",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Red Dead Redemption",
+          "appid": 2668510,
+          "status": "pending"
+        }
+      ],
+      "appid": 2668510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 72,
+      "title": "The Witcher 3: Wild Hunt",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "The Witcher 3: Wild Hunt",
+          "appid": 292030,
+          "status": "pending"
+        }
+      ],
+      "appid": 292030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 73,
+      "title": "The Witcher 2: Assassins of Kings Enhanced Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "The Witcher 2: Assassins of Kings Enhanced Edition",
+          "appid": 20920,
+          "status": "pending"
+        }
+      ],
+      "appid": 20920,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 74,
+      "title": "The Witcher: Enhanced Edition Director's Cut",
+      "category": "AAA action and open world",
+      "matches": [],
+      "appid": 20900,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "action"
+    },
+    {
+      "n": 75,
+      "title": "Hogwarts Legacy",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Hogwarts Legacy",
+          "appid": 990080,
+          "status": "eligible"
+        }
+      ],
+      "appid": 990080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 76,
+      "title": "Ghost of Tsushima DIRECTOR'S CUT",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Ghost of Tsushima DIRECTOR'S CUT",
+          "appid": 2215430,
+          "status": "pending"
+        }
+      ],
+      "appid": 2215430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 77,
+      "title": "Horizon Zero Dawn Remastered",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Horizon Zero Dawn™ Remastered",
+          "appid": 2561580,
+          "status": "pending"
+        }
+      ],
+      "appid": 2561580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 78,
+      "title": "Horizon Forbidden West Complete Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Horizon Forbidden West™ Complete Edition",
+          "appid": 2420110,
+          "status": "pending"
+        }
+      ],
+      "appid": 2420110,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 79,
+      "title": "God of War",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "God of War",
+          "appid": 1593500,
+          "status": "pending"
+        }
+      ],
+      "appid": 1593500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 80,
+      "title": "God of War Ragnarök",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "God of War Ragnarök",
+          "appid": 2322010,
+          "status": "pending"
+        }
+      ],
+      "appid": 2322010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 81,
+      "title": "Marvel's Spider-Man Remastered",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Marvel’s Spider-Man Remastered",
+          "appid": 1817070,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1817070,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 82,
+      "title": "Marvel's Spider-Man: Miles Morales",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Marvel's Spider-Man: Miles Morales",
+          "appid": 1817190,
+          "status": "pending"
+        }
+      ],
+      "appid": 1817190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 83,
+      "title": "Marvel's Spider-Man 2",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Marvel's Spider-Man 2",
+          "appid": 2651280,
+          "status": "pending"
+        }
+      ],
+      "appid": 2651280,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 84,
+      "title": "The Last of Us Part I",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "The Last of Us™ Part I",
+          "appid": 1888930,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1888930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 85,
+      "title": "The Last of Us Part II Remastered",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "The Last of Us™ Part II Remastered",
+          "appid": 2531310,
+          "status": "pending"
+        }
+      ],
+      "appid": 2531310,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 86,
+      "title": "Days Gone",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Days Gone",
+          "appid": 1259420,
+          "status": "pending"
+        }
+      ],
+      "appid": 1259420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 87,
+      "title": "Uncharted: Legacy of Thieves Collection",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "UNCHARTED™: Legacy of Thieves Collection",
+          "appid": 1659420,
+          "status": "pending"
+        }
+      ],
+      "appid": 1659420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 88,
+      "title": "Death Stranding Director's Cut",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "DEATH STRANDING DIRECTOR'S CUT",
+          "appid": 1850570,
+          "status": "pending"
+        }
+      ],
+      "appid": 1850570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 89,
+      "title": "Death Stranding 2: On the Beach",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "DEATH STRANDING 2: ON THE BEACH",
+          "appid": 3280350,
+          "status": "pending"
+        }
+      ],
+      "appid": 3280350,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 90,
+      "title": "Control Ultimate Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Control Ultimate Edition",
+          "appid": 870780,
+          "status": "pending"
+        }
+      ],
+      "appid": 870780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 91,
+      "title": "Alan Wake Remastered",
+      "category": "AAA action and open world",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "action"
+    },
+    {
+      "n": 92,
+      "title": "Alan Wake 2",
+      "category": "AAA action and open world",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "action"
+    },
+    {
+      "n": 93,
+      "title": "Quantum Break",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Quantum Break",
+          "appid": 474960,
+          "status": "pending"
+        }
+      ],
+      "appid": 474960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 94,
+      "title": "Star Wars Jedi: Fallen Order",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "STAR WARS Jedi: Fallen Order™",
+          "appid": 1172380,
+          "status": "pending"
+        }
+      ],
+      "appid": 1172380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 95,
+      "title": "Star Wars Jedi: Survivor",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "STAR WARS Jedi: Survivor™",
+          "appid": 1774580,
+          "status": "pending"
+        }
+      ],
+      "appid": 1774580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 96,
+      "title": "Star Wars Outlaws",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Star Wars Outlaws",
+          "appid": 2842040,
+          "status": "pending"
+        }
+      ],
+      "appid": 2842040,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 97,
+      "title": "Avatar: Frontiers of Pandora",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Avatar: Frontiers of Pandora",
+          "appid": 2840770,
+          "status": "pending"
+        }
+      ],
+      "appid": 2840770,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 98,
+      "title": "Middle-earth: Shadow of Mordor",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Middle-earth™: Shadow of Mordor™",
+          "appid": 241930,
+          "status": "pending"
+        }
+      ],
+      "appid": 241930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 99,
+      "title": "Middle-earth: Shadow of War",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Middle-earth™: Shadow of War™",
+          "appid": 356190,
+          "status": "pending"
+        }
+      ],
+      "appid": 356190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 100,
+      "title": "Mad Max",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Mad Max",
+          "appid": 234140,
+          "status": "pending"
+        }
+      ],
+      "appid": 234140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 101,
+      "title": "Sleeping Dogs: Definitive Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Sleeping Dogs: Definitive Edition",
+          "appid": 307690,
+          "status": "pending"
+        }
+      ],
+      "appid": 307690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 102,
+      "title": "Watch Dogs",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Watch_Dogs",
+          "appid": 243470,
+          "status": "pending"
+        }
+      ],
+      "appid": 243470,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 103,
+      "title": "Watch Dogs 2",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Watch_Dogs 2",
+          "appid": 447040,
+          "status": "pending"
+        }
+      ],
+      "appid": 447040,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 104,
+      "title": "Watch Dogs: Legion",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Watch Dogs: Legion",
+          "appid": 2239550,
+          "status": "pending"
+        }
+      ],
+      "appid": 2239550,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 105,
+      "title": "Far Cry 3",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Far Cry® 3",
+          "appid": 220240,
+          "status": "pending"
+        }
+      ],
+      "appid": 220240,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 106,
+      "title": "Far Cry 4",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Far Cry 4",
+          "appid": 298110,
+          "status": "pending"
+        }
+      ],
+      "appid": 298110,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 107,
+      "title": "Far Cry 5",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Far Cry 5",
+          "appid": 552520,
+          "status": "pending"
+        }
+      ],
+      "appid": 552520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 108,
+      "title": "Far Cry 6",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Far Cry 6",
+          "appid": 2369390,
+          "status": "pending"
+        }
+      ],
+      "appid": 2369390,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 109,
+      "title": "Far Cry New Dawn",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Far Cry New Dawn",
+          "appid": 939960,
+          "status": "pending"
+        }
+      ],
+      "appid": 939960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 110,
+      "title": "Assassin's Creed II",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed II",
+          "appid": 33230,
+          "status": "pending"
+        }
+      ],
+      "appid": 33230,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 111,
+      "title": "Assassin's Creed Brotherhood",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Brotherhood",
+          "appid": 48190,
+          "status": "pending"
+        }
+      ],
+      "appid": 48190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 112,
+      "title": "Assassin's Creed Revelations",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Revelations",
+          "appid": 201870,
+          "status": "pending"
+        }
+      ],
+      "appid": 201870,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 113,
+      "title": "Assassin's Creed III Remastered",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed III Remastered",
+          "appid": 911400,
+          "status": "pending"
+        }
+      ],
+      "appid": 911400,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 114,
+      "title": "Assassin's Creed IV Black Flag",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed IV Black Flag",
+          "appid": 242050,
+          "status": "pending"
+        }
+      ],
+      "appid": 242050,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 115,
+      "title": "Assassin's Creed Unity",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Unity",
+          "appid": 289650,
+          "status": "pending"
+        }
+      ],
+      "appid": 289650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 116,
+      "title": "Assassin's Creed Syndicate",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Syndicate",
+          "appid": 368500,
+          "status": "pending"
+        }
+      ],
+      "appid": 368500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 117,
+      "title": "Assassin's Creed Origins",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Origins",
+          "appid": 582160,
+          "status": "pending"
+        }
+      ],
+      "appid": 582160,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 118,
+      "title": "Assassin's Creed Odyssey",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Odyssey",
+          "appid": 812140,
+          "status": "pending"
+        }
+      ],
+      "appid": 812140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 119,
+      "title": "Assassin's Creed Valhalla",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Valhalla",
+          "appid": 2208920,
+          "status": "pending"
+        }
+      ],
+      "appid": 2208920,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 120,
+      "title": "Assassin's Creed Mirage",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Mirage",
+          "appid": 3035570,
+          "status": "pending"
+        }
+      ],
+      "appid": 3035570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 121,
+      "title": "Assassin's Creed Shadows",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Assassin's Creed Shadows",
+          "appid": 3159330,
+          "status": "pending"
+        }
+      ],
+      "appid": 3159330,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 122,
+      "title": "Batman: Arkham Asylum GOTY Edition",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Batman: Arkham Asylum GOTY Edition",
+          "appid": 35140,
+          "status": "pending"
+        }
+      ],
+      "appid": 35140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 123,
+      "title": "Batman: Arkham City GOTY",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Batman: Arkham City GOTY",
+          "appid": 200260,
+          "status": "pending"
+        }
+      ],
+      "appid": 200260,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 124,
+      "title": "Batman: Arkham Origins",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Batman™: Arkham Origins",
+          "appid": 209000,
+          "status": "pending"
+        }
+      ],
+      "appid": 209000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 125,
+      "title": "Batman: Arkham Knight",
+      "category": "AAA action and open world",
+      "matches": [
+        {
+          "name": "Batman™: Arkham Knight",
+          "appid": 208650,
+          "status": "pending"
+        }
+      ],
+      "appid": 208650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "action"
+    },
+    {
+      "n": 126,
+      "title": "DARK SOULS: REMASTERED",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "DARK SOULS™: REMASTERED",
+          "appid": 570940,
+          "status": "pending"
+        }
+      ],
+      "appid": 570940,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 127,
+      "title": "DARK SOULS II: Scholar of the First Sin",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "DARK SOULS™ II: Scholar of the First Sin",
+          "appid": 335300,
+          "status": "pending"
+        }
+      ],
+      "appid": 335300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 128,
+      "title": "DARK SOULS III",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "DARK SOULS™ III",
+          "appid": 374320,
+          "status": "pending"
+        }
+      ],
+      "appid": 374320,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 129,
+      "title": "ELDEN RING NIGHTREIGN",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "ELDEN RING NIGHTREIGN",
+          "appid": 2622380,
+          "status": "pending"
+        }
+      ],
+      "appid": 2622380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 130,
+      "title": "Lies of P",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Lies of P",
+          "appid": 1627720,
+          "status": "pending"
+        }
+      ],
+      "appid": 1627720,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 131,
+      "title": "Lords of the Fallen",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Lords Of The Fallen",
+          "appid": 265300,
+          "status": "pending"
+        },
+        {
+          "name": "Lords of the Fallen",
+          "appid": 1501750,
+          "status": "pending"
+        }
+      ],
+      "appid": null,
+      "resolution": "ambiguous, held for review",
+      "collection": "rpg"
+    },
+    {
+      "n": 132,
+      "title": "Nioh: Complete Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Nioh: Complete Edition",
+          "appid": 485510,
+          "status": "pending"
+        }
+      ],
+      "appid": 485510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 133,
+      "title": "Nioh 2 – The Complete Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Nioh 2 – The Complete Edition",
+          "appid": 1325200,
+          "status": "pending"
+        }
+      ],
+      "appid": 1325200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 134,
+      "title": "Wo Long: Fallen Dynasty",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Wo Long: Fallen Dynasty",
+          "appid": 1448440,
+          "status": "pending"
+        }
+      ],
+      "appid": 1448440,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 135,
+      "title": "Black Myth: Wukong",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Black Myth: Wukong",
+          "appid": 2358720,
+          "status": "eligible"
+        }
+      ],
+      "appid": 2358720,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 136,
+      "title": "Wuchang: Fallen Feathers",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "WUCHANG: Fallen Feathers",
+          "appid": 2277560,
+          "status": "pending"
+        }
+      ],
+      "appid": 2277560,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 137,
+      "title": "The First Berserker: Khazan",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "The First Berserker: Khazan",
+          "appid": 2680010,
+          "status": "pending"
+        }
+      ],
+      "appid": 2680010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 138,
+      "title": "Monster Hunter: World",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Monster Hunter: World",
+          "appid": 582010,
+          "status": "pending"
+        }
+      ],
+      "appid": 582010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 139,
+      "title": "Monster Hunter Rise",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "MONSTER HUNTER RISE",
+          "appid": 1446780,
+          "status": "pending"
+        }
+      ],
+      "appid": 1446780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 140,
+      "title": "Monster Hunter Wilds",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Monster Hunter Wilds",
+          "appid": 2246340,
+          "status": "pending"
+        }
+      ],
+      "appid": 2246340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 141,
+      "title": "Dragon's Dogma: Dark Arisen",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Dragon's Dogma: Dark Arisen",
+          "appid": 367500,
+          "status": "pending"
+        }
+      ],
+      "appid": 367500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 142,
+      "title": "Kingdom Come: Deliverance",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Kingdom Come: Deliverance",
+          "appid": 379430,
+          "status": "pending"
+        }
+      ],
+      "appid": 379430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 143,
+      "title": "Kingdom Come: Deliverance II",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Kingdom Come: Deliverance II",
+          "appid": 1771300,
+          "status": "pending"
+        }
+      ],
+      "appid": 1771300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 144,
+      "title": "The Elder Scrolls V: Skyrim Special Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "The Elder Scrolls V: Skyrim Special Edition",
+          "appid": 489830,
+          "status": "pending"
+        }
+      ],
+      "appid": 489830,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 145,
+      "title": "The Elder Scrolls IV: Oblivion Remastered",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "The Elder Scrolls IV: Oblivion Remastered",
+          "appid": 2623190,
+          "status": "pending"
+        }
+      ],
+      "appid": 2623190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 146,
+      "title": "The Elder Scrolls III: Morrowind",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "The Elder Scrolls III: Morrowind",
+          "appid": 22320,
+          "status": "pending"
+        }
+      ],
+      "appid": 22320,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 147,
+      "title": "Fallout 3: Game of the Year Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Fallout 3 - Game of the Year Edition",
+          "appid": 22370,
+          "status": "pending"
+        }
+      ],
+      "appid": 22370,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 148,
+      "title": "Fallout: New Vegas",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Fallout: New Vegas",
+          "appid": 22380,
+          "status": "pending"
+        }
+      ],
+      "appid": 22380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 149,
+      "title": "Fallout 4",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Fallout 4",
+          "appid": 377160,
+          "status": "pending"
+        }
+      ],
+      "appid": 377160,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 150,
+      "title": "Starfield",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Starfield",
+          "appid": 1716740,
+          "status": "pending"
+        }
+      ],
+      "appid": 1716740,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 151,
+      "title": "Mass Effect Legendary Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Mass Effect™ Legendary Edition",
+          "appid": 1328670,
+          "status": "pending"
+        }
+      ],
+      "appid": 1328670,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 152,
+      "title": "Mass Effect: Andromeda Deluxe Edition",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": 1238000,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "rpg"
+    },
+    {
+      "n": 153,
+      "title": "Dragon Age: Origins - Ultimate Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Dragon Age: Origins - Ultimate Edition",
+          "appid": 47810,
+          "status": "pending"
+        }
+      ],
+      "appid": 47810,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 154,
+      "title": "Dragon Age II",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": 1238040,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "rpg"
+    },
+    {
+      "n": 155,
+      "title": "Dragon Age: Inquisition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Dragon Age™ Inquisition",
+          "appid": 1222690,
+          "status": "pending"
+        }
+      ],
+      "appid": 1222690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 156,
+      "title": "Dragon Age: The Veilguard",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Dragon Age™: The Veilguard",
+          "appid": 1845910,
+          "status": "pending"
+        }
+      ],
+      "appid": 1845910,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 157,
+      "title": "Divinity: Original Sin Enhanced Edition",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Divinity: Original Sin Enhanced Edition",
+          "appid": 373420,
+          "status": "pending"
+        }
+      ],
+      "appid": 373420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 158,
+      "title": "Divinity: Original Sin 2 - Definitive Edition",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": 435150,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "rpg"
+    },
+    {
+      "n": 159,
+      "title": "Pillars of Eternity",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Pillars of Eternity",
+          "appid": 291650,
+          "status": "pending"
+        }
+      ],
+      "appid": 291650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 160,
+      "title": "Pillars of Eternity II: Deadfire",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Pillars of Eternity II: Deadfire",
+          "appid": 560130,
+          "status": "pending"
+        }
+      ],
+      "appid": 560130,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 161,
+      "title": "Pathfinder: Kingmaker",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Pathfinder: Kingmaker",
+          "appid": 640820,
+          "status": "pending"
+        }
+      ],
+      "appid": 640820,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 162,
+      "title": "Pathfinder: Wrath of the Righteous",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": 1184370,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "rpg"
+    },
+    {
+      "n": 163,
+      "title": "Warhammer 40,000: Rogue Trader",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Warhammer 40,000: Rogue Trader",
+          "appid": 2186680,
+          "status": "pending"
+        }
+      ],
+      "appid": 2186680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 164,
+      "title": "Disco Elysium - The Final Cut",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": 632470,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "rpg"
+    },
+    {
+      "n": 165,
+      "title": "Persona 3 Reload",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Persona 3 Reload",
+          "appid": 2161700,
+          "status": "pending"
+        }
+      ],
+      "appid": 2161700,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 166,
+      "title": "Persona 4 Golden",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Persona 4 Golden",
+          "appid": 1113000,
+          "status": "pending"
+        }
+      ],
+      "appid": 1113000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 167,
+      "title": "Persona 5 Royal",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Persona 5 Royal",
+          "appid": 1687950,
+          "status": "pending"
+        }
+      ],
+      "appid": 1687950,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 168,
+      "title": "Metaphor: ReFantazio",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Metaphor: ReFantazio",
+          "appid": 2679460,
+          "status": "pending"
+        }
+      ],
+      "appid": 2679460,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 169,
+      "title": "Shin Megami Tensei V: Vengeance",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Shin Megami Tensei V: Vengeance",
+          "appid": 1875830,
+          "status": "pending"
+        }
+      ],
+      "appid": 1875830,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 170,
+      "title": "Like a Dragon: Infinite Wealth",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Like a Dragon: Infinite Wealth",
+          "appid": 2072450,
+          "status": "pending"
+        }
+      ],
+      "appid": 2072450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 171,
+      "title": "Yakuza 0",
+      "category": "RPG and soulslike",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "rpg"
+    },
+    {
+      "n": 172,
+      "title": "Yakuza Kiwami",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Yakuza Kiwami",
+          "appid": 3717330,
+          "status": "pending"
+        }
+      ],
+      "appid": 3717330,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 173,
+      "title": "Yakuza Kiwami 2",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Yakuza Kiwami 2",
+          "appid": 3717340,
+          "status": "pending"
+        }
+      ],
+      "appid": 3717340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 174,
+      "title": "Yakuza: Like a Dragon",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Yakuza: Like a Dragon",
+          "appid": 1235140,
+          "status": "pending"
+        }
+      ],
+      "appid": 1235140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 175,
+      "title": "Like a Dragon Gaiden: The Man Who Erased His Name",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Like a Dragon Gaiden: The Man Who Erased His Name",
+          "appid": 2375550,
+          "status": "pending"
+        }
+      ],
+      "appid": 2375550,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 176,
+      "title": "FINAL FANTASY VII REMAKE INTERGRADE",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "FINAL FANTASY VII REMAKE INTERGRADE",
+          "appid": 1462040,
+          "status": "pending"
+        }
+      ],
+      "appid": 1462040,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 177,
+      "title": "FINAL FANTASY VII REBIRTH",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "FINAL FANTASY VII REBIRTH",
+          "appid": 2909400,
+          "status": "pending"
+        }
+      ],
+      "appid": 2909400,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 178,
+      "title": "FINAL FANTASY XVI",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "FINAL FANTASY XVI",
+          "appid": 2515020,
+          "status": "pending"
+        }
+      ],
+      "appid": 2515020,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 179,
+      "title": "FINAL FANTASY XV WINDOWS EDITION",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "FINAL FANTASY XV WINDOWS EDITION",
+          "appid": 637650,
+          "status": "pending"
+        }
+      ],
+      "appid": 637650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 180,
+      "title": "NieR:Automata",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "NieR:Automata™",
+          "appid": 524220,
+          "status": "pending"
+        }
+      ],
+      "appid": 524220,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 181,
+      "title": "NieR Replicant ver.1.22474487139...",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "NieR Replicant ver.1.22474487139...",
+          "appid": 1113560,
+          "status": "pending"
+        }
+      ],
+      "appid": 1113560,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 182,
+      "title": "Octopath Traveler",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "OCTOPATH TRAVELER",
+          "appid": 921570,
+          "status": "pending"
+        }
+      ],
+      "appid": 921570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 183,
+      "title": "Octopath Traveler II",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "OCTOPATH TRAVELER II",
+          "appid": 1971650,
+          "status": "pending"
+        }
+      ],
+      "appid": 1971650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 184,
+      "title": "Clair Obscur: Expedition 33",
+      "category": "RPG and soulslike",
+      "matches": [
+        {
+          "name": "Clair Obscur: Expedition 33",
+          "appid": 1903340,
+          "status": "pending"
+        }
+      ],
+      "appid": 1903340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "rpg"
+    },
+    {
+      "n": 185,
+      "title": "Valheim",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Valheim",
+          "appid": 892970,
+          "status": "eligible"
+        }
+      ],
+      "appid": 892970,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 186,
+      "title": "Sons Of The Forest",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Sons Of The Forest",
+          "appid": 1326470,
+          "status": "pending"
+        }
+      ],
+      "appid": 1326470,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 187,
+      "title": "The Forest",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "The Forest",
+          "appid": 242760,
+          "status": "pending"
+        }
+      ],
+      "appid": 242760,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 188,
+      "title": "Subnautica",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Subnautica",
+          "appid": 264710,
+          "status": "eligible"
+        }
+      ],
+      "appid": 264710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 189,
+      "title": "Subnautica: Below Zero",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Subnautica: Below Zero",
+          "appid": 848450,
+          "status": "pending"
+        }
+      ],
+      "appid": 848450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 190,
+      "title": "No Man's Sky",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "No Man's Sky",
+          "appid": 275850,
+          "status": "eligible"
+        }
+      ],
+      "appid": 275850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 191,
+      "title": "Terraria",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Terraria",
+          "appid": 105600,
+          "status": "pending"
+        }
+      ],
+      "appid": 105600,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 192,
+      "title": "Stardew Valley",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Stardew Valley",
+          "appid": 413150,
+          "status": "eligible"
+        }
+      ],
+      "appid": 413150,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 193,
+      "title": "Core Keeper",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Core Keeper",
+          "appid": 1621690,
+          "status": "pending"
+        }
+      ],
+      "appid": 1621690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 194,
+      "title": "Grounded",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Grounded",
+          "appid": 962130,
+          "status": "pending"
+        }
+      ],
+      "appid": 962130,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 195,
+      "title": "Grounded 2",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Grounded 2",
+          "appid": 2661300,
+          "status": "pending"
+        }
+      ],
+      "appid": 2661300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 196,
+      "title": "Raft",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Raft",
+          "appid": 648800,
+          "status": "pending"
+        }
+      ],
+      "appid": 648800,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 197,
+      "title": "Green Hell",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Green Hell",
+          "appid": 815370,
+          "status": "pending"
+        }
+      ],
+      "appid": 815370,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 198,
+      "title": "7 Days to Die",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "7 Days to Die",
+          "appid": 251570,
+          "status": "pending"
+        }
+      ],
+      "appid": 251570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 199,
+      "title": "Project Zomboid",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Project Zomboid",
+          "appid": 108600,
+          "status": "pending"
+        }
+      ],
+      "appid": 108600,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 200,
+      "title": "Don't Starve Together",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Don't Starve Together",
+          "appid": 322330,
+          "status": "eligible"
+        }
+      ],
+      "appid": 322330,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 201,
+      "title": "Don't Starve",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Don't Starve",
+          "appid": 219740,
+          "status": "pending"
+        }
+      ],
+      "appid": 219740,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 202,
+      "title": "Oxygen Not Included",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Oxygen Not Included",
+          "appid": 457140,
+          "status": "pending"
+        }
+      ],
+      "appid": 457140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 203,
+      "title": "RimWorld",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "RimWorld",
+          "appid": 294100,
+          "status": "pending"
+        }
+      ],
+      "appid": 294100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 204,
+      "title": "Factorio",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Factorio",
+          "appid": 427520,
+          "status": "pending"
+        }
+      ],
+      "appid": 427520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 205,
+      "title": "Satisfactory",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Satisfactory",
+          "appid": 526870,
+          "status": "pending"
+        }
+      ],
+      "appid": 526870,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 206,
+      "title": "Dyson Sphere Program",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Dyson Sphere Program",
+          "appid": 1366540,
+          "status": "pending"
+        }
+      ],
+      "appid": 1366540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 207,
+      "title": "Astroneer",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "ASTRONEER",
+          "appid": 361420,
+          "status": "pending"
+        }
+      ],
+      "appid": 361420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 208,
+      "title": "The Planet Crafter",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "The Planet Crafter",
+          "appid": 1284190,
+          "status": "pending"
+        }
+      ],
+      "appid": 1284190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 209,
+      "title": "The Long Dark",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "The Long Dark",
+          "appid": 305620,
+          "status": "pending"
+        }
+      ],
+      "appid": 305620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 210,
+      "title": "Stranded Deep",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Stranded Deep",
+          "appid": 313120,
+          "status": "pending"
+        }
+      ],
+      "appid": 313120,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 211,
+      "title": "SCUM",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "SCUM",
+          "appid": 513710,
+          "status": "pending"
+        }
+      ],
+      "appid": 513710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 212,
+      "title": "Conan Exiles",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Conan Exiles",
+          "appid": 440900,
+          "status": "pending"
+        }
+      ],
+      "appid": 440900,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 213,
+      "title": "ARK: Survival Evolved",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "ARK: Survival Evolved",
+          "appid": 346110,
+          "status": "eligible"
+        }
+      ],
+      "appid": 346110,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 214,
+      "title": "ARK: Survival Ascended",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "ARK: Survival Ascended",
+          "appid": 2399830,
+          "status": "pending"
+        }
+      ],
+      "appid": 2399830,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 215,
+      "title": "V Rising",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "V Rising",
+          "appid": 1604030,
+          "status": "pending"
+        }
+      ],
+      "appid": 1604030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 216,
+      "title": "Abiotic Factor",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Abiotic Factor",
+          "appid": 427410,
+          "status": "pending"
+        }
+      ],
+      "appid": 427410,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 217,
+      "title": "HumanitZ",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "HumanitZ",
+          "appid": 1766060,
+          "status": "pending"
+        }
+      ],
+      "appid": 1766060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 218,
+      "title": "Icarus",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Icarus",
+          "appid": 1149460,
+          "status": "pending"
+        }
+      ],
+      "appid": 1149460,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 219,
+      "title": "Medieval Dynasty",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Medieval Dynasty",
+          "appid": 1129580,
+          "status": "pending"
+        }
+      ],
+      "appid": 1129580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 220,
+      "title": "Bellwright",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Bellwright",
+          "appid": 1812450,
+          "status": "pending"
+        }
+      ],
+      "appid": 1812450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 221,
+      "title": "Soulmask",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Soulmask",
+          "appid": 2646460,
+          "status": "pending"
+        }
+      ],
+      "appid": 2646460,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 222,
+      "title": "Nightingale",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Nightingale",
+          "appid": 1928980,
+          "status": "pending"
+        }
+      ],
+      "appid": 1928980,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 223,
+      "title": "Forever Skies",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Forever Skies",
+          "appid": 1641960,
+          "status": "pending"
+        }
+      ],
+      "appid": 1641960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 224,
+      "title": "Smalland: Survive the Wilds",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Smalland: Survive the Wilds",
+          "appid": 768200,
+          "status": "pending"
+        }
+      ],
+      "appid": 768200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 225,
+      "title": "Sunkenland",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Sunkenland",
+          "appid": 2080690,
+          "status": "pending"
+        }
+      ],
+      "appid": 2080690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 226,
+      "title": "Dinkum",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Dinkum",
+          "appid": 1062520,
+          "status": "pending"
+        }
+      ],
+      "appid": 1062520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 227,
+      "title": "My Time at Portia",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "My Time at Portia",
+          "appid": 666140,
+          "status": "pending"
+        }
+      ],
+      "appid": 666140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 228,
+      "title": "My Time at Sandrock",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "My Time at Sandrock",
+          "appid": 1084600,
+          "status": "pending"
+        }
+      ],
+      "appid": 1084600,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 229,
+      "title": "Coral Island",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Coral Island",
+          "appid": 1158160,
+          "status": "pending"
+        }
+      ],
+      "appid": 1158160,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 230,
+      "title": "Fields of Mistria",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Fields of Mistria",
+          "appid": 2142790,
+          "status": "pending"
+        }
+      ],
+      "appid": 2142790,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 231,
+      "title": "Travellers Rest",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Travellers Rest",
+          "appid": 1139980,
+          "status": "pending"
+        }
+      ],
+      "appid": 1139980,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 232,
+      "title": "Sun Haven",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Sun Haven",
+          "appid": 1432860,
+          "status": "pending"
+        }
+      ],
+      "appid": 1432860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 233,
+      "title": "Story of Seasons: Friends of Mineral Town",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "STORY OF SEASONS: Friends of Mineral Town",
+          "appid": 978780,
+          "status": "pending"
+        }
+      ],
+      "appid": 978780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 234,
+      "title": "Cult of the Lamb",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Cult of the Lamb",
+          "appid": 1313140,
+          "status": "pending"
+        }
+      ],
+      "appid": 1313140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 235,
+      "title": "Luma Island",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Luma Island",
+          "appid": 2408820,
+          "status": "pending"
+        }
+      ],
+      "appid": 2408820,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 236,
+      "title": "Slime Rancher",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Slime Rancher",
+          "appid": 433340,
+          "status": "pending"
+        }
+      ],
+      "appid": 433340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 237,
+      "title": "Slime Rancher 2",
+      "category": "Survival sandbox and building",
+      "matches": [
+        {
+          "name": "Slime Rancher 2",
+          "appid": 1657630,
+          "status": "pending"
+        }
+      ],
+      "appid": 1657630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "survival"
+    },
+    {
+      "n": 238,
+      "title": "Sid Meier's Civilization V",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Sid Meier's Civilization V",
+          "appid": 8930,
+          "status": "eligible"
+        },
+        {
+          "name": "Sid Meier's Civilization V",
+          "appid": 50100,
+          "status": "pending"
+        }
+      ],
+      "appid": 8930,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "strategy"
+    },
+    {
+      "n": 239,
+      "title": "Sid Meier's Civilization VI",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Sid Meier's Civilization VI",
+          "appid": 289070,
+          "status": "pending"
+        }
+      ],
+      "appid": 289070,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 240,
+      "title": "Sid Meier's Civilization VII",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Sid Meier's Civilization VII",
+          "appid": 1295660,
+          "status": "pending"
+        }
+      ],
+      "appid": 1295660,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 241,
+      "title": "Age of Empires II: Definitive Edition",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Age of Empires II: Definitive Edition",
+          "appid": 813780,
+          "status": "pending"
+        }
+      ],
+      "appid": 813780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 242,
+      "title": "Age of Empires III: Definitive Edition",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Age of Empires III: Definitive Edition",
+          "appid": 933110,
+          "status": "pending"
+        }
+      ],
+      "appid": 933110,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 243,
+      "title": "Age of Empires IV: Anniversary Edition",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Age of Empires IV: Anniversary Edition",
+          "appid": 1466860,
+          "status": "pending"
+        }
+      ],
+      "appid": 1466860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 244,
+      "title": "Age of Mythology: Retold",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Age of Mythology: Retold",
+          "appid": 1934680,
+          "status": "pending"
+        }
+      ],
+      "appid": 1934680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 245,
+      "title": "Total War: THREE KINGDOMS",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: THREE KINGDOMS",
+          "appid": 779340,
+          "status": "pending"
+        }
+      ],
+      "appid": 779340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 246,
+      "title": "Total War: ROME II - Emperor Edition",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: ROME II - Emperor Edition",
+          "appid": 214950,
+          "status": "pending"
+        }
+      ],
+      "appid": 214950,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 247,
+      "title": "Total War: SHOGUN 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: SHOGUN 2",
+          "appid": 34330,
+          "status": "pending"
+        },
+        {
+          "name": "Total War: SHOGUN 2",
+          "appid": 201270,
+          "status": "pending"
+        }
+      ],
+      "appid": 34330,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "strategy"
+    },
+    {
+      "n": 248,
+      "title": "Total War: ATTILA",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: ATTILA",
+          "appid": 325610,
+          "status": "pending"
+        }
+      ],
+      "appid": 325610,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 249,
+      "title": "Total War: WARHAMMER",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: WARHAMMER",
+          "appid": 364360,
+          "status": "pending"
+        }
+      ],
+      "appid": 364360,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 250,
+      "title": "Total War: WARHAMMER II",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: WARHAMMER II",
+          "appid": 594570,
+          "status": "pending"
+        }
+      ],
+      "appid": 594570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 251,
+      "title": "Total War: PHARAOH DYNASTIES",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Total War: PHARAOH DYNASTIES",
+          "appid": 2951630,
+          "status": "pending"
+        }
+      ],
+      "appid": 2951630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 252,
+      "title": "Manor Lords",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Manor Lords",
+          "appid": 1363080,
+          "status": "pending"
+        }
+      ],
+      "appid": 1363080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 253,
+      "title": "Cities: Skylines",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Cities: Skylines",
+          "appid": 255710,
+          "status": "pending"
+        }
+      ],
+      "appid": 255710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 254,
+      "title": "Cities: Skylines II",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Cities: Skylines II",
+          "appid": 949230,
+          "status": "pending"
+        }
+      ],
+      "appid": 949230,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 255,
+      "title": "Frostpunk",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Frostpunk",
+          "appid": 323190,
+          "status": "pending"
+        }
+      ],
+      "appid": 323190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 256,
+      "title": "Frostpunk 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Frostpunk 2",
+          "appid": 1601580,
+          "status": "pending"
+        }
+      ],
+      "appid": 1601580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 257,
+      "title": "Against the Storm",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Against the Storm",
+          "appid": 1336490,
+          "status": "pending"
+        }
+      ],
+      "appid": 1336490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 258,
+      "title": "Banished",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Banished",
+          "appid": 242920,
+          "status": "pending"
+        }
+      ],
+      "appid": 242920,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 259,
+      "title": "Foundation",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Foundation",
+          "appid": 690830,
+          "status": "pending"
+        }
+      ],
+      "appid": 690830,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 260,
+      "title": "Timberborn",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Timberborn",
+          "appid": 1062090,
+          "status": "pending"
+        }
+      ],
+      "appid": 1062090,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 261,
+      "title": "Workers & Resources: Soviet Republic",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Workers & Resources: Soviet Republic",
+          "appid": 784150,
+          "status": "pending"
+        }
+      ],
+      "appid": 784150,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 262,
+      "title": "Anno 1800",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Anno 1800",
+          "appid": 916440,
+          "status": "pending"
+        }
+      ],
+      "appid": 916440,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 263,
+      "title": "Anno 117: Pax Romana",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Anno 117: Pax Romana",
+          "appid": 3274580,
+          "status": "pending"
+        }
+      ],
+      "appid": 3274580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 264,
+      "title": "Tropico 6",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Tropico 6",
+          "appid": 492720,
+          "status": "pending"
+        }
+      ],
+      "appid": 492720,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 265,
+      "title": "Surviving Mars",
+      "category": "Strategy simulation and management",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "strategy"
+    },
+    {
+      "n": 266,
+      "title": "Surviving the Aftermath",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Surviving the Aftermath",
+          "appid": 684450,
+          "status": "pending"
+        }
+      ],
+      "appid": 684450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 267,
+      "title": "Planet Coaster",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Planet Coaster",
+          "appid": 493340,
+          "status": "pending"
+        }
+      ],
+      "appid": 493340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 268,
+      "title": "Planet Coaster 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Planet Coaster 2",
+          "appid": 2688950,
+          "status": "pending"
+        }
+      ],
+      "appid": 2688950,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 269,
+      "title": "Two Point Hospital",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Two Point Hospital",
+          "appid": 535930,
+          "status": "pending"
+        }
+      ],
+      "appid": 535930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 270,
+      "title": "Two Point Campus",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Two Point Campus",
+          "appid": 1649080,
+          "status": "pending"
+        }
+      ],
+      "appid": 1649080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 271,
+      "title": "Two Point Museum",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Two Point Museum",
+          "appid": 2185060,
+          "status": "pending"
+        }
+      ],
+      "appid": 2185060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 272,
+      "title": "Jurassic World Evolution",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Jurassic World Evolution",
+          "appid": 648350,
+          "status": "pending"
+        }
+      ],
+      "appid": 648350,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 273,
+      "title": "Jurassic World Evolution 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Jurassic World Evolution 2",
+          "appid": 1244460,
+          "status": "pending"
+        }
+      ],
+      "appid": 1244460,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 274,
+      "title": "Jurassic World Evolution 3",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Jurassic World Evolution 3",
+          "appid": 2958130,
+          "status": "pending"
+        }
+      ],
+      "appid": 2958130,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 275,
+      "title": "Game Dev Tycoon",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Game Dev Tycoon",
+          "appid": 239820,
+          "status": "pending"
+        }
+      ],
+      "appid": 239820,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 276,
+      "title": "Software Inc.",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Software Inc.",
+          "appid": 362620,
+          "status": "pending"
+        }
+      ],
+      "appid": 362620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 277,
+      "title": "Startup Company",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Startup Company",
+          "appid": 606800,
+          "status": "pending"
+        }
+      ],
+      "appid": 606800,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 278,
+      "title": "Prison Architect",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Prison Architect",
+          "appid": 233450,
+          "status": "pending"
+        }
+      ],
+      "appid": 233450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 279,
+      "title": "Prison Architect 2",
+      "category": "Strategy simulation and management",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "strategy"
+    },
+    {
+      "n": 280,
+      "title": "The Sims 3",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "The Sims™ 3",
+          "appid": 47890,
+          "status": "pending"
+        }
+      ],
+      "appid": 47890,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 281,
+      "title": "House Flipper",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "House Flipper",
+          "appid": 613100,
+          "status": "pending"
+        }
+      ],
+      "appid": 613100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 282,
+      "title": "House Flipper 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "House Flipper 2",
+          "appid": 1190970,
+          "status": "pending"
+        }
+      ],
+      "appid": 1190970,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 283,
+      "title": "PowerWash Simulator",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "PowerWash Simulator",
+          "appid": 1290000,
+          "status": "pending"
+        }
+      ],
+      "appid": 1290000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 284,
+      "title": "PowerWash Simulator 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "PowerWash Simulator 2",
+          "appid": 2968420,
+          "status": "pending"
+        }
+      ],
+      "appid": 2968420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 285,
+      "title": "Euro Truck Simulator 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Euro Truck Simulator 2",
+          "appid": 227300,
+          "status": "pending"
+        }
+      ],
+      "appid": 227300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 286,
+      "title": "American Truck Simulator",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "American Truck Simulator",
+          "appid": 270880,
+          "status": "pending"
+        }
+      ],
+      "appid": 270880,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 287,
+      "title": "Farming Simulator 22",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Farming Simulator 22",
+          "appid": 1248130,
+          "status": "pending"
+        }
+      ],
+      "appid": 1248130,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 288,
+      "title": "Farming Simulator 25",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Farming Simulator 25",
+          "appid": 2300320,
+          "status": "pending"
+        }
+      ],
+      "appid": 2300320,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 289,
+      "title": "Microsoft Flight Simulator (2020)",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Microsoft Flight Simulator (2020)",
+          "appid": 1250410,
+          "status": "pending"
+        }
+      ],
+      "appid": 1250410,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 290,
+      "title": "Microsoft Flight Simulator 2024",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Microsoft Flight Simulator 2024",
+          "appid": 2537590,
+          "status": "pending"
+        }
+      ],
+      "appid": 2537590,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 291,
+      "title": "Kerbal Space Program",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Kerbal Space Program",
+          "appid": 220200,
+          "status": "pending"
+        }
+      ],
+      "appid": 220200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 292,
+      "title": "Kerbal Space Program 2",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Kerbal Space Program 2",
+          "appid": 954850,
+          "status": "pending"
+        }
+      ],
+      "appid": 954850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 293,
+      "title": "Besiege",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Besiege",
+          "appid": 346010,
+          "status": "pending"
+        }
+      ],
+      "appid": 346010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 294,
+      "title": "Teardown",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Teardown",
+          "appid": 1167630,
+          "status": "pending"
+        }
+      ],
+      "appid": 1167630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 295,
+      "title": "BeamNG.drive",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "BeamNG.drive",
+          "appid": 284160,
+          "status": "pending"
+        }
+      ],
+      "appid": 284160,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 296,
+      "title": "Car Mechanic Simulator 2021",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "Car Mechanic Simulator 2021",
+          "appid": 1190000,
+          "status": "pending"
+        }
+      ],
+      "appid": 1190000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 297,
+      "title": "PC Building Simulator",
+      "category": "Strategy simulation and management",
+      "matches": [
+        {
+          "name": "PC Building Simulator",
+          "appid": 621060,
+          "status": "pending"
+        }
+      ],
+      "appid": 621060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "strategy"
+    },
+    {
+      "n": 298,
+      "title": "PC Building Simulator 2",
+      "category": "Strategy simulation and management",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "strategy"
+    },
+    {
+      "n": 299,
+      "title": "Ready or Not",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Ready or Not",
+          "appid": 1144200,
+          "status": "pending"
+        }
+      ],
+      "appid": 1144200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 300,
+      "title": "Tom Clancy's Ghost Recon Wildlands",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Tom Clancy's Ghost Recon® Wildlands",
+          "appid": 460930,
+          "status": "pending"
+        }
+      ],
+      "appid": 460930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 301,
+      "title": "Tom Clancy's Ghost Recon Breakpoint",
+      "category": "Competitive co-op and shooters",
+      "matches": [],
+      "appid": 2231380,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 302,
+      "title": "Tom Clancy's The Division",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Tom Clancy's The Division",
+          "appid": 365590,
+          "status": "pending"
+        }
+      ],
+      "appid": 365590,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 303,
+      "title": "Tom Clancy's The Division 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Tom Clancy's The Division 2",
+          "appid": 2221490,
+          "status": "pending"
+        }
+      ],
+      "appid": 2221490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 304,
+      "title": "Insurgency: Sandstorm",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Insurgency: Sandstorm",
+          "appid": 581320,
+          "status": "pending"
+        }
+      ],
+      "appid": 581320,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 305,
+      "title": "Squad",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Squad",
+          "appid": 393380,
+          "status": "pending"
+        }
+      ],
+      "appid": 393380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 306,
+      "title": "Hell Let Loose",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Hell Let Loose",
+          "appid": 686810,
+          "status": "pending"
+        }
+      ],
+      "appid": 686810,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 307,
+      "title": "Arma 3",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Arma 3",
+          "appid": 107410,
+          "status": "pending"
+        }
+      ],
+      "appid": 107410,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 308,
+      "title": "Arma Reforger",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Arma Reforger",
+          "appid": 1874880,
+          "status": "pending"
+        }
+      ],
+      "appid": 1874880,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 309,
+      "title": "Hunt: Showdown 1896",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Hunt: Showdown 1896",
+          "appid": 594650,
+          "status": "pending"
+        }
+      ],
+      "appid": 594650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 310,
+      "title": "Gray Zone Warfare",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Gray Zone Warfare",
+          "appid": 2479810,
+          "status": "pending"
+        }
+      ],
+      "appid": 2479810,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 311,
+      "title": "Bodycam",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Bodycam",
+          "appid": 2406770,
+          "status": "pending"
+        }
+      ],
+      "appid": 2406770,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 312,
+      "title": "BattleBit Remastered",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "BattleBit Remastered",
+          "appid": 671860,
+          "status": "pending"
+        }
+      ],
+      "appid": 671860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 313,
+      "title": "Battlefield 1",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Battlefield™ 1",
+          "appid": 1238840,
+          "status": "pending"
+        }
+      ],
+      "appid": 1238840,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 314,
+      "title": "Battlefield V",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Battlefield™ V",
+          "appid": 1238810,
+          "status": "pending"
+        }
+      ],
+      "appid": 1238810,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 315,
+      "title": "Battlefield 4",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Battlefield 4™",
+          "appid": 1238860,
+          "status": "pending"
+        }
+      ],
+      "appid": 1238860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 316,
+      "title": "Battlefield 2042",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Battlefield™ 2042",
+          "appid": 1517290,
+          "status": "pending"
+        }
+      ],
+      "appid": 1517290,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 317,
+      "title": "Call of Duty: Black Ops III",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty: Black Ops III",
+          "appid": 311210,
+          "status": "pending"
+        }
+      ],
+      "appid": 311210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 318,
+      "title": "Call of Duty: WWII",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty: WWII",
+          "appid": 476600,
+          "status": "pending"
+        }
+      ],
+      "appid": 476600,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 319,
+      "title": "Call of Duty: Modern Warfare (2019)",
+      "category": "Competitive co-op and shooters",
+      "matches": [],
+      "appid": 2000950,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 320,
+      "title": "Call of Duty: Modern Warfare II",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty®: Modern Warfare® II",
+          "appid": 3595230,
+          "status": "pending"
+        }
+      ],
+      "appid": 3595230,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 321,
+      "title": "Call of Duty: Modern Warfare III",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty®: Modern Warfare® III",
+          "appid": 3595270,
+          "status": "pending"
+        }
+      ],
+      "appid": 3595270,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 322,
+      "title": "Call of Duty: Black Ops 6",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty®: Black Ops 6",
+          "appid": 4384550,
+          "status": "pending"
+        }
+      ],
+      "appid": 4384550,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 323,
+      "title": "Call of Duty: Black Ops 7",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Call of Duty®: Black Ops 7",
+          "appid": 3606480,
+          "status": "pending"
+        }
+      ],
+      "appid": 3606480,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 324,
+      "title": "DOOM",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "DOOM",
+          "appid": 379720,
+          "status": "pending"
+        }
+      ],
+      "appid": 379720,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 325,
+      "title": "DOOM Eternal",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "DOOM Eternal",
+          "appid": 782330,
+          "status": "pending"
+        }
+      ],
+      "appid": 782330,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 326,
+      "title": "DOOM: The Dark Ages",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "DOOM: The Dark Ages",
+          "appid": 3017860,
+          "status": "pending"
+        }
+      ],
+      "appid": 3017860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 327,
+      "title": "Wolfenstein: The New Order",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Wolfenstein: The New Order",
+          "appid": 201810,
+          "status": "pending"
+        }
+      ],
+      "appid": 201810,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 328,
+      "title": "Wolfenstein: The Old Blood",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Wolfenstein: The Old Blood",
+          "appid": 350080,
+          "status": "pending"
+        }
+      ],
+      "appid": 350080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 329,
+      "title": "Wolfenstein II: The New Colossus",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Wolfenstein II: The New Colossus",
+          "appid": 612880,
+          "status": "pending"
+        }
+      ],
+      "appid": 612880,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 330,
+      "title": "Titanfall 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Titanfall® 2",
+          "appid": 1237970,
+          "status": "pending"
+        }
+      ],
+      "appid": 1237970,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 331,
+      "title": "Borderlands 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Borderlands 2",
+          "appid": 49520,
+          "status": "pending"
+        }
+      ],
+      "appid": 49520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 332,
+      "title": "Borderlands: The Pre-Sequel",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Borderlands: The Pre-Sequel",
+          "appid": 261640,
+          "status": "pending"
+        }
+      ],
+      "appid": 261640,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 333,
+      "title": "Borderlands 3",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Borderlands 3",
+          "appid": 397540,
+          "status": "pending"
+        }
+      ],
+      "appid": 397540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 334,
+      "title": "Borderlands 4",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Borderlands® 4",
+          "appid": 1285190,
+          "status": "pending"
+        }
+      ],
+      "appid": 1285190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 335,
+      "title": "Tiny Tina's Wonderlands",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Tiny Tina's Wonderlands",
+          "appid": 1286680,
+          "status": "pending"
+        }
+      ],
+      "appid": 1286680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 336,
+      "title": "Deep Rock Galactic",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Deep Rock Galactic",
+          "appid": 548430,
+          "status": "pending"
+        }
+      ],
+      "appid": 548430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 337,
+      "title": "Deep Rock Galactic: Survivor",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Deep Rock Galactic: Survivor",
+          "appid": 2321470,
+          "status": "pending"
+        }
+      ],
+      "appid": 2321470,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 338,
+      "title": "Lethal Company",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Lethal Company",
+          "appid": 1966720,
+          "status": "pending"
+        }
+      ],
+      "appid": 1966720,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 339,
+      "title": "R.E.P.O.",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "R.E.P.O.",
+          "appid": 3241660,
+          "status": "pending"
+        }
+      ],
+      "appid": 3241660,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 340,
+      "title": "Phasmophobia",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Phasmophobia",
+          "appid": 739630,
+          "status": "pending"
+        }
+      ],
+      "appid": 739630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 341,
+      "title": "Content Warning",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Content Warning",
+          "appid": 2881650,
+          "status": "pending"
+        }
+      ],
+      "appid": 2881650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 342,
+      "title": "GTFO",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "GTFO",
+          "appid": 493520,
+          "status": "pending"
+        }
+      ],
+      "appid": 493520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 343,
+      "title": "Payday 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "PAYDAY 2",
+          "appid": 218620,
+          "status": "eligible"
+        }
+      ],
+      "appid": 218620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 344,
+      "title": "PAYDAY 3",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "PAYDAY 3",
+          "appid": 1272080,
+          "status": "pending"
+        }
+      ],
+      "appid": 1272080,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 345,
+      "title": "Warhammer 40,000: Darktide",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Warhammer 40,000: Darktide",
+          "appid": 1361210,
+          "status": "pending"
+        }
+      ],
+      "appid": 1361210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 346,
+      "title": "Warhammer: Vermintide 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Warhammer: Vermintide 2",
+          "appid": 552500,
+          "status": "pending"
+        }
+      ],
+      "appid": 552500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 347,
+      "title": "Left 4 Dead 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Left 4 Dead 2",
+          "appid": 550,
+          "status": "eligible"
+        }
+      ],
+      "appid": 550,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 348,
+      "title": "Killing Floor 2",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Killing Floor 2",
+          "appid": 232090,
+          "status": "pending"
+        }
+      ],
+      "appid": 232090,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 349,
+      "title": "Killing Floor 3",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Killing Floor 3",
+          "appid": 1430190,
+          "status": "pending"
+        }
+      ],
+      "appid": 1430190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 350,
+      "title": "Back 4 Blood",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Back 4 Blood",
+          "appid": 924970,
+          "status": "pending"
+        }
+      ],
+      "appid": 924970,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 351,
+      "title": "World War Z",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "World War Z",
+          "appid": 699130,
+          "status": "pending"
+        }
+      ],
+      "appid": 699130,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 352,
+      "title": "Remnant: From the Ashes",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Remnant: From the Ashes",
+          "appid": 617290,
+          "status": "pending"
+        }
+      ],
+      "appid": 617290,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 353,
+      "title": "Remnant II",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Remnant II",
+          "appid": 1282100,
+          "status": "pending"
+        }
+      ],
+      "appid": 1282100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 354,
+      "title": "OUTRIDERS",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "OUTRIDERS",
+          "appid": 680420,
+          "status": "pending"
+        }
+      ],
+      "appid": 680420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 355,
+      "title": "Risk of Rain Returns",
+      "category": "Competitive co-op and shooters",
+      "matches": [
+        {
+          "name": "Risk of Rain Returns",
+          "appid": 1337520,
+          "status": "pending"
+        }
+      ],
+      "appid": 1337520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 356,
+      "title": "Risk of Rain",
+      "category": "Competitive co-op and shooters",
+      "matches": [],
+      "appid": 248820,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 357,
+      "title": "Helldivers Dive Harder Edition",
+      "category": "Competitive co-op and shooters",
+      "matches": [],
+      "appid": 394510,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "multiplayer"
+    },
+    {
+      "n": 358,
+      "title": "Hades",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hades",
+          "appid": 1145360,
+          "status": "pending"
+        }
+      ],
+      "appid": 1145360,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 359,
+      "title": "Hades II",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hades II",
+          "appid": 1145350,
+          "status": "pending"
+        }
+      ],
+      "appid": 1145350,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 360,
+      "title": "Hollow Knight",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hollow Knight",
+          "appid": 367520,
+          "status": "pending"
+        }
+      ],
+      "appid": 367520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 361,
+      "title": "Hollow Knight: Silksong",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hollow Knight: Silksong",
+          "appid": 1030300,
+          "status": "pending"
+        }
+      ],
+      "appid": 1030300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 362,
+      "title": "Dead Cells",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Dead Cells",
+          "appid": 588650,
+          "status": "pending"
+        }
+      ],
+      "appid": 588650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 363,
+      "title": "Slay the Spire",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Slay the Spire",
+          "appid": 646570,
+          "status": "pending"
+        }
+      ],
+      "appid": 646570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 364,
+      "title": "Slay the Spire 2",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Slay the Spire 2",
+          "appid": 2868840,
+          "status": "pending"
+        }
+      ],
+      "appid": 2868840,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 365,
+      "title": "Balatro",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Balatro",
+          "appid": 2379780,
+          "status": "pending"
+        }
+      ],
+      "appid": 2379780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 366,
+      "title": "Vampire Survivors",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Vampire Survivors",
+          "appid": 1794680,
+          "status": "eligible"
+        }
+      ],
+      "appid": 1794680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 367,
+      "title": "Brotato",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Brotato",
+          "appid": 1942280,
+          "status": "pending"
+        }
+      ],
+      "appid": 1942280,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 368,
+      "title": "Binding of Isaac: Rebirth",
+      "category": "Indie hits and roguelikes",
+      "matches": [],
+      "appid": 250900,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "indie"
+    },
+    {
+      "n": 369,
+      "title": "Enter the Gungeon",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Enter the Gungeon",
+          "appid": 311690,
+          "status": "pending"
+        }
+      ],
+      "appid": 311690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 370,
+      "title": "Exit the Gungeon",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Exit the Gungeon",
+          "appid": 1209490,
+          "status": "pending"
+        }
+      ],
+      "appid": 1209490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 371,
+      "title": "Spelunky",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Spelunky",
+          "appid": 239350,
+          "status": "pending"
+        }
+      ],
+      "appid": 239350,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 372,
+      "title": "Spelunky 2",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Spelunky 2",
+          "appid": 418530,
+          "status": "pending"
+        }
+      ],
+      "appid": 418530,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 373,
+      "title": "Rogue Legacy",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Rogue Legacy",
+          "appid": 241600,
+          "status": "pending"
+        }
+      ],
+      "appid": 241600,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 374,
+      "title": "Rogue Legacy 2",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Rogue Legacy 2",
+          "appid": 1253920,
+          "status": "pending"
+        }
+      ],
+      "appid": 1253920,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 375,
+      "title": "Noita",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Noita",
+          "appid": 881100,
+          "status": "pending"
+        }
+      ],
+      "appid": 881100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 376,
+      "title": "Caves of Qud",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Caves of Qud",
+          "appid": 333640,
+          "status": "pending"
+        }
+      ],
+      "appid": 333640,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 377,
+      "title": "Dwarf Fortress",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Dwarf Fortress",
+          "appid": 975370,
+          "status": "pending"
+        }
+      ],
+      "appid": 975370,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 378,
+      "title": "FTL: Faster Than Light",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "FTL: Faster Than Light",
+          "appid": 212680,
+          "status": "pending"
+        }
+      ],
+      "appid": 212680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 379,
+      "title": "Into the Breach",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Into the Breach",
+          "appid": 590380,
+          "status": "pending"
+        }
+      ],
+      "appid": 590380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 380,
+      "title": "Inscryption",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Inscryption",
+          "appid": 1092790,
+          "status": "pending"
+        }
+      ],
+      "appid": 1092790,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 381,
+      "title": "Buckshot Roulette",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Buckshot Roulette",
+          "appid": 2835570,
+          "status": "pending"
+        }
+      ],
+      "appid": 2835570,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 382,
+      "title": "DREDGE",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "DREDGE",
+          "appid": 1562430,
+          "status": "pending"
+        }
+      ],
+      "appid": 1562430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 383,
+      "title": "Dave the Diver",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "DAVE THE DIVER",
+          "appid": 1868140,
+          "status": "pending"
+        }
+      ],
+      "appid": 1868140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 384,
+      "title": "Blue Prince",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Blue Prince",
+          "appid": 1569580,
+          "status": "pending"
+        }
+      ],
+      "appid": 1569580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 385,
+      "title": "Animal Well",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "ANIMAL WELL",
+          "appid": 813230,
+          "status": "pending"
+        }
+      ],
+      "appid": 813230,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 386,
+      "title": "Tunic",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "TUNIC",
+          "appid": 553420,
+          "status": "pending"
+        }
+      ],
+      "appid": 553420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 387,
+      "title": "Celeste",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Celeste",
+          "appid": 504230,
+          "status": "pending"
+        }
+      ],
+      "appid": 504230,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 388,
+      "title": "Cuphead",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Cuphead",
+          "appid": 268910,
+          "status": "pending"
+        }
+      ],
+      "appid": 268910,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 389,
+      "title": "Ori and the Blind Forest: Definitive Edition",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Ori and the Blind Forest: Definitive Edition",
+          "appid": 387290,
+          "status": "pending"
+        }
+      ],
+      "appid": 387290,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 390,
+      "title": "Ori and the Will of the Wisps",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Ori and the Will of the Wisps",
+          "appid": 1057090,
+          "status": "pending"
+        }
+      ],
+      "appid": 1057090,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 391,
+      "title": "Shovel Knight: Treasure Trove",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Shovel Knight: Treasure Trove",
+          "appid": 250760,
+          "status": "pending"
+        }
+      ],
+      "appid": 250760,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 392,
+      "title": "Pizza Tower",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Pizza Tower",
+          "appid": 2231450,
+          "status": "pending"
+        }
+      ],
+      "appid": 2231450,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 393,
+      "title": "Katana ZERO",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Katana ZERO",
+          "appid": 460950,
+          "status": "pending"
+        }
+      ],
+      "appid": 460950,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 394,
+      "title": "Nine Sols",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Nine Sols",
+          "appid": 1809540,
+          "status": "pending"
+        }
+      ],
+      "appid": 1809540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 395,
+      "title": "SANABI",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "SANABI",
+          "appid": 1562700,
+          "status": "pending"
+        }
+      ],
+      "appid": 1562700,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 396,
+      "title": "Neon White",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Neon White",
+          "appid": 1533420,
+          "status": "pending"
+        }
+      ],
+      "appid": 1533420,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 397,
+      "title": "ULTRAKILL",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "ULTRAKILL",
+          "appid": 1229490,
+          "status": "pending"
+        }
+      ],
+      "appid": 1229490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 398,
+      "title": "Hotline Miami",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hotline Miami",
+          "appid": 219150,
+          "status": "pending"
+        }
+      ],
+      "appid": 219150,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 399,
+      "title": "Hotline Miami 2: Wrong Number",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hotline Miami 2: Wrong Number",
+          "appid": 274170,
+          "status": "pending"
+        }
+      ],
+      "appid": 274170,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 400,
+      "title": "Hyper Light Drifter",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hyper Light Drifter",
+          "appid": 257850,
+          "status": "pending"
+        }
+      ],
+      "appid": 257850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 401,
+      "title": "Hyper Light Breaker",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Hyper Light Breaker",
+          "appid": 1534840,
+          "status": "pending"
+        }
+      ],
+      "appid": 1534840,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 402,
+      "title": "Death's Door",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Death's Door",
+          "appid": 894020,
+          "status": "pending"
+        }
+      ],
+      "appid": 894020,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 403,
+      "title": "Bastion",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Bastion",
+          "appid": 107100,
+          "status": "pending"
+        }
+      ],
+      "appid": 107100,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 404,
+      "title": "Transistor",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Transistor",
+          "appid": 237930,
+          "status": "pending"
+        }
+      ],
+      "appid": 237930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 405,
+      "title": "Pyre",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Pyre",
+          "appid": 462770,
+          "status": "pending"
+        }
+      ],
+      "appid": 462770,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 406,
+      "title": "The Messenger",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "The Messenger",
+          "appid": 764790,
+          "status": "pending"
+        }
+      ],
+      "appid": 764790,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 407,
+      "title": "Sea of Stars",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Sea of Stars",
+          "appid": 1244090,
+          "status": "pending"
+        }
+      ],
+      "appid": 1244090,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 408,
+      "title": "Chained Echoes",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Chained Echoes",
+          "appid": 1229240,
+          "status": "pending"
+        }
+      ],
+      "appid": 1229240,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 409,
+      "title": "Undertale",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Undertale",
+          "appid": 391540,
+          "status": "pending"
+        }
+      ],
+      "appid": 391540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 410,
+      "title": "DELTARUNE",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "DELTARUNE",
+          "appid": 1671210,
+          "status": "pending"
+        }
+      ],
+      "appid": 1671210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 411,
+      "title": "OMORI",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "OMORI",
+          "appid": 1150690,
+          "status": "pending"
+        }
+      ],
+      "appid": 1150690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 412,
+      "title": "OneShot",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "OneShot",
+          "appid": 420530,
+          "status": "pending"
+        }
+      ],
+      "appid": 420530,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 413,
+      "title": "To the Moon",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "To the Moon",
+          "appid": 206440,
+          "status": "pending"
+        },
+        {
+          "name": "TO THE MOON",
+          "appid": 3626460,
+          "status": "pending"
+        }
+      ],
+      "appid": 206440,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "indie"
+    },
+    {
+      "n": 414,
+      "title": "A Short Hike",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "A Short Hike",
+          "appid": 1055540,
+          "status": "pending"
+        }
+      ],
+      "appid": 1055540,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 415,
+      "title": "Webfishing",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "WEBFISHING",
+          "appid": 3146520,
+          "status": "pending"
+        }
+      ],
+      "appid": 3146520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 416,
+      "title": "PEAK",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Peak",
+          "appid": 3506430,
+          "status": "pending"
+        },
+        {
+          "name": "PEAK",
+          "appid": 3527290,
+          "status": "pending"
+        }
+      ],
+      "appid": 3527290,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "indie"
+    },
+    {
+      "n": 417,
+      "title": "Schedule I",
+      "category": "Indie hits and roguelikes",
+      "matches": [
+        {
+          "name": "Schedule I",
+          "appid": 3164500,
+          "status": "pending"
+        }
+      ],
+      "appid": 3164500,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "indie"
+    },
+    {
+      "n": 418,
+      "title": "Resident Evil 0",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 0",
+          "appid": 339340,
+          "status": "pending"
+        }
+      ],
+      "appid": 339340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 419,
+      "title": "Resident Evil HD Remaster",
+      "category": "Horror narrative and adventure",
+      "matches": [],
+      "appid": 304240,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "horror"
+    },
+    {
+      "n": 420,
+      "title": "Resident Evil 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 2",
+          "appid": 883710,
+          "status": "pending"
+        }
+      ],
+      "appid": 883710,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 421,
+      "title": "Resident Evil 3",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 3",
+          "appid": 952060,
+          "status": "pending"
+        }
+      ],
+      "appid": 952060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 422,
+      "title": "Resident Evil 4",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 4",
+          "appid": 2050650,
+          "status": "eligible"
+        }
+      ],
+      "appid": 2050650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 423,
+      "title": "Resident Evil 5",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 5",
+          "appid": 21690,
+          "status": "pending"
+        }
+      ],
+      "appid": 21690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 424,
+      "title": "Resident Evil 6",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 6",
+          "appid": 221040,
+          "status": "pending"
+        }
+      ],
+      "appid": 221040,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 425,
+      "title": "Resident Evil 7 Biohazard",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil 7 Biohazard",
+          "appid": 418370,
+          "status": "pending"
+        }
+      ],
+      "appid": 418370,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 426,
+      "title": "Resident Evil Village",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Resident Evil Village",
+          "appid": 1196590,
+          "status": "pending"
+        }
+      ],
+      "appid": 1196590,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 427,
+      "title": "Silent Hill 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "SILENT HILL 2",
+          "appid": 2124490,
+          "status": "pending"
+        }
+      ],
+      "appid": 2124490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 428,
+      "title": "Silent Hill f",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "SILENT HILL f",
+          "appid": 2947440,
+          "status": "pending"
+        }
+      ],
+      "appid": 2947440,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 429,
+      "title": "The Evil Within",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Evil Within",
+          "appid": 268050,
+          "status": "pending"
+        }
+      ],
+      "appid": 268050,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 430,
+      "title": "The Evil Within 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Evil Within 2",
+          "appid": 601430,
+          "status": "pending"
+        }
+      ],
+      "appid": 601430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 431,
+      "title": "Dead Space (2023)",
+      "category": "Horror narrative and adventure",
+      "matches": [],
+      "appid": 1693980,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "horror"
+    },
+    {
+      "n": 432,
+      "title": "Dead Space 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Dead Space 2",
+          "appid": 47780,
+          "status": "pending"
+        }
+      ],
+      "appid": 47780,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 433,
+      "title": "Dead Space 3",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Dead Space™ 3",
+          "appid": 1238060,
+          "status": "pending"
+        }
+      ],
+      "appid": 1238060,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 434,
+      "title": "Alien: Isolation",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Alien: Isolation",
+          "appid": 214490,
+          "status": "pending"
+        }
+      ],
+      "appid": 214490,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 435,
+      "title": "Amnesia: The Dark Descent",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Amnesia: The Dark Descent",
+          "appid": 57300,
+          "status": "pending"
+        }
+      ],
+      "appid": 57300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 436,
+      "title": "Amnesia: Rebirth",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Amnesia: Rebirth",
+          "appid": 999220,
+          "status": "pending"
+        }
+      ],
+      "appid": 999220,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 437,
+      "title": "Amnesia: The Bunker",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Amnesia: The Bunker",
+          "appid": 1944430,
+          "status": "pending"
+        }
+      ],
+      "appid": 1944430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 438,
+      "title": "SOMA",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "SOMA",
+          "appid": 282140,
+          "status": "pending"
+        }
+      ],
+      "appid": 282140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 439,
+      "title": "Outlast",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Outlast",
+          "appid": 238320,
+          "status": "pending"
+        },
+        {
+          "name": "Outlast",
+          "appid": 1318840,
+          "status": "pending"
+        },
+        {
+          "name": "Outlast",
+          "appid": 4596250,
+          "status": "pending"
+        }
+      ],
+      "appid": 238320,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "horror"
+    },
+    {
+      "n": 440,
+      "title": "Outlast 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Outlast 2",
+          "appid": 414700,
+          "status": "pending"
+        }
+      ],
+      "appid": 414700,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 441,
+      "title": "The Outlast Trials",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Outlast Trials",
+          "appid": 1304930,
+          "status": "pending"
+        }
+      ],
+      "appid": 1304930,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 442,
+      "title": "Little Nightmares",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Little Nightmares",
+          "appid": 424840,
+          "status": "pending"
+        }
+      ],
+      "appid": 424840,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 443,
+      "title": "Little Nightmares II",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Little Nightmares II",
+          "appid": 860510,
+          "status": "pending"
+        }
+      ],
+      "appid": 860510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 444,
+      "title": "Little Nightmares III",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Little Nightmares III",
+          "appid": 1392860,
+          "status": "pending"
+        }
+      ],
+      "appid": 1392860,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 445,
+      "title": "Inside",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "INSIDE",
+          "appid": 304430,
+          "status": "pending"
+        }
+      ],
+      "appid": 304430,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 446,
+      "title": "LIMBO",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "LIMBO",
+          "appid": 48000,
+          "status": "pending"
+        },
+        {
+          "name": "Limbo",
+          "appid": 3270520,
+          "status": "pending"
+        }
+      ],
+      "appid": 48000,
+      "resolution": "reviewed Steam App ID / edition alias",
+      "collection": "horror"
+    },
+    {
+      "n": 447,
+      "title": "Still Wakes the Deep",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Still Wakes the Deep",
+          "appid": 1622910,
+          "status": "pending"
+        }
+      ],
+      "appid": 1622910,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 448,
+      "title": "Until Dawn",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Until Dawn™",
+          "appid": 2172010,
+          "status": "pending"
+        }
+      ],
+      "appid": 2172010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 449,
+      "title": "The Quarry",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Quarry",
+          "appid": 1577120,
+          "status": "pending"
+        }
+      ],
+      "appid": 1577120,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 450,
+      "title": "The Dark Pictures Anthology: Man of Medan",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Dark Pictures Anthology: Man of Medan",
+          "appid": 939850,
+          "status": "pending"
+        }
+      ],
+      "appid": 939850,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 451,
+      "title": "The Dark Pictures Anthology: Little Hope",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Dark Pictures Anthology: Little Hope",
+          "appid": 1194630,
+          "status": "pending"
+        }
+      ],
+      "appid": 1194630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 452,
+      "title": "The Dark Pictures Anthology: House of Ashes",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Dark Pictures Anthology: House of Ashes",
+          "appid": 1281590,
+          "status": "pending"
+        }
+      ],
+      "appid": 1281590,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 453,
+      "title": "The Dark Pictures Anthology: The Devil in Me",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Dark Pictures Anthology: The Devil in Me",
+          "appid": 1567020,
+          "status": "pending"
+        }
+      ],
+      "appid": 1567020,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 454,
+      "title": "Detroit: Become Human",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Detroit: Become Human",
+          "appid": 1222140,
+          "status": "pending"
+        }
+      ],
+      "appid": 1222140,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 455,
+      "title": "Heavy Rain",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Heavy Rain",
+          "appid": 960910,
+          "status": "pending"
+        }
+      ],
+      "appid": 960910,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 456,
+      "title": "Beyond: Two Souls",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Beyond: Two Souls",
+          "appid": 960990,
+          "status": "pending"
+        }
+      ],
+      "appid": 960990,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 457,
+      "title": "Life is Strange",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Life is Strange™",
+          "appid": 319630,
+          "status": "pending"
+        }
+      ],
+      "appid": 319630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 458,
+      "title": "Life is Strange: Before the Storm",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Life is Strange: Before the Storm",
+          "appid": 554620,
+          "status": "pending"
+        }
+      ],
+      "appid": 554620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 459,
+      "title": "Life is Strange 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Life is Strange 2",
+          "appid": 532210,
+          "status": "pending"
+        }
+      ],
+      "appid": 532210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 460,
+      "title": "Life is Strange: True Colors",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Life is Strange: True Colors",
+          "appid": 936790,
+          "status": "pending"
+        }
+      ],
+      "appid": 936790,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 461,
+      "title": "Life is Strange: Double Exposure",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Life is Strange: Double Exposure",
+          "appid": 1874000,
+          "status": "pending"
+        }
+      ],
+      "appid": 1874000,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 462,
+      "title": "Firewatch",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Firewatch",
+          "appid": 383870,
+          "status": "pending"
+        }
+      ],
+      "appid": 383870,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 463,
+      "title": "What Remains of Edith Finch",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "What Remains of Edith Finch",
+          "appid": 501300,
+          "status": "pending"
+        }
+      ],
+      "appid": 501300,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 464,
+      "title": "The Stanley Parable: Ultra Deluxe",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Stanley Parable: Ultra Deluxe",
+          "appid": 1703340,
+          "status": "pending"
+        }
+      ],
+      "appid": 1703340,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 465,
+      "title": "The Beginner's Guide",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Beginner's Guide",
+          "appid": 303210,
+          "status": "pending"
+        }
+      ],
+      "appid": 303210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 466,
+      "title": "Return of the Obra Dinn",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Return of the Obra Dinn",
+          "appid": 653530,
+          "status": "pending"
+        }
+      ],
+      "appid": 653530,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 467,
+      "title": "Papers, Please",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Papers, Please",
+          "appid": 239030,
+          "status": "pending"
+        }
+      ],
+      "appid": 239030,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 468,
+      "title": "Pentiment",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Pentiment",
+          "appid": 1205520,
+          "status": "pending"
+        }
+      ],
+      "appid": 1205520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 469,
+      "title": "The Walking Dead: The Telltale Definitive Series",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Walking Dead: The Telltale Definitive Series",
+          "appid": 1449690,
+          "status": "pending"
+        }
+      ],
+      "appid": 1449690,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 470,
+      "title": "Twelve Minutes",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Twelve Minutes",
+          "appid": 1097200,
+          "status": "pending"
+        }
+      ],
+      "appid": 1097200,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 471,
+      "title": "Stray",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Stray",
+          "appid": 1332010,
+          "status": "pending"
+        }
+      ],
+      "appid": 1332010,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 472,
+      "title": "Outer Wilds",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "Outer Wilds",
+          "appid": 753640,
+          "status": "pending"
+        }
+      ],
+      "appid": 753640,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 473,
+      "title": "The Talos Principle",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Talos Principle",
+          "appid": 257510,
+          "status": "pending"
+        }
+      ],
+      "appid": 257510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 474,
+      "title": "The Talos Principle 2",
+      "category": "Horror narrative and adventure",
+      "matches": [
+        {
+          "name": "The Talos Principle 2",
+          "appid": 835960,
+          "status": "pending"
+        }
+      ],
+      "appid": 835960,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "horror"
+    },
+    {
+      "n": 475,
+      "title": "Forza Horizon 4",
+      "category": "Sports racing and fighting",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "sports"
+    },
+    {
+      "n": 476,
+      "title": "Forza Horizon 5",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Forza Horizon 5",
+          "appid": 1551360,
+          "status": "pending"
+        }
+      ],
+      "appid": 1551360,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 477,
+      "title": "Forza Motorsport",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Forza Motorsport",
+          "appid": 2440510,
+          "status": "pending"
+        }
+      ],
+      "appid": 2440510,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 478,
+      "title": "Assetto Corsa",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Assetto Corsa",
+          "appid": 244210,
+          "status": "pending"
+        }
+      ],
+      "appid": 244210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 479,
+      "title": "Assetto Corsa Competizione",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Assetto Corsa Competizione",
+          "appid": 805550,
+          "status": "pending"
+        }
+      ],
+      "appid": 805550,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 480,
+      "title": "Assetto Corsa EVO",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Assetto Corsa EVO",
+          "appid": 3058630,
+          "status": "pending"
+        }
+      ],
+      "appid": 3058630,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 481,
+      "title": "Automobilista 2",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Automobilista 2",
+          "appid": 1066890,
+          "status": "pending"
+        }
+      ],
+      "appid": 1066890,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 482,
+      "title": "iRacing",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "iRacing",
+          "appid": 266410,
+          "status": "pending"
+        }
+      ],
+      "appid": 266410,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 483,
+      "title": "F1 23",
+      "category": "Sports racing and fighting",
+      "matches": [],
+      "appid": null,
+      "resolution": "not in active supplier feed",
+      "collection": "sports"
+    },
+    {
+      "n": 484,
+      "title": "F1 24",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "F1® 24",
+          "appid": 2488620,
+          "status": "pending"
+        }
+      ],
+      "appid": 2488620,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 485,
+      "title": "F1 25",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "F1® 25",
+          "appid": 3059520,
+          "status": "pending"
+        }
+      ],
+      "appid": 3059520,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 486,
+      "title": "EA SPORTS WRC",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "EA SPORTS™ WRC",
+          "appid": 1849250,
+          "status": "pending"
+        }
+      ],
+      "appid": 1849250,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 487,
+      "title": "DiRT Rally 2.0",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "DiRT Rally 2.0",
+          "appid": 690790,
+          "status": "pending"
+        }
+      ],
+      "appid": 690790,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 488,
+      "title": "Wreckfest",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Wreckfest",
+          "appid": 228380,
+          "status": "pending"
+        }
+      ],
+      "appid": 228380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 489,
+      "title": "Wreckfest 2",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Wreckfest 2",
+          "appid": 1203190,
+          "status": "pending"
+        }
+      ],
+      "appid": 1203190,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 490,
+      "title": "Need for Speed Heat",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Need for Speed™ Heat",
+          "appid": 1222680,
+          "status": "pending"
+        }
+      ],
+      "appid": 1222680,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 491,
+      "title": "Need for Speed Unbound",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Need for Speed™ Unbound",
+          "appid": 1846380,
+          "status": "pending"
+        }
+      ],
+      "appid": 1846380,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 492,
+      "title": "Need for Speed Payback",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Need for Speed™ Payback",
+          "appid": 1262580,
+          "status": "pending"
+        }
+      ],
+      "appid": 1262580,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 493,
+      "title": "Need for Speed Hot Pursuit Remastered",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Need for Speed™ Hot Pursuit Remastered",
+          "appid": 1328660,
+          "status": "pending"
+        }
+      ],
+      "appid": 1328660,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 494,
+      "title": "CarX Drift Racing Online",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "CarX Drift Racing Online",
+          "appid": 635260,
+          "status": "pending"
+        }
+      ],
+      "appid": 635260,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 495,
+      "title": "CarX Street",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "CarX Street",
+          "appid": 1114150,
+          "status": "pending"
+        }
+      ],
+      "appid": 1114150,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 496,
+      "title": "The Crew Motorfest",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "The Crew Motorfest",
+          "appid": 2698940,
+          "status": "pending"
+        }
+      ],
+      "appid": 2698940,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 497,
+      "title": "Riders Republic",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Riders Republic",
+          "appid": 2290180,
+          "status": "pending"
+        }
+      ],
+      "appid": 2290180,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 498,
+      "title": "Descenders",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Descenders",
+          "appid": 681280,
+          "status": "pending"
+        }
+      ],
+      "appid": 681280,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 499,
+      "title": "Session: Skate Sim",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Session: Skate Sim",
+          "appid": 861650,
+          "status": "pending"
+        }
+      ],
+      "appid": 861650,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    },
+    {
+      "n": 500,
+      "title": "Tony Hawk's Pro Skater 1 + 2",
+      "category": "Sports racing and fighting",
+      "matches": [
+        {
+          "name": "Tony Hawk's™ Pro Skater™ 1 + 2",
+          "appid": 2395210,
+          "status": "pending"
+        }
+      ],
+      "appid": 2395210,
+      "resolution": "unique normalized supplier-title match",
+      "collection": "sports"
+    }
+  ]
+}

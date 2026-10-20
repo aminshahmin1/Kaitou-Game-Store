@@ -8,10 +8,11 @@ import { applyBalanceAvailability } from "./stock";
 import { getFazerCardsCatalogDetails } from "./integrations/fazercards-catalog";
 import { steamSellingPrice } from "./steam-pricing";
 import type { Product } from "./types";
+import { featuredSteamIds, steamCollection } from "./steam-collections";
 
 const gameFeedItem = z.object({ appid: z.number().int().positive(), name: z.string().trim().min(1).transform((value) => value.slice(0,500)) });
 const gameFeed = z.object({ ok: z.literal(true), meta: z.object({ truncated: z.literal(false) }), games: z.array(z.unknown()).min(1) });
-const metadataSchema = z.object({ success: z.boolean(), data: z.object({ type: z.string(), name: z.string(), steam_appid: z.number(), is_free: z.boolean(), header_image: z.url(), short_description: z.string().optional() }).optional() });
+const metadataSchema = z.object({ success: z.boolean(), data: z.object({ type: z.string(), name: z.string(), steam_appid: z.number(), is_free: z.boolean(), header_image: z.url(), short_description: z.string().optional(), release_date: z.object({ coming_soon: z.boolean() }) }).optional() });
 export type SteamLibraryEntry = { appid: number; name: string; imageUrl: string; description: string };
 function database() { const db = createSupabaseAdminClient(); if (!db) throw new Error("Catalogue unavailable."); return db; }
 function appId(input: string | number) { const id = Number(input); if (!Number.isSafeInteger(id) || id < 1) throw new Error("Invalid game."); return id; }
@@ -97,7 +98,7 @@ export async function verifySteamGame(input: number | string): Promise<SteamLibr
   const data = parsed.data;
   if (!parsed.success || !data) throw new Error("Steam game details could not be verified.");
   if (data.steam_appid !== id) throw new Error("Steam game identity mismatch.");
-  const eligible = data.type === "game" && data.is_free === false;
+  const eligible = data.type === "game" && data.is_free === false && data.release_date.coming_soon === false;
   const imageUrl = safeImage(data.header_image);
   const description = "";
   const { error: saveError } = await db.from("steam_library_games").update({ metadata_status: eligible ? "eligible" : "excluded", metadata_checked_at: new Date().toISOString(), image_url: imageUrl, description }).eq("appid", id);
@@ -105,31 +106,53 @@ export async function verifySteamGame(input: number | string): Promise<SteamLibr
   return eligible ? { appid: id, name: cached.name, imageUrl, description } : null;
 }
 
-export async function verifyPendingSteamGames(limit = 4) {
+export async function verifyPendingSteamGames(limit = 24, runBudgetMs = 25000) {
   const db = database();
-  const { data, error } = await db.from("steam_library_games").select("appid").eq("supplier_active", true).eq("metadata_status", "pending")
-    .or(`metadata_attempt_at.is.null,metadata_attempt_at.lt.${new Date(Date.now() - 3600000).toISOString()}`).order("source_rank").limit(limit);
+  const { data, error } = await db.from("steam_library_games").select("appid").eq("supplier_active", true)
+    .or(`metadata_status.eq.pending,and(curated_rank.not.is.null,metadata_checked_at.lt.${new Date(Date.now() - 24 * 3600000).toISOString()})`)
+    .or(`metadata_attempt_at.is.null,metadata_attempt_at.lt.${new Date(Date.now() - 3600000).toISOString()}`)
+    .order("curated_rank", { ascending: true, nullsFirst: false }).order("source_rank").limit(Math.max(1, Math.min(24, limit)));
   if (error) throw new Error("Catalogue checks unavailable.");
   let verified = 0, checked = 0;
-  const deadline = Date.now()+15000;
-  for (const row of data ?? []) { if (Date.now()>deadline-8000) break; checked++; try { if (await verifySteamGame(row.appid)) verified++; } catch { break; } }
+  const deadline = Date.now() + Math.min(25000, Math.max(0, runBudgetMs));
+  let cursor = 0, busy = false;
+  async function worker() {
+    while (cursor < (data?.length ?? 0) && Date.now() < deadline - 8000 && !busy) {
+      const row = data![cursor++]; checked++;
+      try { if (await verifySteamGame(row.appid)) verified++; }
+      catch (error) { if (error instanceof Error && error.message.includes("checks are busy")) busy = true; }
+    }
+  }
+  await Promise.all([worker(), worker(), worker()]);
   return { checked, verified };
 }
 
-export async function searchSteamLibrary(query = "", page = 1) {
+export async function searchSteamLibrary(query = "", page = 1, collectionId?: string) {
   const db = database(), q = query.trim().slice(0, 100), offset = (Math.max(1, Math.min(10000, page)) - 1) * 24;
   const pattern = `%${q.replace(/[\\%_]/g, "\\$&")}%`;
+  const collection = steamCollection(collectionId);
   let partial = false;
   if (q) {
-    const { data: candidates, error } = await db.from("steam_library_games").select("appid").eq("supplier_active", true).eq("metadata_status", "pending").ilike("name", pattern).order("source_rank").limit(8);
+    let candidatesQuery = db.from("steam_library_games").select("appid").eq("supplier_active", true).eq("metadata_status", "pending").ilike("name", pattern);
+    if (collection) candidatesQuery = candidatesQuery.eq("curated_category", collection.id);
+    const { data: candidates, error } = await candidatesQuery.order("curated_rank", { ascending: true, nullsFirst: false }).order("source_rank").limit(8);
     if (error) throw new Error("Search unavailable.");
     for (const candidate of candidates ?? []) { try { await verifySteamGame(candidate.appid); } catch { partial = true; break; } }
   }
   let request = db.from("steam_library_games").select("appid,name,image_url,description", { count: "exact" }).eq("supplier_active", true).eq("metadata_status", "eligible");
+  if (collection) request = request.eq("curated_category", collection.id);
   if (q) request = request.ilike("name", pattern);
-  const { data, count, error } = await request.order("source_rank").range(offset, offset + 23);
+  const { data, count, error } = await request.order("curated_rank", { ascending: true, nullsFirst: false }).order("source_rank").range(offset, offset + 23);
   if (error) throw new Error("Search unavailable.");
   return { items: (data ?? []).map((row): SteamLibraryEntry => ({ appid: Number(row.appid), name: row.name, imageUrl: row.image_url, description: row.description ?? "" })), total: count ?? 0, partial };
+}
+
+export async function getFeaturedSteamGames(): Promise<SteamLibraryEntry[]> {
+  const { data, error } = await database().from("steam_library_games").select("appid,name,image_url,description")
+    .eq("supplier_active", true).eq("metadata_status", "eligible").in("appid", featuredSteamIds);
+  if (error) throw new Error("Featured games unavailable.");
+  return (data ?? []).filter((row) => row.image_url).sort((a, b) => featuredSteamIds.indexOf(Number(a.appid)) - featuredSteamIds.indexOf(Number(b.appid))).slice(0, 8)
+    .map((row) => ({ appid: Number(row.appid), name: row.name, imageUrl: row.image_url, description: row.description ?? "" }));
 }
 
 export async function prepareSteamProduct(input: number | string): Promise<Product | null> {

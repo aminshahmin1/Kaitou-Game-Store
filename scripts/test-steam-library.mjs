@@ -15,7 +15,7 @@ assert.equal(pricing.steamSellingPrice(1,4.08).priceMyr,5.08);
 for(const cost of [0,-1,NaN,Infinity])assert.throws(()=>pricing.steamSellingPrice(cost,4.08));
 assert.equal(pricing.normalizeSteamInvite("s.team/p/abc-def/ghijk/"),"https://s.team/p/abc-def/ghijk");
 for(const url of ["http://s.team/p/a/b","https://s.team.evil.test/p/a/b","https://evil.test/p/a/b","https://user@s.team/p/a/b","https://s.team/p/a/b?next=x","https://s.team/p/a/b#x","https://s.team:444/p/a/b","https://s.team/p/../bad","javascript:alert(1)"])assert.throws(()=>pricing.normalizeSteamInvite(url));
-let metadataType="game",free=false,wrongId=false,budget=true,fetches=0,productActive=true;
+let metadataType="game",free=false,comingSoon=false,wrongId=false,budget=true,fetches=0,productActive=true;
 const calls=[], games=new Map([[42,{appid:42,name:"Test base game",supplier_active:true,metadata_status:"pending",metadata_checked_at:null}]]);
 function database(){return {from(table){const filters={};let patch,upsert;
   const query={select(){return query;},eq(k,v){filters[k]=v;return query;},update(v){patch=v;return query;},upsert(v,o){upsert=v;calls.push({table,upsert:v,options:o});return query;},
@@ -27,15 +27,17 @@ function database(){return {from(table){const filters={};let patch,upsert;
   rpc(name,args){calls.push({rpc:name,args});const result=name==="consume_request_limit"?{data:[{allowed:budget}]}:{data:null,error:null};const promise=Promise.resolve(result);promise.abortSignal=()=>promise;return promise;}};}
 const stock=load("src/lib/stock.ts");
 const library=load("src/lib/steam-library.ts",{
+  "./steam-collections":load("src/lib/steam-collections.ts"),
   "./supabase/admin":{createSupabaseAdminClient:database},"./funding-cost":{getFundingCostBasis:async()=>({rate:4.08})},"./supplier-credit":{getAvailableSupplierCredit:async()=>100},"./stock":stock,"./steam-pricing":pricing,
   "./integrations/fazercards-catalog":{getFazerCardsCatalogDetails:async()=>({categoryId:"42",offers:[{offerId:"100:MY",edition:"Standard",region:"MY",name:"Standard (MY)",priceUsd:1},{offerId:"200:MY",edition:"Deluxe",region:"MY",name:"Deluxe (MY)",priceUsd:2},{offerId:"300:MY",edition:"DLC only",region:"MY",name:"DLC only",priceUsd:1},{offerId:"400:MY",name:"Free",priceUsd:0}]})},
-},{fetch:async()=>{fetches++;return{ok:true,json:async()=>({"42":{success:true,data:{type:metadataType,name:"Game",steam_appid:wrongId?99:42,is_free:free,header_image:"https://cdn.cloudflare.steamstatic.com/steam/apps/42/header.jpg"}}})};}});
+},{fetch:async()=>{fetches++;return{ok:true,json:async()=>({"42":{success:true,data:{type:metadataType,name:"Game",steam_appid:wrongId?99:42,is_free:free,release_date:{coming_soon:comingSoon},header_image:"https://cdn.cloudflare.steamstatic.com/steam/apps/42/header.jpg"}}})};}});
 assert.equal((await library.syncSteamCatalogue()).skipped,true);
 assert.equal(fetches,0);
 assert.equal((await library.verifySteamGame(42)).appid,42);assert.equal(fetches,1);
 await library.verifySteamGame(42);assert.equal(fetches,1,"Fresh metadata must be cached");
 for(const [type,isFree]of[["dlc",false],["demo",false],["game",true]]){Object.assign(games.get(42),{metadata_checked_at:null,metadata_status:"pending"});metadataType=type;free=isFree;assert.equal(await library.verifySteamGame(42),null);}
 metadataType="game";free=false;Object.assign(games.get(42),{metadata_checked_at:null,metadata_status:"pending"});wrongId=true;await assert.rejects(library.verifySteamGame(42),/identity/);wrongId=false;
+comingSoon=true;assert.equal(await library.verifySteamGame(42),null,"Unreleased candidates must not be published");comingSoon=false;Object.assign(games.get(42),{metadata_checked_at:null,metadata_status:"pending"});
 budget=false;const previous=fetches;await assert.rejects(library.verifySteamGame(42),/busy/);assert.equal(fetches,previous);budget=true;
 await library.verifySteamGame(42);
 const product=await library.prepareSteamProduct(42);
