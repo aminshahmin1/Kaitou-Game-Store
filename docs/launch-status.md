@@ -1,5 +1,9 @@
 # Kaitou launch verification
 
+## Hover-only currency rain: 2026-10-20
+
+- LIVE: dpl_D64E9UdghEtDHf7i58KPaPVma9jq. Rain starts on individual-card hover/keyboard-visible focus and sits behind the game image, not in front. Sixteen varied-size particles with drift, tumbling and subtle glow; idle and touch-only states do not animate, reduced-motion disables it. Poster area only; pricing/navigation unchanged. Production build, scoped lint and isolated/live hover browser checks pass. No orders created. Details: docs/rankings-redesign-2026-10-20.md.
+
 ## Rankings and card effects: 2026-10-20
 
 - LIVE: dpl_2wdfZ1Qf9UrnTkSMrYENUrimAL27 at kaitou.shop. Rankings follows light/dark theme including footer; compact game names and local currency icons in a single horizontally scrolling strip with swipe/arrow/keyboard access. Top 100 per game/unit enforced in the private RPC and page; original account identities, masked IDs, exclusions and totals preserved. Game-specific currency rain in top-up poster areas, pointer-transparent and disabled by reduced-motion preference.

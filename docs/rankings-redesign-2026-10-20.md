@@ -1,5 +1,12 @@
 # Rankings and currency-rain release
 
+## Hover-only follow-up
+
+- Updated after the initial release: rain now starts only on fine-pointer hover or keyboard-visible focus; only that card animates. Touch devices stay idle. Sixteen particles use varied sizes, speeds, lateral drift, tumbling/3D rotation and soft currency glints. No animation runs while idle, and reduced-motion disables the effect.
+- Particles sit at z-index 1 over the poster-area background; the transparent poster container and its image sit at z-index 2. The rain is behind the actual game artwork, clipped to the image area and pointer-transparent. Prices and card navigation are unchanged.
+- Scoped lint and production build/TypeScript pass. Isolated browser verification confirms idle stopped, selected-card-only motion, lower rain stacking layer, loaded assets, actual changing transforms, light/dark appearance, mouse leave, keyboard focus, reduced motion and touch idle. Genshin hover screenshot visually inspected. No orders created.
+- LIVE: deployment dpl_D64E9UdghEtDHf7i58KPaPVma9jq promoted to kaitou.shop; the complete hover-effect browser script also passes on the live domain with zero uncaught errors and no orders created. Prior continuous nine-particle description below records the initial release and is superseded by this follow-up.
+
 - Rankings follows the saved site theme with dedicated light/dark surface, text, borders, medals, navigation and footer colors. One horizontally scrolling game strip replaces wrapping long labels. Native swipe/trackpad, previous/next buttons, keyboard links and selected-game visibility; no fake ARIA tab semantics for page navigation. Compact visual names preserve the existing full game/region/unit identity in URLs and accessible labels. No player grouping or historical totals changed.
 - Private currency_leaderboard RPC now returns up to 100 players per game/unit instead of 25; removes the former 500-row global cap. Same completed, paid, non-test and non-refunded currency-only aggregation and private grants. Page also caps selected rows at 100. No fake players added to public boards.
 - Product poster areas have nine lightweight currency particles each, using the corresponding game's real currency artwork. CSS transform/opacity loops, clipped to artwork area, no pointer interception and no change to card dimensions or purchasing. Reduced-motion hides the effect. No paid video generation, external animation service or new dependency required.

@@ -31,7 +31,8 @@ try{
   await page.getByRole("button",{name:"Change color theme"}).click();assert.equal(await page.locator("html").getAttribute("data-theme"),"light");
   await page.goto(base,{waitUntil:"domcontentloaded"});const cards=page.locator(".topup-product-card");assert.ok(await cards.count()>=5);
   const rains=await page.locator("[data-currency-rain]").evaluateAll(async elements=>{const results=[];for(const el of elements){const imgs=[...el.querySelectorAll("img")];for(const img of imgs)img.loading="eager";await Promise.all(imgs.map(img=>img.decode()));results.push({unit:el.dataset.currencyRain,particles:imgs.length,loaded:imgs.every(img=>img.naturalWidth>0),pointerEvents:getComputedStyle(el).pointerEvents});}return results;});
-  assert.ok(rains.length>=5);assert.ok(rains.every(r=>r.particles===9&&r.loaded&&r.pointerEvents==="none"));
+  assert.ok(rains.length>=5);assert.ok(rains.every(r=>r.particles===16&&r.loaded&&r.pointerEvents==="none"));
+  await cards.first().hover();
   const drop=page.locator(".currency-drop").first();const before=await drop.evaluate(el=>getComputedStyle(el).transform);await page.waitForTimeout(220);assert.notEqual(await drop.evaluate(el=>getComputedStyle(el).transform),before);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false);await page.screenshot({path:path.join(output,"topup-rain-light.png"),fullPage:true});
   await page.setViewportSize({width:390,height:960});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2),false);await page.screenshot({path:path.join(output,"topup-rain-mobile.png"),fullPage:true});await page.setViewportSize({width:1440,height:960});

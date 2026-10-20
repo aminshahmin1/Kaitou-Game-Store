@@ -164,17 +164,23 @@ html[data-theme="light"] .ranking-medal-3 { color: #975026; }
 .ranking-surface footer :is(p, a) { color: var(--rank-muted); }
 .ranking-surface footer p { color: var(--rank-ink); }
 
-.currency-rain { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; contain: paint; }
-.currency-drop { position: absolute; left: var(--drop-left); top: -28px; width: 22px; height: 22px; opacity: 0; }
+.topup-product-card [data-product-poster] { position: relative; z-index: 2; background: transparent; }
+.currency-rain { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; contain: paint; opacity: 0; transition: opacity 160ms ease-out; }
+.currency-drop { position: absolute; left: var(--drop-left); top: -34px; width: var(--drop-size); height: var(--drop-size); opacity: 0; filter: drop-shadow(0 0 4px rgb(151 225 255 / 35%)); }
 @media (prefers-reduced-motion: no-preference) {
-  .currency-drop { animation: currency-fall var(--drop-duration) linear var(--drop-delay) infinite; }
-  .topup-product-card:hover .currency-drop, .topup-product-card:focus-visible .currency-drop { filter: brightness(1.15); }
+  .topup-product-card:focus-visible .currency-rain { opacity: 1; }
+  .topup-product-card:focus-visible .currency-drop { animation: currency-fall var(--drop-duration) linear var(--drop-delay) infinite; }
   @keyframes currency-fall {
-    0% { opacity: 0; transform: translate3d(0, -12px, 0) rotate(-12deg); }
-    16% { opacity: 0.6; }
-    80% { opacity: 0.45; }
-    100% { opacity: 0; transform: translate3d(12px, 180px, 0) rotate(var(--drop-turn)); }
+    0% { opacity: 0; transform: translate3d(0, -12px, 0) rotate(-20deg) rotateY(0deg); }
+    15% { opacity: 0.85; }
+    55% { opacity: 0.7; }
+    85% { opacity: 0.55; }
+    100% { opacity: 0; transform: translate3d(var(--drop-drift), 200px, 0) rotate(var(--drop-turn)) rotateY(140deg); }
   }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .topup-product-card:hover .currency-rain { opacity: 1; }
+  .topup-product-card:hover .currency-drop { animation: currency-fall var(--drop-duration) linear var(--drop-delay) infinite; }
 }
 @media (prefers-reduced-motion: reduce) { .currency-rain { display: none; } }
 

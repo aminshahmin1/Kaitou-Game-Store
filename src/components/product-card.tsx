@@ -12,7 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/products/${product.slug}`}
       className="topup-product-card group overflow-hidden rounded-lg border border-cyan-300/20 bg-white/[0.045] shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:-translate-y-1 hover:border-cyan-300/50"
     >
-      <div className="relative isolate overflow-hidden">
+      <div className="relative isolate overflow-hidden bg-[#071225]">
         {product.type === "topup" && <CurrencyRain game={product.game} />}
         <ProductPoster src={product.imageUrl} title={product.game} />
       </div>
