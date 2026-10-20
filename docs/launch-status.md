@@ -1,5 +1,10 @@
 # Kaitou launch verification
 
+## Rankings and card effects: 2026-10-20
+
+- LIVE: dpl_2wdfZ1Qf9UrnTkSMrYENUrimAL27 at kaitou.shop. Rankings follows light/dark theme including footer; compact game names and local currency icons in a single horizontally scrolling strip with swipe/arrow/keyboard access. Top 100 per game/unit enforced in the private RPC and page; original account identities, masked IDs, exclusions and totals preserved. Game-specific currency rain in top-up poster areas, pointer-transparent and disabled by reduced-motion preference.
+- Unit regressions, TypeScript, scoped lint, build and rollback SQL with over 100 players per game pass; zero fixtures remain. Both isolated and live browser runs pass eight width/theme cases plus game selection, populated masks, currency images, actual motion/reduced motion and card navigation. No paid orders created. Artwork provenance, permission caveat and verification details: docs/rankings-redesign-2026-10-20.md.
+
 ## Direct support release: 2026-10-20
 
 - LIVE at kaitou.shop/support: deployment dpl_Ed7HFodwNXC8fm7yCRWWLqtF8amF. Website form sends directly through existing Gmail SMTP, collects name/email/phone, optional order reference and up to three JPG/PNG/WebP/PDF attachments (2 MiB combined). Order Status Get help prefills the order number. No mail-app handoff for this flow. Fixed server recipient, validated customer reply-to, bounded uploads and private per-IP rate limiting. No persistent dashboard ticket queue added.

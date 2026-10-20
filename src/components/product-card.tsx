@@ -4,14 +4,18 @@ import { ArrowRight, BadgeCheck } from "lucide-react";
 import { formatMyr, getProductStartingPrice } from "@/lib/catalog";
 import type { Product } from "@/lib/types";
 import { ProductPoster } from "./product-poster";
+import { CurrencyRain } from "./currency-rain";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group overflow-hidden rounded-lg border border-cyan-300/20 bg-white/[0.045] shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:-translate-y-1 hover:border-cyan-300/50"
+      className="topup-product-card group overflow-hidden rounded-lg border border-cyan-300/20 bg-white/[0.045] shadow-[0_18px_45px_rgba(0,0,0,0.22)] transition hover:-translate-y-1 hover:border-cyan-300/50"
     >
-      <ProductPoster src={product.imageUrl} title={product.game} />
+      <div className="relative isolate overflow-hidden">
+        {product.type === "topup" && <CurrencyRain game={product.game} />}
+        <ProductPoster src={product.imageUrl} title={product.game} />
+      </div>
       <div data-dark-surface className="bg-[#071225] p-5">
         <div className="flex items-center justify-between">
           <span className="rounded-md bg-black/35 px-3 py-1 text-xs font-bold uppercase text-cyan-100">
