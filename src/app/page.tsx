@@ -93,7 +93,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
             <div>
               <p className="text-sm font-bold uppercase text-cyan-200">Available now</p>
               <h2 className="font-display text-5xl font-bold uppercase leading-none text-white">
-                Products
+                Top Ups
               </h2>
             </div>
             <div className="flex items-center gap-2 rounded-md border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm font-bold text-emerald-200">
@@ -122,7 +122,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
             </div>
           ) : (
             <div className="rounded-lg border border-cyan-300/20 bg-white/[0.045] p-8 text-center text-slate-200">
-              {query || filters.category ? "No products match your search." : "Products are being prepared. Please check back soon."}
+              {query || filters.category ? "No top-ups match your search." : "Top-ups are being prepared. Please check back soon."}
             </div>
           )}
         </section>

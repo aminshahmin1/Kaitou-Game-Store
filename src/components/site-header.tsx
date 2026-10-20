@@ -37,7 +37,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-4 text-sm font-semibold text-slate-200 lg:flex xl:gap-6">
-          <Link href="/#products">Products</Link>
+          <Link href="/#products">Top Ups</Link>
           <Link href="/steam-gifts">Steam Gifts Library</Link>
           <Link href="/order-status">Order status</Link>
           <Link href="/leaderboard">Rankings</Link>
@@ -82,7 +82,7 @@ export function SiteHeader() {
         <button type="submit" aria-label="Search" title="Search" className="grid h-11 w-11 place-items-center rounded-md bg-cyan-300 text-slate-950"><Search className="h-5 w-5" /></button>
       </form>}
       {menuOpen && <nav className="grid gap-1 border-t border-cyan-300/15 px-5 py-3 text-sm font-semibold lg:hidden">
-        <Link className="py-3" href="/#products" onClick={() => setMenuOpen(false)}>Products</Link>
+        <Link className="py-3" href="/#products" onClick={() => setMenuOpen(false)}>Top Ups</Link>
         <Link className="py-3" href="/steam-gifts" onClick={() => setMenuOpen(false)}>Steam Gifts Library</Link>
         <Link className="py-3" href="/order-status" onClick={() => setMenuOpen(false)}>Order status</Link>
         <Link className="py-3" href="/leaderboard" onClick={() => setMenuOpen(false)}>Rankings</Link>
